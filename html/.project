@@ -26,17 +26,29 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
+<<<<<<< HEAD
 			<name>org.eclipse.wst.validation.validationbuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
+=======
 			<name>com.google.gdt.eclipse.core.webAppProjectValidator</name>
+>>>>>>> 72a0ca36b23d5477c2ffda0de072bde9ab5c05a2
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
+<<<<<<< HEAD
+			<name>com.google.gdt.eclipse.core.webAppProjectValidator</name>
+=======
+			<name>com.google.appengine.eclipse.core.enhancerbuilder</name>
+>>>>>>> 72a0ca36b23d5477c2ffda0de072bde9ab5c05a2
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+<<<<<<< HEAD
 			<name>com.google.gwt.eclipse.core.gwtProjectValidator</name>
+=======
+			<name>com.google.appengine.eclipse.core.projectValidator</name>
+>>>>>>> 72a0ca36b23d5477c2ffda0de072bde9ab5c05a2
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -46,8 +58,12 @@
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
+<<<<<<< HEAD
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>com.google.gwt.eclipse.core.gwtNature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
+=======
+		<nature>com.google.appengine.eclipse.core.gaeNature</nature>
+>>>>>>> 72a0ca36b23d5477c2ffda0de072bde9ab5c05a2
 	</natures>
 </projectDescription>
