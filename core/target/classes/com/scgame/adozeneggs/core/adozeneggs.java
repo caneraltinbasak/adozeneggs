@@ -9,39 +9,40 @@ import playn.core.ImageLayer;
 import playn.core.Pointer;
 
 public class adozeneggs implements Game {
-	  GroupLayer layer;
+	GroupLayer layer;
 
-  @Override
-  public void init() {
-	  
-	    // create a group layer to hold everything
-	    layer = graphics().createGroupLayer();
-	    graphics().rootLayer().add(layer);
-	    
-    // create and add background image layer
-    Image bgImage = assetManager().getImage("images/bg.png");
-    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-    layer.add(bgLayer);
-    // add a listener for pointer (mouse, touch) input
-    pointer().setListener(new Pointer.Adapter() {
-      @Override
-      public void onPointerEnd(Pointer.Event event) {
-        Egg egg = new Egg(layer, event.x(), event.y());
-      }
-    });
-  }
+	@Override
+	public void init() {
+		
+		// create a group layer to hold everything
+		layer = graphics().createGroupLayer();
+		graphics().rootLayer().add(layer);
+		// create and add background image layer
 
-  @Override
-  public void paint(float alpha) {
-    // the background automatically paints itself, so no need to do anything here!
-  }
+		Image bgImage = assetManager().getImage("images/bg.png");
+		ImageLayer bgLayer = graphics().createImageLayer(bgImage);
+		layer.add(bgLayer);
+		
+		Basket aBasket = new Basket(new Vect2d(0, 0), new Vect2d(400, 400));
+		Basket bBasket = new Basket(new Vect2d(0, 0), new Vect2d(400, 200));
+		
+		Egg egg= new Egg(layer, aBasket, bBasket);
 
-  @Override
-  public void update(float delta) {
-  }
 
-  @Override
-  public int updateRate() {
-    return 25;
-  }
+	}
+
+	@Override
+	public void paint(float alpha) {
+
+	}
+
+	@Override
+	public void update(float delta) {
+		
+	}
+
+	@Override
+	public int updateRate() {
+		return 25;
+	}
 }
