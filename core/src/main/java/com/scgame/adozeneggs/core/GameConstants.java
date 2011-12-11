@@ -46,7 +46,7 @@ public class GameConstants {
 		/**
 		 * gravity is defined by pixels/miliseconds.
 		 */
-		public static final float gravity = 2;
-		public static final float JumpSpeed = 5;
+		public static final float gravity = (float)0.01; 
+		public static final float JumpSpeed = (float)1; // pixel/ms
 	}
 }
