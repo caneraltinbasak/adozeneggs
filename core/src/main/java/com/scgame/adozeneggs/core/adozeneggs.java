@@ -15,9 +15,17 @@ public class adozeneggs implements Game {
 	Egg theEgg;
 	Basket aBasket;
 	Basket bBasket;
+	private Scene activeScene;
+	private Scene scMenu = new SceneMenu(this);
+	private Scene scLevels = new SceneLevels(this); 
+	private Scene scGameplay = new SceneGameplay(this); 
+	GroupLayer baseLayer;
+
 	@Override
 	public void init() {
 		
+		runSceneMenu();
+		/*
 		// create a group layer to hold everything
 		layer = graphics().createGroupLayer();
 		graphics().rootLayer().add(layer);
@@ -52,9 +60,34 @@ public class adozeneggs implements Game {
 			}
 		});
 
-
+		 */
 	}
 
+
+	public void runSceneMenu() {
+		if (activeScene != null) {
+			activeScene.shutdown();
+		}
+		activeScene = scMenu;
+		activeScene.init();
+	}
+	
+	public void runSceneLevels() {
+		if (activeScene != null) {
+			activeScene.shutdown();
+		}
+		activeScene = scLevels;
+		activeScene.init();
+	}
+	
+	public void runSceneGameplay(int level) {
+		if (activeScene != null) {
+			activeScene.shutdown();
+		}
+		activeScene = scGameplay;
+		((SceneGameplay) scGameplay).init(level);
+	}
+	
 	@Override
 	public void paint(float alpha) {
 		theEgg.paint(alpha);

@@ -12,7 +12,6 @@ import playn.core.ResourceCallback;
 
 import com.scgame.adozeneggs.core.SpriteLoader;
 
-import com.scgame.adozeneggs.core.Sprite;
 
 public class Egg{
 	public static String IMAGE = "sprites/peasprites.png";
