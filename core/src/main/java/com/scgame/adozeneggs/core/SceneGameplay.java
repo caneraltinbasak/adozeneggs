@@ -44,7 +44,7 @@ public class SceneGameplay extends Scene {
 	    ImageLayer ldLayer = graphics().createImageLayer(ldImage);
 	    gLayer.add(ldLayer);
 	    
-	    backButton = new Button(30, 400, "images/back-button.png");
+	    backButton = new Button(0.10f, 0.90f, "images/back-button.png");
 		gLayer.add(backButton.getLayer());
 		
 		// add a listener for pointer (mouse, touch) input

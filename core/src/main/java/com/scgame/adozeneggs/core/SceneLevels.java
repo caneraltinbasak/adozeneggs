@@ -37,19 +37,19 @@ public class SceneLevels extends Scene {
 	    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
 	    gLayer.add(bgLayer);
 	    
-	    this.btLevel1 = new Button(30, 30, "images/l1.png");
+	    this.btLevel1 = new Button(0.10f, 0.10f, "images/l1.png");
 		gLayer.add(btLevel1.getLayer());		
-		this.btLevel2 = new Button(130, 30, "images/l2.png");
+		this.btLevel2 = new Button(0.30f, 0.10f, "images/l2.png");
 		gLayer.add(btLevel2.getLayer());
-		this.btLevel3 = new Button(230, 30, "images/l3.png");
+		this.btLevel3 = new Button(0.50f, 0.10f, "images/l3.png");
 		gLayer.add(btLevel3.getLayer());
-		this.btLevel4 = new Button(30, 100, "images/l4.png");
+		this.btLevel4 = new Button(0.10f, 0.30f, "images/l4.png");
 		gLayer.add(btLevel4.getLayer());
-		this.btLevel5 = new Button(130, 100, "images/l5.png");
+		this.btLevel5 = new Button(0.30f, 0.30f, "images/l5.png");
 		gLayer.add(btLevel5.getLayer());
-		this.btLevel6 = new Button(230, 100, "images/l6.png");
+		this.btLevel6 = new Button(0.50f, 0.30f, "images/l6.png");
 		gLayer.add(btLevel6.getLayer());
-		this.backButton = new Button(30, 400, "images/back-button.png");
+		this.backButton = new Button(0.10f, 0.90f, "images/back-button.png");
 		gLayer.add(backButton.getLayer());
 		
 		// add a listener for pointer (mouse, touch) input

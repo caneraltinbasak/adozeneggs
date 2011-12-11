@@ -11,15 +11,16 @@ public class GameConstants {
 	 * ScreenProperties defines the properties of the drawing surface. 
 	 * It should be set at main initialization stage. 
 	 */
-	public class ScreenProperties{
+	
+	public static class ScreenProperties{
 		/**
 		 * width of screen
 		 */
-		public int width;
+		public static int width = 320;
 		/**
 		 * height of screen
 		 **/
-		public int height;
+		public static int height = 480;
 		/**
 		 * screen dot-per-inch if available
 		 * 

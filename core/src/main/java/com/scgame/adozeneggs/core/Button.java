@@ -8,20 +8,26 @@ import playn.core.ImageLayer;
 import playn.core.ResourceCallback;
 
 public class Button {
-	float px; // x coordinate in percentage 
-	float py; // y coordinate in percentage
-	int width; 
-	int height;
+	float px; 	// x coordinate in pixel value
+	float py;	// y coordinate in pixel value
+	float width; 
+	float height;
 	boolean isHit;
 	ImageLayer imageLayer;
 	
-	public Button(float px, float py, String imagePath) {
-	    this.px = px;
-	    this.py = py;
+	/**
+	 * Button Constructor
+	 * @param marginLeft left margin for button (in percentage)
+	 * @param marginTop top margin for button (in percentage)
+	 * @param imagePath image for button
+	 */
+	public Button(float marginLeft, float marginTop, String imagePath) {
+	    this.px = GameConstants.ScreenProperties.width * (marginLeft);
+		this.py = GameConstants.ScreenProperties.height * (marginTop);
 	    this.isHit = false;
 	    this.imageLayer = graphics().createImageLayer();
 	    this.imageLayer.setTranslation(px, py);
-	    	    
+	    	 
 		Image button = assetManager().getImage(imagePath);		
 		this.height = button.height();
 		this.width = button.width();
@@ -46,6 +52,11 @@ public class Button {
 			});
 	}
 	  
+	/**
+	 * Checks if pointer is clicked-touched on button
+	 * @param x pointer (mouse, touch) value on x coordinate 
+	 * @param y pointer (mouse, touch) value on y coordinate
+	 */
 	public boolean hitTest(float x, float y) {
 		if ((x > px) && (x < px + width) && (y > py) && (y < py + height)) {
 			this.isHit = true;

@@ -35,9 +35,9 @@ public class SceneMenu extends Scene {
 	    
 	    gLayer.add(bgLayer);
 	    
-		this.playButton = new Button(50, 50, "images/newGame.png");
+		this.playButton = new Button(0.10f, 0.10f, "images/newGame.png");
 		gLayer.add(playButton.getLayer());
-		this.optButton = new Button(50, 100, "images/options.png");
+		this.optButton = new Button(0.10f, 0.30f, "images/options.png");
 		gLayer.add(optButton.getLayer());
 		
 		// add a listener for pointer (mouse, touch) input
