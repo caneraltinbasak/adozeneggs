@@ -31,5 +31,8 @@ public class Basket {
 		stars=1;
 		return false;
 	}
+	public void update(float delta){
+		position=position.add(velocity.multiply(delta));
+	}
 
 }
