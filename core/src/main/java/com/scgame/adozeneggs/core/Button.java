@@ -28,7 +28,7 @@ public class Button {
 	    this.imageLayer = graphics().createImageLayer();
 	    this.imageLayer.setTranslation(px, py);
 	    	 
-		Image button = assetManager().getImage(imagePath);		
+		Image button = assetManager().getImage(imagePath);	 	
 		this.height = button.height();
 		this.width = button.width();
 		this.loadImage(button);

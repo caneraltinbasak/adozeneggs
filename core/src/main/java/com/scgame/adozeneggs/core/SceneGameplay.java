@@ -50,7 +50,7 @@ public class SceneGameplay extends Scene {
 		// add a listener for pointer (mouse, touch) input
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
-	    	public void onPointerEnd(Pointer.Event event) {
+	    	public void onPointerEnd(Pointer.Event event) { 
 	    		if (backButton.hitTest(event.x(), event.y())) {
 	    			adozeneggs.runSceneLevels();
 	    		}

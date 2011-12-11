@@ -49,9 +49,9 @@ public class SceneLevels extends Scene {
 		gLayer.add(btLevel5.getLayer());
 		this.btLevel6 = new Button(0.50f, 0.30f, "images/l6.png");
 		gLayer.add(btLevel6.getLayer());
-		this.backButton = new Button(0.10f, 0.90f, "images/back-button.png");
+		this.backButton = new Button(0.10f, 0.90f, "images/back-button.png");  
 		gLayer.add(backButton.getLayer());
-		
+	
 		// add a listener for pointer (mouse, touch) input
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
