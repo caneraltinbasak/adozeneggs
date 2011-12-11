@@ -1,12 +1,7 @@
 package com.scgame.adozeneggs.core;
 
-import static playn.core.PlayN.*;
-
 import playn.core.Game;
 import playn.core.GroupLayer;
-import playn.core.Image;
-import playn.core.ImageLayer;
-import playn.core.Pointer;
 
 public class adozeneggs implements Game {
 	GroupLayer layer;
