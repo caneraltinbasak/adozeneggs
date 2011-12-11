@@ -64,7 +64,7 @@ public class Egg{
 		if (hasLoaded) {
 			spriteIndex = (spriteIndex + 1) % sprite.numSprites();
 			sprite.setSprite(spriteIndex);
-			sprite.layer().setTranslation(50, 50);
+			sprite.layer().setTranslation(position.x, position.y);
 		}
 	}
 	public void update(float delta) {
@@ -73,7 +73,7 @@ public class Egg{
 			// newPosition = position + velocity*time if on air
 			position=position.add(velocity.multiply(delta));
 			// newVelocity = velocity + gravitational accelaration constant * time
-			velocity=velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.gravity*delta));
+			velocity=velocity.add(new Vect2d(0, -GameConstants.PhysicalProperties.gravity*delta));
 			int stars=0;
 			if(targetBasket.hit(this, stars))
 			{
