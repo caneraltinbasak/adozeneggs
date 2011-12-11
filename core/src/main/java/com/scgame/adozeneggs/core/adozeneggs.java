@@ -90,14 +90,14 @@ public class adozeneggs implements Game {
 	
 	@Override
 	public void paint(float alpha) {
-		theEgg.paint(alpha);
+//		theEgg.paint(alpha);
 	}
 
 	@Override
 	public void update(float delta) {
-		theEgg.update(delta);
-		aBasket.update(delta);
-		bBasket.update(delta);
+//		theEgg.update(delta);
+//		aBasket.update(delta);
+//		bBasket.update(delta);
 	}
 
 	@Override
