@@ -2,6 +2,11 @@ package com.scgame.adozeneggs.core;
 
 import playn.core.Game;
 import playn.core.GroupLayer;
+import playn.core.Image;
+import playn.core.ImageLayer;
+import static playn.core.PlayN.assetManager;
+import static playn.core.PlayN.graphics;
+import static playn.core.PlayN.pointer;
 
 public class adozeneggs implements Game {
 	GroupLayer layer;
@@ -29,8 +34,8 @@ public class adozeneggs implements Game {
 		Basket bBasket = new Basket(new Vect2d(0, 0), new Vect2d(400, 200));
 		
 		Egg egg= new Egg(layer, aBasket, bBasket);
-
-		 */
+		*/
+		
 	}
 
 

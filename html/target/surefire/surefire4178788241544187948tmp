@@ -1,0 +1,37 @@
+#surefire
+#Mon Dec 12 22:00:38 EET 2011
+testClassesDirectory=/Users/aa/adozeneggs/html/target/test-classes
+classPathUrl.4=/Users/aa/.m2/repository/com/samskivert/pythagoras/1.1/pythagoras-1.1.jar
+classPathUrl.3=/Users/aa/.m2/repository/com/googlecode/playn/playn-core/1.0.2/playn-core-1.0.2.jar
+classPathUrl.2=/Users/aa/adozeneggs/core/target/adozeneggs-core-0.0.1-SNAPSHOT.jar
+useManifestOnlyJar=true
+classPathUrl.1=/Users/aa/adozeneggs/html/target/classes
+reportsDirectory=/Users/aa/adozeneggs/html/target/surefire-reports
+classPathUrl.0=/Users/aa/adozeneggs/html/target/test-classes
+dirscanner.0=directoryScannerOptions
+providerConfiguration=org.apache.maven.surefire.junit4.JUnit4Provider
+testSuiteDefinitionTestSourceDirectory=/Users/aa/adozeneggs/html/src/test/java
+surefireClassPathUrl.1=/Users/aa/.m2/repository/org/apache/maven/surefire/surefire-api/2.7.1/surefire-api-2.7.1.jar
+surefireClassPathUrl.0=/Users/aa/.m2/repository/org/apache/maven/surefire/surefire-junit4/2.7.1/surefire-junit4-2.7.1.jar
+report.2=org.apache.maven.surefire.report.XMLReporter
+useSystemClassLoader=true
+report.1=org.apache.maven.surefire.report.BriefFileReporter
+report.0=org.apache.maven.surefire.report.ForkingConsoleReporter
+excludes0=**/*$*
+isTrimStackTrace=true
+dirscanner.0.params=/Users/aa/adozeneggs/html/target/test-classes|[**/Test*.java, **/*Test.java, **/*TestCase.java]|[**/*$*]
+includes2=**/*TestCase.java
+enableAssertions=true
+includes1=**/*Test.java
+failIfNoTests=false
+includes0=**/Test*.java
+classPathUrl.12=/Users/aa/.m2/repository/junit/junit/4.8.1/junit-4.8.1.jar
+dirscanner.0.types=java.io.File|java.util.ArrayList|java.util.ArrayList
+classPathUrl.11=/Users/aa/.m2/repository/com/allen-sauer/gwt/voices/gwt-voices/2.1.3/gwt-voices-2.1.3.jar
+classPathUrl.10=/Users/aa/.m2/repository/com/google/gwt/gwt-servlet/2.4.0/gwt-servlet-2.4.0.jar
+classPathUrl.9=/Users/aa/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar
+classPathUrl.8=/Users/aa/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar
+classPathUrl.7=/Users/aa/.m2/repository/com/google/gwt/gwt-user/2.4.0/gwt-user-2.4.0.jar
+childDelegation=false
+classPathUrl.6=/Users/aa/.m2/repository/com/googlecode/playn/playn-webgl/1.0.2/playn-webgl-1.0.2.jar
+classPathUrl.5=/Users/aa/.m2/repository/com/googlecode/playn/playn-html/1.0.2/playn-html-1.0.2.jar
