@@ -1,5 +1,7 @@
 package com.scgame.adozeneggs.core;
 
+import playn.core.Pointer;
+
 public interface ButtonEventListener {
-    public void onButtonCliked( JumpEvent event );
+	public void onClick(Pointer.Event event);
 }

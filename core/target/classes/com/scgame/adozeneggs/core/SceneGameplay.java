@@ -28,7 +28,7 @@ public class SceneGameplay extends Scene {
 		
 	}
 	
-	public void init(int level) {
+	public void init(String level) {
 		System.out.println("level " + level);
 		
 		gLayer = graphics().createGroupLayer();

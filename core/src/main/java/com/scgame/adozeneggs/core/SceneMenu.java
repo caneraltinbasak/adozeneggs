@@ -2,20 +2,35 @@ package com.scgame.adozeneggs.core;
 
 import static playn.core.PlayN.assetManager;
 import static playn.core.PlayN.graphics;
+import static playn.core.PlayN.json;
 import static playn.core.PlayN.pointer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
+import playn.core.Json;
 import playn.core.Pointer;
+import playn.core.ResourceCallback;
+import playn.core.Pointer.Event;
 
 public class SceneMenu extends Scene {
-	private final adozeneggs adozeneggs;
-	private Button playButton;
-	private Button optButton;
+	private adozeneggs adozeneggs;
+	private List<Button> buttonList = new ArrayList<Button>();
+	private Image bgImage;
 	private GroupLayer gLayer = null;
+	private String jsonPath = "layouts/SceneMenu.json";
+	private int screenWidth;
+	private int screenHeight;
 	
 	public SceneMenu (adozeneggs adozeneggs) {
 	    this.adozeneggs = adozeneggs;
+	    this.screenHeight = adozeneggs.getScreenHeight();
+	    this.screenWidth = adozeneggs.getScreenWidth();
+	    
+	    initImageLocations();
 	}
 	
 	@Override
@@ -24,34 +39,94 @@ public class SceneMenu extends Scene {
 		return null;
 	}
 
+	private void initImageLocations() {
+	    // parsing json for x/y coordinates of all the images on screen
+	    assetManager().getText(jsonPath, new ResourceCallback<String>() {
+	      @Override
+	      public void done(String json) {
+	    	  Json.Object document = json().parse(json);
+	    	  Json.Object imgLocation = document.getObject("image_location");
+	    	  // parse resolutions
+	    	  Json.Array arrRes = imgLocation.getArray("resolution");
+	    	  
+	    	  for (int i = 0; i < arrRes.length(); i++) {
+	    		  Json.Object resolution = arrRes.getObject(i);
+	    	      int resX = resolution.getInt("x");
+	    	      int resY = resolution.getInt("y");
+	    	      
+	    	      if ((resX == screenWidth) && (resY == screenHeight)) {
+	    	    	  Json.Object objBgImage = resolution.getObject("bg_image");
+	    	    	  String bgImagePath = objBgImage.getString("path");
+	    	    	  // create and add background image layer
+	    	    	  bgImage = assetManager().getImage(bgImagePath);
+	    	    	  
+	    	    	  // Reading buttons
+	    	    	  Json.Array arrButton = resolution.getArray("button");
+	    	    	  for (int j = 0; j < arrButton.length(); j++) {
+	    	    		  Json.Object objButton = arrButton.getObject(j);
+	    	    		  // id is to understand which button it is
+	    	    		  String id = objButton.getString("id");
+	    	    		  int x = objButton.getInt("x");
+	    	    		  int y = objButton.getInt("y");
+	    	    		  String path = objButton.getString("path");
+	    	    		  Button button = new Button(x, y, path);
+	    	    		  
+	    	    		  // Adding click listener for newGame button
+	    	    		  if (id.equals("newGame")) {
+	    	    			  button.setEventListener(new ButtonEventListener() {
+	    	    				  @Override
+	    	    				  public void onClick(Event event) {
+	    	    					  adozeneggs.runSceneLevels();
+	    	    				  }
+	    	    			  });
+	    	    		  }	
+	    	    		  
+	    	    		  // Adding click listener for options button
+	    	    		  if (id.equals("options")) {
+	    	    			  
+	    	    		  }	
+	    	    		  buttonList.add(button);
+	    	    	  }
+	    	      }
+	    	  }
+	      }
+
+	      @Override
+	      public void error(Throwable err) {
+	    	// TODO Should be error log here
+	      }
+	    });
+
+	}
+	
 	@Override
 	public void init() {
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 	    
 	    // create and add background image layer
-	    Image bgImage = assetManager().getImage("images/bg.png");
 	    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-	    
 	    gLayer.add(bgLayer);
 	    
-		this.playButton = new Button(0.10f, 0.10f, "images/newGame.png");
-		gLayer.add(playButton.getLayer());
-		this.optButton = new Button(0.10f, 0.30f, "images/options.png"); 
-		gLayer.add(optButton.getLayer());
-		
+	    for (int i = 0; i < buttonList.size(); i++) {
+	    	gLayer.add(buttonList.get(i).getLayer());
+	    }
+	    		
 		// add a listener for pointer (mouse, touch) input
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) {
-	    		if (playButton.hitTest(event.x(), event.y())) {
-	    			adozeneggs.runSceneLevels();
-	    		}
-	    		
+	    		firePointerEndEvent(event);		
 	    	}
 	    });
     }
-
+	
+	private synchronized void firePointerEndEvent(Pointer.Event event) {
+		for (int i = 0; i < buttonList.size(); i++) {
+			buttonList.get(i).clicked(event);
+		}
+	}
+	
 	@Override
 	public void shutdown() {		
 		pointer().setListener(null);
@@ -60,5 +135,7 @@ public class SceneMenu extends Scene {
 			gLayer = null;
 		}
 	}
+	
+	
 	
 }
