@@ -9,12 +9,12 @@ import playn.core.ImageLayer;
 import playn.core.Pointer;
 
 public class SceneGameplay extends Scene {
-	private final adozeneggs adozeneggs;
+	private SceneNavigator sceneNavigator;
 	private GroupLayer gLayer = null;
 	Button backButton; 
 
-	public SceneGameplay (adozeneggs adozeneggs) {
-	    this.adozeneggs = adozeneggs;
+	public SceneGameplay (SceneNavigator sceneNavigator) {
+	    this.sceneNavigator = sceneNavigator;
 	}
 	
 	@Override
@@ -23,14 +23,7 @@ public class SceneGameplay extends Scene {
 		return null;
 	}
 
-	@Override
 	public void init() {
-		
-	}
-	
-	public void init(String level) {
-		System.out.println("level " + level);
-		
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 	    
@@ -52,7 +45,7 @@ public class SceneGameplay extends Scene {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) { 
 	    		if (backButton.hitTest(event.x(), event.y())) {
-	    			adozeneggs.runSceneLevels();
+	    			sceneNavigator.runScene(eScenes.LEVELS);
 	    		}
 	    	}
 	    });

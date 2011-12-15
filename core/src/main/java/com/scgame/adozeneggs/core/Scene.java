@@ -4,9 +4,6 @@ package com.scgame.adozeneggs.core;
 import playn.core.Game;
 import playn.core.Keyboard;
 
-enum eScenes {
-	MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS
-}
 /**
  * Demonstrates a particular PlayN feature or set of features. This interface is kind of like
  * {@link Game} except that it has lifecycle methods for cleaning up as well as initializing. Demos

@@ -16,11 +16,11 @@ public class GameConstants {
 		/**
 		 * width of screen
 		 */
-		public static int width = 320;
+		public static int width;
 		/**
 		 * height of screen
 		 **/
-		public static int height = 480;
+		public static int height;
 		/**
 		 * screen dot-per-inch if available
 		 * 
