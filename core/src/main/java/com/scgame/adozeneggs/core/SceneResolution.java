@@ -43,7 +43,8 @@ public class SceneResolution extends Scene {
 			}
 			@Override
 			public void done(Image resource) {
-				ImageLayer bgLayer = graphics().createImageLayer(resource);    
+				ImageLayer bgLayer = graphics().createImageLayer(resource);  
+				bgLayer.setDepth(0);
 			    gLayer.add(bgLayer);
 			}
 		});
@@ -59,6 +60,7 @@ public class SceneResolution extends Scene {
 			
 			@Override
 			public void done() {
+				res1.setLayerDepth(1);
 				gLayer.add(res1.getLayer());
 			}
 		});
@@ -75,6 +77,7 @@ public class SceneResolution extends Scene {
 			
 			@Override
 			public void done() {
+				res2.setLayerDepth(2);
 				gLayer.add(res2.getLayer());
 				
 			}

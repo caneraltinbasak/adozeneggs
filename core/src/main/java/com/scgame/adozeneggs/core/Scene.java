@@ -1,6 +1,9 @@
 
 package com.scgame.adozeneggs.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import playn.core.Game;
 import playn.core.Keyboard;
 

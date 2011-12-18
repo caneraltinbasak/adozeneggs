@@ -23,6 +23,7 @@ public class SceneLevels extends Scene {
 	private List<Button> buttonList = new ArrayList<Button>();
 	private Image bgImage;
 	private String jsonPath = "layouts/SceneLevels.json";
+	private float depth = 1;
 	
 	public SceneLevels (SceneNavigator sceneNavigator) {
 		this.sceneNavigator = sceneNavigator;
@@ -64,6 +65,7 @@ public class SceneLevels extends Scene {
 						public void done(Image resource) {
 						    // create and add background image layer
 						    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
+						    bgLayer.setDepth(0);
 						    gLayer.add(bgLayer);	
 						}
 						@Override
@@ -89,6 +91,8 @@ public class SceneLevels extends Scene {
 							}
 							@Override
 							public void done() {
+								depth++;
+								button.setLayerDepth(depth);
 								gLayer.add(button.getLayer());
 								buttonList.add(button);
 							}
@@ -117,6 +121,8 @@ public class SceneLevels extends Scene {
 							}
 							@Override
 							public void done() {
+								depth++;
+								button.setLayerDepth(depth);
 								gLayer.add(button.getLayer());
 								buttonList.add(button);
 							}
@@ -165,5 +171,8 @@ public class SceneLevels extends Scene {
 			gLayer.setVisible(false);
 		}
 	}
-
+	 public void update(float delta) {
+		 
+	 }
+	 
 }

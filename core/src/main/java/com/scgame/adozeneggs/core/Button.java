@@ -95,4 +95,10 @@ public class Button {
 			callback.done();
 		}
 	}
+	
+	public void setLayerDepth(float depth) {
+		if (this.imageLayer != null) {
+			this.imageLayer.setDepth(depth);
+		}
+	}
 }
