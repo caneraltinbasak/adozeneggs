@@ -14,8 +14,7 @@ public class adozeneggs implements Game {
 		
 		// init screen size for simulation
 		graphics().setSize(220, 300);
-		SceneNavigator sceneNavigator = new SceneNavigator();
-		sceneNavigator.runScene(eScenes.RESOLUTION);
+		SceneNavigator.getInstance().runScene(eScenes.RESOLUTION, null);
 		
 		
 		// create a group layer to hold everything

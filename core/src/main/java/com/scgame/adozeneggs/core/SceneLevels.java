@@ -18,14 +18,12 @@ import playn.core.Pointer.Event;
 import playn.core.ResourceCallback;
 
 public class SceneLevels extends Scene {
-	private SceneNavigator sceneNavigator;
 	private GroupLayer gLayer;
 	private List<Button> buttonList = new ArrayList<Button>();
 	private Image bgImage;
 	private String jsonPath = "layouts/SceneLevels.json";
 	
-	public SceneLevels (SceneNavigator sceneNavigator) {
-		this.sceneNavigator = sceneNavigator;
+	public SceneLevels () {
 		initImageLayouts();
 		gLayer.setVisible(false);
 	}
@@ -97,7 +95,7 @@ public class SceneLevels extends Scene {
 	    	    		  button.setEventListener(new ButtonEventListener() {
 	    	    			  @Override
 	    	    			  public void onClick(Event event) {
-	    	    				  sceneNavigator.runScene(eScenes.GAMEPLAY);
+	    	    				  SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "levels/level1.json"); // TODO: Implement passing the correct data to start level
 	    	    			  }
 	    	    		  });
 	    	    	  }
@@ -125,7 +123,7 @@ public class SceneLevels extends Scene {
     	    		  button.setEventListener(new ButtonEventListener() {
     	    			  @Override
     	    			  public void onClick(Event event) {
-    	    				  sceneNavigator.runScene(eScenes.MENU);
+    	    				  SceneNavigator.getInstance().runScene(eScenes.MENU,null);
     	    			  }
     	    		  });
 	    	      }
@@ -140,7 +138,7 @@ public class SceneLevels extends Scene {
 	}
 	
 	@Override
-	public void init() {
+	public void init(Object data) {
 		// add a listener for pointer (mouse, touch) input
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override

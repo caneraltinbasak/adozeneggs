@@ -18,14 +18,12 @@ import playn.core.Pointer.Event;
 import playn.core.ResourceCallback;
 
 public class SceneMenu extends Scene {
-	private SceneNavigator sceneNavigator;
 	private List<Button> buttonList = new ArrayList<Button>();
 	private Image bgImage;
 	private GroupLayer gLayer = null;
 	private String jsonPath = "layouts/SceneMenu.json";
 	
-	public SceneMenu (SceneNavigator sceneNavigator) {
-	    this.sceneNavigator = sceneNavigator;   
+	public SceneMenu () {
 	    initImageLayouts();
 	    gLayer.setVisible(false);
 	}
@@ -99,7 +97,7 @@ public class SceneMenu extends Scene {
 	    	    			  button.setEventListener(new ButtonEventListener() {
 	    	    				  @Override
 	    	    				  public void onClick(Event event) {
-	    	    					  sceneNavigator.runScene(eScenes.LEVELS);
+	    	    					  SceneNavigator.getInstance().runScene(eScenes.LEVELS, null);
 	    	    				  }
 	    	    			  });
 	    	    		  }	
@@ -123,7 +121,7 @@ public class SceneMenu extends Scene {
 	}
 	
 	@Override
-	public void init() {	
+	public void init(Object data) {	
 		// add a listener for pointer (mouse, touch) input
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override

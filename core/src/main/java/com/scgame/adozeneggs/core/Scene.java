@@ -19,7 +19,7 @@ public abstract class Scene
   /**
    * Initializes this demo. Here is where listeners should be wired up and resources loaded.
    */
-  public abstract void init();
+  public abstract void init(Object data);
 
   /**
    * Shuts down this demo. Listeners should be cleared and resources destroyed.

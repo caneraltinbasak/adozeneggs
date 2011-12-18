@@ -16,12 +16,10 @@ import playn.core.ResourceCallback;
 import playn.core.Pointer.Event;
 
 public class SceneResolution extends Scene {
-	private SceneNavigator sceneNavigator;
 	private GroupLayer gLayer = null;
 	private List<Button> buttonList = new ArrayList<Button>();
 	
-	public SceneResolution(SceneNavigator sceneNavigator) {
-		this.sceneNavigator = sceneNavigator;
+	public SceneResolution() {
 	}
 	@Override
 	public String name() {
@@ -30,7 +28,7 @@ public class SceneResolution extends Scene {
 	}
 
 	@Override
-	public void init() {
+	public void init(Object data) {
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 	    
@@ -88,9 +86,10 @@ public class SceneResolution extends Scene {
 			public void onClick(Event event) {
 				GameConstants.ScreenProperties.height = 1024;
 				GameConstants.ScreenProperties.width = 768;
+				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.HIGH;
 				graphics().setSize(768, 1024);
-				sceneNavigator.createScenes();
-				sceneNavigator.runScene(eScenes.MENU);
+				SceneNavigator.getInstance().createScenes();
+				SceneNavigator.getInstance().runScene(eScenes.MENU, null);
 			}
 		});
 		
@@ -99,9 +98,10 @@ public class SceneResolution extends Scene {
 			public void onClick(Event event) {
 				GameConstants.ScreenProperties.height = 480;
 				GameConstants.ScreenProperties.width = 320;
+				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.LOW;
 				graphics().setSize(320, 480);
-				sceneNavigator.createScenes();
-				sceneNavigator.runScene(eScenes.MENU);
+				SceneNavigator.getInstance().createScenes();
+				SceneNavigator.getInstance().runScene(eScenes.MENU, null);
 			}
 		});
 		

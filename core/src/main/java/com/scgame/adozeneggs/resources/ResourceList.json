@@ -1,0 +1,6 @@
+{
+  "Resource": [
+    {"type":"image" , "quality":"high", "url": "images/back_high.png"},
+    {"type":"image" , "quality":"high",  "url": "images/back_medium.png"},
+  ]
+}

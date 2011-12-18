@@ -11,6 +11,9 @@ public class GameConstants {
 	 * ScreenProperties defines the properties of the drawing surface. 
 	 * It should be set at main initialization stage. 
 	 */
+	private GameConstants(){
+		throw new AssertionError();
+	}
 	
 	public static class ScreenProperties{
 		/**
@@ -29,19 +32,19 @@ public class GameConstants {
 		/**
 		 * high resolution graphics
 		 */
-		public static final int HIGH = 1;
+		public static final String HIGH = "high";
 		/**
 		 * medium resolution graphics
 		 */
-		public static final int MEDIUM = 2;
+		public static final String MEDIUM = "medium";
 		/**
 		 * low resolution graphics
 		 */
-		public static final int LOW = 3;
+		public static final String LOW = "low";
 		/**
 		 * Quality of the sprites that will be used. The values should be HIGH(1),MEDIUM(2) or LOW(3)
 		 */
-		public int gQuality;
+		public static String gQuality;
 	}
 	public class PhysicalProperties{
 		/**

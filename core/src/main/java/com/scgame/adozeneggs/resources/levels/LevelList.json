@@ -1,0 +1,6 @@
+{
+  "levels": [
+    {"start_message": "Jump! Jump! Jump!", "url": "levels/level1.json"},
+    {"start_message": "Getting Tricky", "url": "levels/level2.json"},
+  ]
+}

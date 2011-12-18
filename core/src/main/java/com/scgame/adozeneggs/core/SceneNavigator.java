@@ -1,28 +1,38 @@
 package com.scgame.adozeneggs.core;
 
+import playn.core.Json;
+
 enum eScenes {
-	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS
+	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING
 }
 
 public class SceneNavigator {
+	private static SceneNavigator instance = null;
+
 	private Scene activeScene;
 	private Scene scResolution;
 	private Scene scMenu;
 	private Scene scLevels; 
-	private Scene scGameplay; 
+	private Scene scGameplay;
+	private Scene scLoading;
 	
-	public SceneNavigator() {
+	private SceneNavigator() {
 		// Creating scenes
-		scResolution = new SceneResolution(this);
+		scResolution = new SceneResolution();
 	}
-	
-	public void createScenes() {
-		scMenu = new SceneMenu(this);
-		scLevels = new SceneLevels(this); 
-		scGameplay = new SceneGameplay(this); 
+	public void createScenes(){
+		scMenu = new SceneMenu();
+		scLevels = new SceneLevels(); 
+		scGameplay = new SceneGameplay(); 
+		scLoading = new SceneLoading(); 
 	}
-	
-	public void runScene(eScenes scene) {
+	public static SceneNavigator getInstance() {
+		if (instance == null) {
+			instance = new SceneNavigator();
+		}
+		return instance;
+	}
+	public void runScene(eScenes scene, Object data) {
 		if (activeScene != null) {
 			activeScene.shutdown();
 		}
@@ -30,19 +40,23 @@ public class SceneNavigator {
 		switch (scene) {
 		case MENU: 
 			activeScene = scMenu;
-			activeScene.init();
+			activeScene.init(null);
 			break;
 		case LEVELS:
 			activeScene = scLevels;
-			activeScene.init();
+			activeScene.init(null);
 			break;
 		case GAMEPLAY:
 			activeScene = scGameplay;
-			activeScene.init();
+			activeScene.init(data);
 			break;
 		case RESOLUTION:
 			activeScene = scResolution;
-			activeScene.init();
+			activeScene.init(null);
+			break;
+		case LOADING:
+			activeScene = scLoading;
+			activeScene.init(null);
 			break;
 		}
 	}

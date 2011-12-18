@@ -3,18 +3,17 @@ package com.scgame.adozeneggs.core;
 import static playn.core.PlayN.assetManager;
 import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.pointer;
+import static playn.core.PlayN.log;
 import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.Pointer;
 
 public class SceneGameplay extends Scene {
-	private SceneNavigator sceneNavigator;
 	private GroupLayer gLayer = null;
 	Button backButton; 
 
-	public SceneGameplay (SceneNavigator sceneNavigator) {
-	    this.sceneNavigator = sceneNavigator;
+	public SceneGameplay () {
 	}
 	
 	@Override
@@ -23,7 +22,8 @@ public class SceneGameplay extends Scene {
 		return null;
 	}
 
-	public void init() {
+	public void init(Object LevelDataPath) {
+		log().debug("[SceneGameplay::init] LevelDataPath:"+(String) LevelDataPath);
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 	    
@@ -45,7 +45,7 @@ public class SceneGameplay extends Scene {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) { 
 	    		if (backButton.hitTest(event.x(), event.y())) {
-	    			sceneNavigator.runScene(eScenes.LEVELS);
+	    			SceneNavigator.getInstance().runScene(eScenes.LEVELS,null);
 	    		}
 	    	}
 	    });
