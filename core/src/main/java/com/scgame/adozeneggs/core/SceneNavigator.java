@@ -1,15 +1,17 @@
 package com.scgame.adozeneggs.core;
 
 import playn.core.Json;
+import static playn.core.PlayN.graphics;
+import playn.core.Game;
 
 enum eScenes {
 	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING
 }
 
-public class SceneNavigator {
-	private static SceneNavigator instance = null;
 
-	private Scene activeScene;
+public class SceneNavigator implements Game {
+	public Scene activeScene;
+	private static SceneNavigator instance = null;
 	private Scene scResolution;
 	private Scene scMenu;
 	private Scene scLevels; 
@@ -59,6 +61,35 @@ public class SceneNavigator {
 			activeScene.init(null);
 			break;
 		}
+	}
+	
+	public Scene getActiveScene() {
+		return activeScene;
+	}
+
+	@Override
+	public void init() {
+		graphics().setSize(220, 300);
+		scResolution = new SceneResolution();
+		activeScene = scResolution;
+		runScene(eScenes.RESOLUTION, null);
+	}
+
+	@Override
+	public void update(float delta) {
+		activeScene.update(delta);
+	}
+
+	@Override
+	public void paint(float alpha) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int updateRate() {
+		// TODO Auto-generated method stub
+		return 25;
 	}
 }
 		

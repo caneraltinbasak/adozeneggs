@@ -14,8 +14,10 @@ public class Button {
 	private float width; 
 	private float height;
 	private boolean isHit;
-	private ImageLayer imageLayer;
-	ButtonEventListener listener = null;
+	private ImageLayer imageLayer = null;
+	private ButtonEventListener listener = null;
+	private ButtonCallback callback = null;
+	private boolean btnReady = false;
 	
 	/**
 	 * Button Constructor
@@ -31,30 +33,33 @@ public class Button {
 	    this.imageLayer.setTranslation(px, py);
 	    	 
 		Image button = assetManager().getImage(imagePath);	 	
-		this.loadImage(button);
-		
-		this.height = button.height();
-		this.width = button.width();		
+		this.loadImage(button, this);	
 	}
   
 	public ImageLayer getLayer () {
 		return this.imageLayer;
 	}
 	
-	void loadImage(Image image) {
+	void loadImage(Image image, final Button button) {
 		image.addCallback(new ResourceCallback<Image>() {
 			@Override
 			public void done(Image image) {
 				imageLayer.setImage(image);
+				// Setting button size after image is loaded
 				width = image.width();
 				height = image.height();
+				btnReady = true;
+				
+				if (callback != null) {
+					callback.done();
+				}
 			}
 
 			@Override
 			public void error(Throwable err) {
-				log().error("Error loading image!", err);
+				log().error("Button.loadImage : Error loading button image! ", err);
 			}
-			});
+		});
 	}
 	  
 	/**
@@ -81,5 +86,19 @@ public class Button {
 	
 	public synchronized void setEventListener(ButtonEventListener listener) {
 		this.listener = listener;
+	}
+	
+	public void addCallback(ButtonCallback callback) {
+		this.callback = callback;
+		
+		if (btnReady) {
+			callback.done();
+		}
+	}
+	
+	public void setLayerDepth(float depth) {
+		if (this.imageLayer != null) {
+			this.imageLayer.setDepth(depth);
+		}
 	}
 }

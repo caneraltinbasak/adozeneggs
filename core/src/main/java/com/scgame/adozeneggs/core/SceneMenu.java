@@ -22,6 +22,7 @@ public class SceneMenu extends Scene {
 	private Image bgImage;
 	private GroupLayer gLayer = null;
 	private String jsonPath = "layouts/SceneMenu.json";
+	private int depth = 1;
 	
 	public SceneMenu () {
 	    initImageLayouts();
@@ -55,6 +56,7 @@ public class SceneMenu extends Scene {
 	    	      if ((resX == GameConstants.ScreenProperties.width) && (resY == GameConstants.ScreenProperties.height)) {
 	    	    	  Json.Object objBgImage = resolution.getObject("bg_image");
 	    	    	  String bgImagePath = objBgImage.getString("path");
+	    	    	  
 	    	    	  // create and add background image layer
 	    	    	  bgImage = assetManager().getImage(bgImagePath);
 	    	    	  bgImage.addCallback(new ResourceCallback<Image>() {
@@ -62,7 +64,9 @@ public class SceneMenu extends Scene {
 						public void done(Image resource) {
 						    // create and add background image layer
 						    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-						    gLayer.add(bgLayer);	
+						    bgLayer.setDepth(0);
+						    gLayer.add(bgLayer);
+						    
 						}
 						@Override
 						public void error(Throwable err) {
@@ -71,6 +75,7 @@ public class SceneMenu extends Scene {
 	    	    	  });
 	    	    	 
 	    	    	  // Reading buttons
+	    	    	  
 	    	    	  Json.Array arrButton = resolution.getArray("button");
 	    	    	  for (int j = 0; j < arrButton.length(); j++) {
 	    	    		  Json.Object objButton = arrButton.getObject(j);
@@ -87,6 +92,8 @@ public class SceneMenu extends Scene {
 							}
 							@Override
 							public void done() {
+								depth++;
+								button.setLayerDepth(depth);
 								gLayer.add(button.getLayer());
 								buttonList.add(button);
 							}
@@ -131,6 +138,7 @@ public class SceneMenu extends Scene {
 	    });
 	    
 	    gLayer.setVisible(true);
+	    
     }
 	
 	private synchronized void firePointerEndEvent(Pointer.Event event) {

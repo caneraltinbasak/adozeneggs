@@ -1,47 +1,47 @@
 {
-    image_location:{
-        resolution:[
+    "image_layout":{
+        "resolution":[
             {
-                x:320,
-                y:480,
-                bg_image:{
-                    id:'bg',
-                    path:'images/bg_medium.png'
+                "x":320,
+                "y":480,
+                "bg_image":{
+                    "id":"bg",
+                    "path":"images/bg_medium.png"
                 },
-                button:[
+                "button":[
                     {
-                        id:'newGame',
-                        path:'images/newGame_medium.png',
-                        x:10,
-                        y:20
+                        "id":"newGame",
+                        "path":"images/newGame_medium.png",
+                        "x":10,
+                        "y":20
                     },
                     {
-                        id:'options',
-                        path:'images/options_medium.png',
-                        x:10,
-                        y:100
-                    }
+                        "id":"options",
+                        "path":"images/options_medium.png",
+                        "x":10,
+                        "y":100
+                    }              
                 ]
             },
             {
-                x:768,
-                y:1024,
-                bg_image:{
-                    id:'bg',
-                    path:'images/bg_high.png'
+                "x":768,
+                "y":1024,
+                "bg_image":{
+                    "id":"bg",
+                    "path":"images/bg_high.png"
                 },
-                button:[
+                "button":[
                     {
-                        id:'newGame',
-                        path:'images/newGame_high.png',
-                        x:10,
-                        y:20
+                        "id":"newGame",
+                        "path":"images/newGame_high.png",
+                        "x":10,
+                        "y":20
                     },
                     {
-                        id:'options',
-                        path:'images/options_high.png',
-                        x:10,
-                        y:250
+                        "id":"options",
+                        "path":"images/options_high.png",
+                        "x":10,
+                        "y":250
                     }
                 ]
             }

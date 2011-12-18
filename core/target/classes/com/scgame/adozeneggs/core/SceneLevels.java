@@ -3,6 +3,7 @@ package com.scgame.adozeneggs.core;
 import static playn.core.PlayN.assetManager;
 import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.json;
+import static playn.core.PlayN.log;
 import static playn.core.PlayN.pointer;
 
 import java.util.ArrayList;
@@ -17,20 +18,15 @@ import playn.core.Pointer.Event;
 import playn.core.ResourceCallback;
 
 public class SceneLevels extends Scene {
-	private final adozeneggs adozeneggs;
 	private GroupLayer gLayer;
 	private List<Button> buttonList = new ArrayList<Button>();
 	private Image bgImage;
 	private String jsonPath = "layouts/SceneLevels.json";
-	private int screenWidth;
-	private int screenHeight;
+	private float depth = 1;
 	
-	public SceneLevels (adozeneggs adozeneggs) {
-		this.adozeneggs = adozeneggs;
-		this.screenHeight = adozeneggs.getScreenHeight();
-	    this.screenWidth = adozeneggs.getScreenWidth();
-	    
-	    initImageLocations();
+	public SceneLevels () {
+		initImageLayouts();
+		gLayer.setVisible(false);
 	}
 	
 	@Override
@@ -39,7 +35,10 @@ public class SceneLevels extends Scene {
 		return null;
 	}
 
-	private void initImageLocations() {
+	private void initImageLayouts() {
+		gLayer = graphics().createGroupLayer();
+	    graphics().rootLayer().add(gLayer);
+	    
 	    // parsing json for x/y coordinates of all the images on screen
 	    assetManager().getText(jsonPath, new ResourceCallback<String>() {
 	      @Override
@@ -54,55 +53,98 @@ public class SceneLevels extends Scene {
 	    	      int resX = resolution.getInt("x");
 	    	      int resY = resolution.getInt("y");
 	    	      
-	    	      if ((resX == screenWidth) && (resY == screenHeight)) {
+	    	      if ((resX == GameConstants.ScreenProperties.width) && (resY == GameConstants.ScreenProperties.height)) {
 	    	    	  Json.Object objBgImage = resolution.getObject("bg_image");
 	    	    	  String bgImagePath = objBgImage.getString("path");
 	    	    	  // create and add background image layer
 	    	    	  bgImage = assetManager().getImage(bgImagePath);
+	    	    	  bgImage.addCallback(new ResourceCallback<Image>() {
+						@Override
+						public void done(Image resource) {
+						    // create and add background image layer
+						    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
+						    bgLayer.setDepth(0);
+						    gLayer.add(bgLayer);	
+						}
+						@Override
+						public void error(Throwable err) {
+							log().error("SceneLevels.initImageLayouts : Error loading backgroung image!", err);
+						}
+	    	    	  });
 	    	    	  
-	    	    	  // Reading buttons
-	    	    	  Json.Array arrButton = resolution.getArray("button");
+	    	    	  // Reading level buttons
+	    	    	  Json.Array arrButton = resolution.getArray("level_button");
 	    	    	  for (int j = 0; j < arrButton.length(); j++) {
-	    	    		  Json.Object objButton = arrButton.getObject(j);
-	    	    		  // id is to understand which button it is
-	    	    		  final String id = objButton.getString("id");
-	    	    		  int x = objButton.getInt("x");
-	    	    		  int y = objButton.getInt("y");
-	    	    		  String path = objButton.getString("path");
-	    	    		  Button button = new Button(x, y, path);
+	    	    		  Json.Object levelButton = arrButton.getObject(j);
+	    	    		  int x = levelButton.getInt("x");
+	    	    		  int y = levelButton.getInt("y");
+	    	    		  String path = levelButton.getString("path");
+	    	    		  final Button button = new Button(x, y, path);
+	    	    
+	    	    		  button.addCallback(new ButtonCallback() {
+							@Override
+							public void error(Throwable err) {
+								log().error("SceneLevels.initImageLayouts : Error loading level button", err);
+								
+							}
+							@Override
+							public void done() {
+								depth++;
+								button.setLayerDepth(depth);
+								gLayer.add(button.getLayer());
+								buttonList.add(button);
+							}
+	    	    		  });
 	    	    		  
 	    	    		  button.setEventListener(new ButtonEventListener() {
 	    	    			  @Override
 	    	    			  public void onClick(Event event) {
-	    	    				  adozeneggs.runSceneGameplay(id);
+	    	    				  SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "levels/level1.json"); // TODO: Implement passing the correct data to start level
 	    	    			  }
 	    	    		  });
-	    	    		  buttonList.add(button);
-	    	    	  }	 
+	    	    	  }
+	    	    	  
+	    	    	  // Reading back buttons
+	    	    	  Json.Object backButton = resolution.getObject("back_button");
+	    	    	  int x = backButton.getInt("x");
+    	    		  int y = backButton.getInt("y");
+    	    		  String path = backButton.getString("path");
+    	    		  final Button button = new Button(x, y, path);
+    	    		  
+    	    		  button.addCallback(new ButtonCallback() {
+							@Override
+							public void error(Throwable err) {
+								log().error("SceneLevels.initImageLayouts : Error loading level button", err);
+								
+							}
+							@Override
+							public void done() {
+								depth++;
+								button.setLayerDepth(depth);
+								gLayer.add(button.getLayer());
+								buttonList.add(button);
+							}
+    	    		  });
+    	    		  
+    	    		  button.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Event event) {
+    	    				  SceneNavigator.getInstance().runScene(eScenes.MENU,null);
+    	    			  }
+    	    		  });
 	    	      }
 	    	  }
 	      }
 
 	      @Override
 	      public void error(Throwable err) {
-	    	// TODO Should be error log here
+	    	  log().error("SceneLevels.json file does not exist! ", err);
 	      }
 	    });
 	}
 	
 	@Override
-	public void init() {
-		gLayer = graphics().createGroupLayer();
-	    graphics().rootLayer().add(gLayer);
-	    
-	    // create and add background image layer
-	    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-	    gLayer.add(bgLayer);
-	    
-	    for (int i = 0; i < buttonList.size(); i++) {
-	    	gLayer.add(buttonList.get(i).getLayer());
-	    }
-	
+	public void init(Object data) {
 		// add a listener for pointer (mouse, touch) input
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
@@ -110,6 +152,8 @@ public class SceneLevels extends Scene {
 	    		firePointerEndEvent(event);		
 	    	}
 	    });
+	    
+	    gLayer.setVisible(true);
 	}
 	
 	private synchronized void firePointerEndEvent(Pointer.Event event) {
@@ -122,9 +166,11 @@ public class SceneLevels extends Scene {
 	public void shutdown() {
 		pointer().setListener(null);
 		if (gLayer != null) {
-			gLayer.destroy();
-			gLayer = null;
+			gLayer.setVisible(false);
 		}
 	}
-
+	 public void update(float delta) {
+		 
+	 }
+	 
 }
