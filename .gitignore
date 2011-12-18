@@ -1,2 +1,14 @@
 .project
 .settings
+html/target/
+html/.project
+html/.settings
+java/target/
+java/.project
+java/.settings
+core/target/
+core/.project
+core/.settings
+android/target/
+android/.project
+android/.settings
