@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import playn.core.GroupLayer;
-import playn.core.Platform;
 import playn.core.ResourceCallback;
 
 import com.scgame.adozeneggs.core.SpriteLoader;

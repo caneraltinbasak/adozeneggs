@@ -1,6 +1,5 @@
 package com.scgame.adozeneggs.core;
 
-import playn.core.Json;
 import static playn.core.PlayN.graphics;
 import playn.core.Game;
 
