@@ -15,6 +15,8 @@ public class SceneLoading extends Scene implements LoaderInterface{
 	private Image bgImage;
 	private LoadingBar loadingBar;
 	private String jsonPath = "layouts/SceneLoading.json";
+	private boolean loadingComplete = false;
+	private float percentComplete= 0;
 	public SceneLoading(){
 		initImageLayouts();
 		gLayer.setVisible(false);
@@ -42,7 +44,7 @@ public class SceneLoading extends Scene implements LoaderInterface{
 
 							@Override
 							public void error(Throwable err) {
-								log().error("LoadingView::LoadingView() : Error loading" + bgImage, err);
+								log().error("LoadingView::initImageLayouts() : Error loading" + bgImage, err);
 							}
 
 							@Override
@@ -63,8 +65,7 @@ public class SceneLoading extends Scene implements LoaderInterface{
 
 			@Override
 			public void error(Throwable err) {
-				// TODO Auto-generated method stub
-
+				log().error("LoadingView::initImageLayouts() : Error loading" + jsonPath, err);
 			}
 		});
 	}
@@ -86,12 +87,19 @@ public class SceneLoading extends Scene implements LoaderInterface{
 	}
 	@Override
 	public void onPercentUpdate(float percent) {
-		if(loadingBar != null)
-			loadingBar.onPercentUpdate(percent);
+		percentComplete = percent;
 	}
 	@Override
 	public void onLoadComplete() {
-		SceneNavigator.getInstance().runScene(eScenes.MENU, null);
+		loadingComplete =true;
 	}
-	
+	@Override
+	public void update(float delta) {
+		if(loadingComplete == true)
+			SceneNavigator.getInstance().runScene(eScenes.MENU, null);
+	}
+	@Override
+	public void paint(float alpha) {
+		loadingBar.onPercentUpdate(percentComplete);
+	}
 }

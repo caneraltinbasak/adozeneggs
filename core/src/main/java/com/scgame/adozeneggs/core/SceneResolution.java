@@ -92,7 +92,7 @@ public class SceneResolution extends Scene {
 				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.HIGH;
 				graphics().setSize(768, 1024);
 				SceneNavigator.getInstance().createScenes();
-				SceneNavigator.getInstance().runScene(eScenes.MENU, null);
+				SceneNavigator.getInstance().runScene(eScenes.LOADING, null);
 			}
 		});
 		
@@ -104,7 +104,7 @@ public class SceneResolution extends Scene {
 				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.LOW;
 				graphics().setSize(320, 480);
 				SceneNavigator.getInstance().createScenes();
-				SceneNavigator.getInstance().runScene(eScenes.MENU, null);
+				SceneNavigator.getInstance().runScene(eScenes.LOADING, null);
 			}
 		});
 		

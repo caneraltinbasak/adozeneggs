@@ -1,5 +1,6 @@
 package com.scgame.adozeneggs.core;
 
+import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.log;
 import playn.core.GroupLayer;
 import playn.core.ResourceCallback;
@@ -11,6 +12,7 @@ public class LoadingBar {
 	
 	public LoadingBar(int x, int y, String spriteJsonPath){
 		this.position= new Vect2d(x, y);
+		gLayer = graphics().createGroupLayer();
 		sprite = SpriteLoader.getSprite(spriteJsonPath);
 		sprite.addCallback(new ResourceCallback<Sprite>() {
 			
@@ -25,10 +27,11 @@ public class LoadingBar {
 				gLayer.add(sprite.layer());
 			}
 		});
+		log().debug("Loading Bar loaded");
 	}
 
 	public void onPercentUpdate(float percent) {
-		sprite.setSprite((int)percent*10);
+		sprite.setSprite((int)(percent*10));
 	}
 	public GroupLayer getLayer () {
 		return this.gLayer;

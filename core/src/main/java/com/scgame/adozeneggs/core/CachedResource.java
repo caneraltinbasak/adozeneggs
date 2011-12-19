@@ -15,6 +15,9 @@ public class CachedResource {
 	private Map<String, Object> cachedResources = new HashMap<String, Object>();;
 	private Boolean hasLoaded = false;
 	static private final String JSON_PATH = "ResourceList.json";
+	static private final String IMAGE_TYPE = "image";
+	static private final String SOUND_TYPE = "sound";
+	static private final String TEXT_TYPE = "text";
 	private int loadedElements = 0;
 	private int totalElements = 0;
 	private LoaderInterface eventlistener = null;
@@ -43,16 +46,16 @@ public class CachedResource {
 					totalElements = resourceArray.length();
 					for (int i = 0; i < totalElements; i++) {
 						Json.Object resource = resourceArray.getObject(i);
-						if (resource.getString("type") == "image") {
-							if (resource.getString("quality") == GameConstants.ScreenProperties.gQuality) {
-								Image aImage = assetManager().getImage(
-										resource.getString("URL"));
+						String resourceType= resource.getString("type");
+						String resourceUrl = resource.getString("url");
+						if (resourceType.equals(IMAGE_TYPE)) {
+							if (resource.getString("quality").equals(GameConstants.ScreenProperties.gQuality)) {
+								Image aImage = assetManager().getImage(resourceUrl);
 								aImage.addCallback(new ResourceCallback<Image>() {
 									@Override
 									public void done(Image resource) {
 										loadedElements++;
-										eventlistener.onPercentUpdate(totalElements
-												/ loadedElements);
+										eventlistener.onPercentUpdate((float)loadedElements / (float)totalElements);
 									}
 
 									@Override
@@ -60,37 +63,29 @@ public class CachedResource {
 
 									}
 								});
-								cachedResources.put(resource.getString("URL"),
-										aImage);
+								cachedResources.put(resourceUrl,aImage);
 							}
-						} else if (resource.getString("type") == "sound") {
-							Sound aSound = assetManager().getSound(
-									resource.getString("URL"));
-							cachedResources.put(resource.getString("URL"), aSound);
+						} else if (resourceType.equals(SOUND_TYPE)) {
+							Sound aSound = assetManager().getSound(resourceUrl);
+							cachedResources.put(resourceUrl, aSound);
 							loadedElements++;
-							eventlistener.onPercentUpdate(totalElements
-									/ loadedElements);
-
-						} else if (resource.getString("type") == "text") {
+							eventlistener.onPercentUpdate((float)loadedElements / (float)totalElements);
+						} else if (resourceType.equals(TEXT_TYPE)) {
 							log().error("Text is not supported yet");
+						}else{
+							log().error("Unknown resource type: " + resourceType);
 						}
-						if(i == loadedElements)
-							eventlistener.onLoadComplete();
-
 					}
-
 				}
 
 				@Override
 				public void error(Throwable err) {
 					log().error("Failed to load"+ JSON_PATH,err);
 				}
-
 			});
 			hasLoaded = true;
-		}else{
-			eventlistener.onLoadComplete();
 		}
+		eventlistener.onLoadComplete();
 		eventlistener=null; // clear listener
 	}
 
