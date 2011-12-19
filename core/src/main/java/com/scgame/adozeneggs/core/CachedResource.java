@@ -6,10 +6,6 @@ import static playn.core.PlayN.log;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
-
-import javax.annotation.Resources;
-
 import playn.core.Image;
 import playn.core.Json;
 import playn.core.ResourceCallback;
@@ -36,74 +32,85 @@ public class CachedResource {
 	}
 
 	public void loadResources(LoaderInterface listener) {
-		eventlistener = listener;
-		assetManager().getText(JSON_PATH, new ResourceCallback<String>() {
+		eventlistener = listener; // set up listener
+		if(!hasLoaded){
+			assetManager().getText(JSON_PATH, new ResourceCallback<String>() {
 
-			@Override
-			public void done(String json) {
-				Json.Object document = json().parse(json);
-				Json.Array resourceArray = document.getArray("Resource");
-				totalElements = resourceArray.length();
-				for (int i = 0; i < totalElements; i++) {
-					Json.Object resource = resourceArray.getObject(i);
-					if (resource.getString("type") == "image") {
-						if (resource.getString("quality") == GameConstants.ScreenProperties.gQuality) {
-							Image aImage = assetManager().getImage(
+				@Override
+				public void done(String json) {
+					Json.Object document = json().parse(json);
+					Json.Array resourceArray = document.getArray("Resource");
+					totalElements = resourceArray.length();
+					for (int i = 0; i < totalElements; i++) {
+						Json.Object resource = resourceArray.getObject(i);
+						if (resource.getString("type") == "image") {
+							if (resource.getString("quality") == GameConstants.ScreenProperties.gQuality) {
+								Image aImage = assetManager().getImage(
+										resource.getString("URL"));
+								aImage.addCallback(new ResourceCallback<Image>() {
+									@Override
+									public void done(Image resource) {
+										loadedElements++;
+										eventlistener.onPercentUpdate(totalElements
+												/ loadedElements);
+									}
+
+									@Override
+									public void error(Throwable err) {
+
+									}
+								});
+								cachedResources.put(resource.getString("URL"),
+										aImage);
+							}
+						} else if (resource.getString("type") == "sound") {
+							Sound aSound = assetManager().getSound(
 									resource.getString("URL"));
-							aImage.addCallback(new ResourceCallback<Image>() {
-								@Override
-								public void done(Image resource) {
-									loadedElements++;
-									eventlistener.onPercentUpdate(totalElements
-											/ loadedElements);
-								}
+							cachedResources.put(resource.getString("URL"), aSound);
+							loadedElements++;
+							eventlistener.onPercentUpdate(totalElements
+									/ loadedElements);
 
-								@Override
-								public void error(Throwable err) {
-
-								}
-							});
-							cachedResources.put(resource.getString("URL"),
-									aImage);
+						} else if (resource.getString("type") == "text") {
+							log().error("Text is not supported yet");
 						}
-					} else if (resource.getString("type") == "sound") {
-						Sound aSound = assetManager().getSound(
-								resource.getString("URL"));
-						cachedResources.put(resource.getString("URL"), aSound);
-						loadedElements++;
-						eventlistener.onPercentUpdate(totalElements
-								/ loadedElements);
+						if(i == loadedElements)
+							eventlistener.onLoadComplete();
 
-					} else if (resource.getString("type") == "text") {
-						log().error("Text is not supported yet");
 					}
-					if(i == loadedElements)
-						eventlistener.onLoadComplete();
 
 				}
 
-			}
+				@Override
+				public void error(Throwable err) {
+					log().error("Failed to load"+ JSON_PATH,err);
+				}
 
-			@Override
-			public void error(Throwable err) {
-				// TODO Auto-generated method stub
-
-			}
-
-		});
-		hasLoaded = true;
+			});
+			hasLoaded = true;
+		}else{
+			eventlistener.onLoadComplete();
+		}
+		eventlistener=null; // clear listener
 	}
 
 	public void purgeResources() {
+		cachedResources.clear();
 		hasLoaded = false;
 	}
 
 	public Object getResource(String id) {
-		if (hasLoaded)
-			return cachedResources.get(id);
-		else
-			log().error(
-					"CashedResource::getResource is called before loading all resources");
+		if (hasLoaded){
+			Object resource = cachedResources.get(id);
+			if(resource!=null){
+				return resource;
+			}else{
+				log().error("Cached resource load error:"+id);
+			}
+		}
+		else{
+			log().error("CashedResource::getResource is called before loading all resources");
+		}
 		return null;
 	}
 }
