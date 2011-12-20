@@ -17,14 +17,9 @@ import playn.core.Pointer.Event;
 
 public class SceneResolution extends Scene {
 	private GroupLayer gLayer = null;
-	private List<Button> buttonList = new ArrayList<Button>();
+	private List<NonCachedButton> buttonList = new ArrayList<NonCachedButton>();
 	
 	public SceneResolution() {
-	}
-	@Override
-	public String name() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -48,12 +43,12 @@ public class SceneResolution extends Scene {
 		});
 	    	    
 	    // Adding resolution button
-		final Button res1 = new Button(50, 50, "images/res1.png");
+		final NonCachedButton res1 = new NonCachedButton(50, 50, "images/res1.png");
 		res1.addCallback(new ButtonCallback() {
 			
 			@Override
 			public void error(Throwable err) {
-				log().error("Button colud not be created", err);
+				log().error("Button could not be created", err);
 			}
 			
 			@Override
@@ -64,7 +59,7 @@ public class SceneResolution extends Scene {
 		});
 		
 		// Adding resolution button
-		final Button res2 = new Button(50, 150, "images/res2.png");
+		final NonCachedButton res2 = new NonCachedButton(50, 150, "images/res2.png");
 		res2.addCallback(new ButtonCallback() {
 			
 			@Override
@@ -91,7 +86,7 @@ public class SceneResolution extends Scene {
 				GameConstants.ScreenProperties.width = 768;
 				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.HIGH;
 				graphics().setSize(768, 1024);
-				SceneNavigator.getInstance().createScenes();
+				//SceneNavigator.getInstance().createScenes();
 				SceneNavigator.getInstance().runScene(eScenes.LOADING, null);
 			}
 		});
@@ -101,9 +96,9 @@ public class SceneResolution extends Scene {
 			public void onClick(Event event) {
 				GameConstants.ScreenProperties.height = 480;
 				GameConstants.ScreenProperties.width = 320;
-				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.LOW;
+				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.MEDIUM;
 				graphics().setSize(320, 480);
-				SceneNavigator.getInstance().createScenes();
+				//SceneNavigator.getInstance().createScenes();
 				SceneNavigator.getInstance().runScene(eScenes.LOADING, null);
 			}
 		});

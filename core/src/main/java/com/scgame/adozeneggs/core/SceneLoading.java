@@ -4,6 +4,9 @@ import static playn.core.PlayN.assetManager;
 import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.json;
 import static playn.core.PlayN.log;
+
+import com.scgame.adozeneggs.core.SceneNavigator;
+
 import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
@@ -17,6 +20,7 @@ public class SceneLoading extends Scene implements LoaderInterface{
 	private String jsonPath = "layouts/SceneLoading.json";
 	private boolean loadingComplete = false;
 	private float percentComplete= 0;
+	
 	public SceneLoading(){
 		initImageLayouts();
 		gLayer.setVisible(false);
@@ -69,11 +73,7 @@ public class SceneLoading extends Scene implements LoaderInterface{
 			}
 		});
 	}
-	@Override
-	public String name() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	@Override
 	public void init(Object totalElements) {
 		CachedResource.getInstance().loadResources(this);
@@ -92,6 +92,7 @@ public class SceneLoading extends Scene implements LoaderInterface{
 	@Override
 	public void onLoadComplete() {
 		loadingComplete =true;
+		SceneNavigator.getInstance().createScenes();
 	}
 	@Override
 	public void update(float delta) {

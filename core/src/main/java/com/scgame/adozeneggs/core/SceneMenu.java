@@ -22,7 +22,7 @@ public class SceneMenu extends Scene {
 	private Image bgImage;
 	private GroupLayer gLayer = null;
 	private String jsonPath = "layouts/SceneMenu.json";
-	private int depth = 1;
+	private int depth = 0;
 	
 	public SceneMenu () {
 	    initImageLayouts();
@@ -30,12 +30,20 @@ public class SceneMenu extends Scene {
 	}
 	
 	@Override
-	public String name() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	public void init(Object data) {	
+		// add a listener for pointer (mouse, touch) input
+	    pointer().setListener(new Pointer.Adapter() {
+	    	@Override
+	    	public void onPointerEnd(Pointer.Event event) {
+	    		firePointerEndEvent(event);		
+	    	}
+	    });
+	    
+	    gLayer.setVisible(true);
+    }
+	
 	private void initImageLayouts() {
+		
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 
@@ -58,24 +66,13 @@ public class SceneMenu extends Scene {
 	    	    	  String bgImagePath = objBgImage.getString("path");
 	    	    	  
 	    	    	  // create and add background image layer
-	    	    	  bgImage = assetManager().getImage(bgImagePath);
-	    	    	  bgImage.addCallback(new ResourceCallback<Image>() {
-						@Override
-						public void done(Image resource) {
-						    // create and add background image layer
-						    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-						    bgLayer.setDepth(0);
-						    gLayer.add(bgLayer);
-						    
-						}
-						@Override
-						public void error(Throwable err) {
-							log().error("SceneMenu.initImageLayouts : Error loading backgroung image!", err);
-						}
-	    	    	  });
-	    	    	 
+	    	    	  bgImage = (Image)CachedResource.getInstance().getResource(bgImagePath);
+	    	    	  ImageLayer bgLayer = graphics().createImageLayer(bgImage);
+	    	    	  bgLayer.setDepth(depth);
+					  gLayer.add(bgLayer);
+
+					  depth++; // Buttons have same depth
 	    	    	  // Reading buttons
-	    	    	  
 	    	    	  Json.Array arrButton = resolution.getArray("button");
 	    	    	  for (int j = 0; j < arrButton.length(); j++) {
 	    	    		  Json.Object objButton = arrButton.getObject(j);
@@ -84,20 +81,11 @@ public class SceneMenu extends Scene {
 	    	    		  int x = objButton.getInt("x");
 	    	    		  int y = objButton.getInt("y");
 	    	    		  String path = objButton.getString("path");
-	    	    		  final Button button = new Button(x, y, path);
-	    	    		  button.addCallback(new ButtonCallback() {
-							@Override
-							public void error(Throwable err) {
-								log().error("SceneMenu.initImageLayouts : Error loading button", err);
-							}
-							@Override
-							public void done() {
-								depth++;
-								button.setLayerDepth(depth);
-								gLayer.add(button.getLayer());
-								buttonList.add(button);
-							}
-	    	    		  });
+	    	    		  Button button = new Button(x, y, path);
+	    	    		  button.setLayerDepth(depth);
+	    	    		  final ImageLayer layer = button.getLayer();
+	    	    		  gLayer.add(layer);
+	    	    		  buttonList.add(button);
 	    	    		  
 	    	    		  // Adding click listener for newGame button
 	    	    		  if (id.equals("newGame")) {
@@ -111,11 +99,34 @@ public class SceneMenu extends Scene {
 	    	    		  
 	    	    		  // Adding click listener for options button
 	    	    		  if (id.equals("options")) {
-	    	    			  
+	    	    			  button.setEventListener(new ButtonEventListener() {
+	    	    				  @Override
+	    	    				  public void onClick(Event event) {
+
+	    	    				  }
+	    	    			  });
 	    	    		  }
-	    	    		 
 	    	    	  }
-	    	    	  break; // resolution is found
+	    	    	  
+	    	    	  // Reading sound buttons
+	    	    	  Json.Object soundOnButton = resolution.getObject("sound_on_button");
+	    	    	  Json.Object soundOffButton = resolution.getObject("sound_off_button");
+	    	    	  int x = soundOnButton.getInt("x");
+    	    		  int y = soundOnButton.getInt("y");
+    	    		  String soundOnPath = soundOnButton.getString("path");
+    	    		  String soundOffPath = soundOffButton.getString("path");
+    	    		  final ToggleButton button = new ToggleButton(x, y, soundOnPath, soundOffPath);
+    	    		  button.setLayerDepth(depth);
+    	    		  final ImageLayer btnLayer = button.getLayer();
+    	    		  gLayer.add(btnLayer);
+    	    		  buttonList.add(button);
+    	    		  
+    	    		  button.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Event event) {
+    	    				  button.toggle();
+    	    			  }
+    	    		  });
 	    	      }
 	    	  }
 	      }
@@ -127,19 +138,7 @@ public class SceneMenu extends Scene {
 	    });
 	}
 	
-	@Override
-	public void init(Object data) {	
-		// add a listener for pointer (mouse, touch) input
-	    pointer().setListener(new Pointer.Adapter() {
-	    	@Override
-	    	public void onPointerEnd(Pointer.Event event) {
-	    		firePointerEndEvent(event);		
-	    	}
-	    });
-	    
-	    gLayer.setVisible(true);
-	    
-    }
+
 	
 	private synchronized void firePointerEndEvent(Pointer.Event event) {
 		for (int i = 0; i < buttonList.size(); i++) {
@@ -154,7 +153,4 @@ public class SceneMenu extends Scene {
 			gLayer.setVisible(false);
 		}
 	}
-	
-	
-	
 }

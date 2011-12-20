@@ -7,7 +7,6 @@ enum eScenes {
 	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING
 }
 
-
 public class SceneNavigator implements Game {
 	public Scene activeScene;
 	private static SceneNavigator instance = null;
@@ -20,12 +19,12 @@ public class SceneNavigator implements Game {
 	private SceneNavigator() {
 		// Creating scenes
 		scResolution = new SceneResolution();
+		scLoading = new SceneLoading(); 
 	}
 	public void createScenes(){
 		scMenu = new SceneMenu();
 		scLevels = new SceneLevels(); 
 		scGameplay = new SceneGameplay(); 
-		scLoading = new SceneLoading(); 
 	}
 	public static SceneNavigator getInstance() {
 		if (instance == null) {

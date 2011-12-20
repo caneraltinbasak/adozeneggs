@@ -21,7 +21,19 @@
                         "x":10,
                         "y":100
                     }              
-                ]
+                ],
+                "sound_on_button": {
+                    "id": "sound_on",
+                    "path": "images/sound_on_medium.png",
+                    "x": 270,
+                    "y": 20
+                },
+                "sound_off_button": {
+                    "id": "sound_off",
+                    "path": "images/sound_off_medium.png",
+                    "x": 270,
+                    "y": 20
+                }
             },
             {
                 "x":768,
@@ -43,7 +55,19 @@
                         "x":10,
                         "y":250
                     }
-                ]
+                ],
+                "sound_on_button": {
+                    "id": "sound_on",
+                    "path": "images/sound_on_high.png",
+                    "x": 650,
+                    "y": 30
+                },
+                "sound_off_button": {
+                    "id": "sound_off",
+                    "path": "images/sound_off_high.png",
+                    "x": 650,
+                    "y": 30
+                }
             }
         ]
     }

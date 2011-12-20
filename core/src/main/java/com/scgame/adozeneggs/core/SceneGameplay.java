@@ -27,13 +27,6 @@ public class SceneGameplay extends Scene {
 	}
 	
 	@Override
-	public String name() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	  public void init(Object LevelDataPath) {
 	    // create a group layer to hold everything
 	    layer = graphics().createGroupLayer();
@@ -62,23 +55,10 @@ public class SceneGameplay extends Scene {
 	      layer.add(segments[ii]);
 	    }
 	    
-	    final Button pauseButton = new Button(10, 400, "images/pause_medium.png");
-	    pauseButton.addCallback(new ButtonCallback() {
-			
-			@Override
-			public void error(Throwable err) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void done() {
-				// TODO Auto-generated method stub
-				pauseButton.setLayerDepth(70);
-				layer.add(pauseButton.getLayer());
-				buttonList.add(pauseButton);
-			}
-		});
+	    Button pauseButton = new Button(10, 400, "images/pause_medium.png");
+	    pauseButton.setLayerDepth(70);
+		layer.add(pauseButton.getLayer());
+		buttonList.add(pauseButton);
 	    
 	    pauseButton.setEventListener(new ButtonEventListener() {
 			@Override
@@ -106,7 +86,6 @@ public class SceneGameplay extends Scene {
 		}
 	}
 	
-	  @Override
 	  public void update(float delta) {
 		if (gamePaused == false) {
 		    // the tail segments play follow the leader
@@ -115,8 +94,6 @@ public class SceneGameplay extends Scene {
 		      Transform t1 = cur.transform(), t2 = prev.transform();
 		      t1.setTx(t2.tx());
 		      t1.setTy(t2.ty());
-		      t1.setUniformScale(t2.uniformScale());
-		      cur.setDepth(prev.depth());
 		    }
 	
 		    // and the head segment leads the way
@@ -137,8 +114,6 @@ public class SceneGameplay extends Scene {
 		    }
 		    t.setTx(nx);
 		    t.setTy(ny);
-		    t.setUniformScale(nd/50f);
-		    first.setDepth(nd);
 		}
 	  }
 
