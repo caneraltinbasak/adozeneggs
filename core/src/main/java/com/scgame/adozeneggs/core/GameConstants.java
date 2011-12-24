@@ -46,11 +46,43 @@ public class GameConstants {
 		 */
 		public static String gQuality;
 	}
-	public class PhysicalProperties{
+
+	public static class PhysicalProperties{
 		/**
-		 * gravity is defined by pixels/miliseconds.
+		 * gravitational acceleration 
 		 */
-		public static final float gravity = 2;
-		public static final float JumpSpeed = 5;
+		public static final float gravity = - 10; // m/s^2
+		/**
+		 * Jump speed of the egg
+		 */
+		public static final float JumpSpeed = 5; // m/s
+		/**
+		 * Virtual width in meters
+		 */
+		public static final float width = 6.0f; // m
+		/** 
+		 * virtual height in meters
+		 */
+		public static final float height = 10.0f; // m
+		
+		/**
+		 * Converts horizontal physical property(speed, position) to screen pixels.
+		 * @param meters Distance in meters
+		 * @return Distance in pixels.
+		 */
+		public static float horizontalInPixel(float meters){
+			return (meters/PhysicalProperties.width)*ScreenProperties.width;
+		}
+		public static float verticalInPixels(float meters){
+			return (meters/PhysicalProperties.height)*ScreenProperties.height;
+		}
+		/**
+		 * Converts coordinates in meters to screen pixels. Returns a new
+		 * @param posInMeters Position in meters.
+		 * @return Position in pixel coordinates.
+		 */
+		public static Vect2d convertToPixel(final Vect2d posInMeters){
+			return new Vect2d(horizontalInPixel(posInMeters.x), verticalInPixels(posInMeters.y));
+		}
 	}
 }
