@@ -1,11 +1,12 @@
 package com.scgame.adozeneggs.core;
 
+import playn.core.ImageLayer;
+
 /**
  * @author Caner
  *
  */
 public abstract class Entity {
-	  private Sprite sprite;
-	  private boolean hasLoaded = false; // set to true when resources have loaded
-
+	public abstract void paint(float alpha) ;
+	public abstract void update(float delta) ;
 }

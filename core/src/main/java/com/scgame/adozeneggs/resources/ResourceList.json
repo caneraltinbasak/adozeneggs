@@ -34,6 +34,8 @@
     {"type":"image" , "quality":"medium",   "url": "images/sound_on_medium.png"},
     {"type":"image" , "quality":"medium",   "url": "images/sound_off_medium.png"},
     {"type":"image" , "quality":"high",   	"url": "images/sound_on_high.png"},
-    {"type":"image" , "quality":"high",   	"url": "images/sound_off_high.png"}
+    {"type":"image" , "quality":"high",   	"url": "images/sound_off_high.png"},
+    {"type":"image" , "quality":"high",   	"url": "images/basket_high.png"},
+    {"type":"image" , "quality":"medium",   "url": "images/basket_medium.png"}
   ]
 }

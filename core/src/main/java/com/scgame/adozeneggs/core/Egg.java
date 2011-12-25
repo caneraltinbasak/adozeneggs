@@ -17,7 +17,7 @@ public class Egg{
 	public static String JSON = "sprites/peasprite.json";
 	public static String JSON_WITH_IMAGE = "sprites/peasprite2.json";
 	private List<EggEventListener> eventListeners = new ArrayList<EggEventListener>();
-	private Sprite sprite;
+	public Sprite sprite;
 	private int spriteIndex = 1;
 	private boolean hasLoaded = false; // set to true when resources have loaded
 	// and we can update
@@ -25,10 +25,10 @@ public class Egg{
 	private Basket targetBasket;
 
 	// position
-	private Vect2d position;
+	public Vect2d position;
 
 	// velocity(used when on air, uses currentBasket baskets velocity if not on air)
-	private Vect2d velocity;
+	public Vect2d velocity;
 
 
 	/**
@@ -73,7 +73,7 @@ public class Egg{
 			// newVelocity = velocity + gravitational accelaration constant * time
 			velocity=velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.gravity*delta));
 			int stars=0;
-			if(targetBasket.hit(this, stars))
+			if(targetBasket.hit(this)!=0)
 			{
 				// generate event and update current basket
 				fireJumpEvent(targetBasket, stars);
@@ -93,7 +93,7 @@ public class Egg{
 	 */
 	public void jump(){
 		// get currentBasket baskets velocity. y value is expected to be "0"
-		this.velocity=this.currentBasket.getVelocity();
+		this.velocity.x=this.currentBasket.getVelocity();
 		// set y value to predefined jump speed
 		velocity.y=GameConstants.PhysicalProperties.JumpSpeed;
 		// set currentBasket basket to null since we are not attached to basket

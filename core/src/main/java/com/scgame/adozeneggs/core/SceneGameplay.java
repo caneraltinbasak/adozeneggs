@@ -2,6 +2,8 @@ package com.scgame.adozeneggs.core;
 
 import static playn.core.PlayN.assetManager;
 import static playn.core.PlayN.graphics;
+import static playn.core.PlayN.json;
+import static playn.core.PlayN.log;
 import static playn.core.PlayN.pointer;
 
 
@@ -11,117 +13,163 @@ import java.util.List;
 import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
+import playn.core.Json;
 import playn.core.Pointer;
+import playn.core.ResourceCallback;
 import playn.core.Pointer.Event;
 import pythagoras.f.Transform;
 
 public class SceneGameplay extends Scene {
 
-	private GroupLayer layer;
-	private ImageLayer[] segments;
-	private float dx = 10, dy = 5, dd = 1;
+	private static final float BASKET_VERTICAl_DISTANCE = 2.5f;
+	protected static final float BASKET_START_POSITION = 0.5f;
+	private GroupLayer sceneRootLayer;
+
 	private boolean gamePaused =  false;
 	private List<Button> buttonList = new ArrayList<Button>();
+	private GameForeground foreGround;
+	private GameBackground backGround;
 
 	public SceneGameplay () {
 	}
-	
+
 	@Override
-	  public void init(Object LevelDataPath) {
-	    // create a group layer to hold everything
-	    layer = graphics().createGroupLayer();
-	    graphics().rootLayer().add(layer);
+	public void init(final Object LevelDataPath) {
+		// the top layer which doesn't move, static elements will be inside this layer.
+		sceneRootLayer = graphics().createGroupLayer();
+		graphics().rootLayer().add(sceneRootLayer);
+		
+		foreGround = new GameForeground();
+		foreGround.getGroupLayer().setDepth(50);
+		sceneRootLayer.add(foreGround.getGroupLayer());
+		
+		backGround = new GameBackground();
+		backGround.getGroupLayer().setDepth(40);
+		sceneRootLayer.add(backGround.getGroupLayer());
 
-	    Image bgImage;
-	    // create and add background image layer
-	    if (graphics().height() == 480 && graphics().width() == 320) {
-	    	bgImage = assetManager().getImage("images/bg_medium.png");
-	    }
-	    else{
-	    	bgImage = assetManager().getImage("images/bg_high.png");
-	    }
-	    
-	    final ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-	    bgLayer.setDepth(2);
-	    layer.add(bgLayer);
-	    
 
-	    // create our snake segments
-	    Image segImage = assetManager().getImage("images/pea.png");
-	    segments = new ImageLayer[25];
-	    for (int ii = 0; ii < segments.length; ii++) {
-	      segments[ii] = graphics().createImageLayer(segImage);
-	      segments[ii].setDepth(50);
-	      layer.add(segments[ii]);
-	    }
-	    
-	    Button pauseButton = new Button(10, 400, "images/pause_medium.png");
-	    pauseButton.setLayerDepth(70);
-		layer.add(pauseButton.getLayer());
-		buttonList.add(pauseButton);
-	    
-	    pauseButton.setEventListener(new ButtonEventListener() {
+
+		assetManager().getText((String) LevelDataPath, new ResourceCallback<String>() {
 			@Override
-			public void onClick(Event event) {
-				if (gamePaused) {
-					gamePaused = false;
+			public void done(String resource) {
+				Json.Object document = json().parse(resource);
+				
+				// Add static elements to the sceneRootLayer;
+				Json.Object layout = document.getObject("RootScreenlayout");
+				Json.Array resArray = layout.getArray("resolution");
+				for( int i = 0; i < resArray.length(); i++ ){
+					Json.Object resolution = resArray.getObject(i);
+					int width = resolution.getInt("width");
+					int height = resolution.getInt("height");
+					if ((width == GameConstants.ScreenProperties.width) && (height == GameConstants.ScreenProperties.height)) {
+						Json.Object pauseButton = resolution.getObject("pause_button");
+						String onPath = pauseButton.getString("on_path");
+						String offPath = pauseButton.getString("off_path");
+						int x = pauseButton.getInt("x");
+						int y = pauseButton.getInt("y");
+						Button pButton = new ToggleButton(x, y, onPath,offPath);
+						pButton.setLayerDepth(70);
+						sceneRootLayer.add(pButton.getLayer());
+						buttonList.add(pButton);
+						pButton.setEventListener(new ButtonEventListener() {
+							@Override
+							public void onClick(Event event) {
+								log().debug("Clicked pause\n");
+								if (gamePaused) {
+									gamePaused = false;
+								}
+								else {
+									gamePaused = true;
+								}
+							}
+						});
+					}
 				}
-				else {
-					gamePaused = true;
+				
+				// Add Foreground Elements
+				Json.Object gameElements = document.getObject("GameElements");
+				Json.Object jBasket = gameElements.getObject("basket");
+				resArray = jBasket.getArray("resolution");
+				String basketImagePath = null;
+				for( int i = 0; i < resArray.length(); i++ ){
+					Json.Object resolution = resArray.getObject(i);
+					int width = resolution.getInt("width");
+					int height = resolution.getInt("height");
+					if ((width == GameConstants.ScreenProperties.width) && (height == GameConstants.ScreenProperties.height)) {
+						basketImagePath = resolution.getString("path");
+					}
+				}
+				Json.Array layArray = jBasket.getArray("layout");
+				float startY = BASKET_START_POSITION;
+				for( int i = 0; i < layArray.length(); i++ ){
+					Json.Object basketLayout = layArray.getObject(i);
+					float startYinPixels = GameConstants.PhysicalProperties.verticalInPixels(startY);
+					float endX = (float)basketLayout.getNumber("end_x");
+					float endXinPixels = GameConstants.PhysicalProperties.horizontalInPixel(endX);
+					float startX = (float) basketLayout.getNumber("start_x");
+					float startXinPixels = GameConstants.PhysicalProperties.horizontalInPixel(startX);
+					float speedX = (float) basketLayout.getNumber("speed");
+					float speedXinPixelsPerMs = GameConstants.PhysicalProperties.horizontalInPixel(speedX)/100;
+					Basket basket = new Basket(speedXinPixelsPerMs, new Vect2d(startXinPixels, startYinPixels), new Vect2d(endXinPixels, startYinPixels), basketImagePath);
+					foreGround.addItsEntity(basket);
+					startY = startY + BASKET_VERTICAl_DISTANCE; // each basket is 2.5m far away from each other 
+				}
+				// Add Background Elements
+				Json.Object jbgImage = gameElements.getObject("bg_image");
+				Json.Array jresArray = jbgImage.getArray("resolution");
+				for( int i = 0; i < jresArray.length(); i++ ){
+					Json.Object bgRes = jresArray.getObject(i);
+					int width = bgRes.getInt("width");
+					int height = bgRes.getInt("height");
+					if ((width == GameConstants.ScreenProperties.width) && (height == GameConstants.ScreenProperties.height)) {
+						String bgPath = bgRes.getString("path");
+						BGScrolledImage bgImage = new BGScrolledImage(bgPath);
+						backGround.addItsEntity(bgImage);
+					}
 				}
 			}
+
+			@Override
+			public void error(Throwable err) {
+				log().error(" Error in " + LevelDataPath + "\n" , err);				
+			}
+
 		});
-	     
-	    pointer().setListener(new Pointer.Adapter() {
-	    	@Override
-	    	public void onPointerEnd(Pointer.Event event) {
-	    		firePointerEndEvent(event);		
-	    	}
-	    });
-	  }
-	
+
+
+
+
+		pointer().setListener(new Pointer.Adapter() {
+			@Override
+			public void onPointerEnd(Pointer.Event event) {
+				firePointerEndEvent(event);		
+			}
+		});
+	}
+
 	private synchronized void firePointerEndEvent(Pointer.Event event) {
 		for (int i = 0; i < buttonList.size(); i++) {
 			buttonList.get(i).clicked(event);
 		}
 	}
-	
-	  public void update(float delta) {
-		if (gamePaused == false) {
-		    // the tail segments play follow the leader
-		    for (int ii = segments.length-1; ii > 0; ii--) {
-		      ImageLayer cur = segments[ii], prev = segments[ii-1];
-		      Transform t1 = cur.transform(), t2 = prev.transform();
-		      t1.setTx(t2.tx());
-		      t1.setTy(t2.ty());
-		    }
-	
-		    // and the head segment leads the way
-		    ImageLayer first = segments[0];
-		    Transform t = first.transform();
-		    float nx = t.tx() + dx, ny = t.ty() + dy, nd = first.depth() + dd;
-		    if (nx < 0 || nx > graphics().width()) {
-		      dx *= -1;
-		      nx += dx;
-		    }
-		    if (ny < 0 || ny > graphics().height()) {
-		      dy *= -1;
-		      ny += dy;
-		    }
-		    if (nd < 25 || nd > 125) {
-		      dd *= -1;
-		      nd += dd;
-		    }
-		    t.setTx(nx);
-		    t.setTy(ny);
-		}
-	  }
 
-	  @Override
-	  public void shutdown() {
-	    segments = null;
-	    layer.destroy();
-	    layer = null;
-	    
-	  }
+	public void update(float delta) {
+		if (gamePaused == false) {
+			foreGround.update(delta);
+			backGround.update(delta);
+		}
+	}
+	
+	public void paint(float alpha) {
+		if (gamePaused == false) {
+			foreGround.paint(alpha);
+			backGround.paint(alpha);
+		}
+	}
+
+	@Override
+	public void shutdown() {
+		sceneRootLayer.destroy();
+		sceneRootLayer = null; 
+	}
 }
