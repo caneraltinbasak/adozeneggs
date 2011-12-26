@@ -53,12 +53,14 @@ public class Button {
 		return this.isHit;
 	}
 	
-	public void clicked(Pointer.Event event) {
+	public boolean clicked(Pointer.Event event) {
 		if (hitTest(event.x(), event.y())) {
 			if (listener != null) {
 				listener.onClick(event);
 			}
+			return true;
 		}
+		return false;
 	}
 	
 	public synchronized void setEventListener(ButtonEventListener listener) {

@@ -31,4 +31,14 @@ public class GameBackground extends GroupEntity {
 	public GroupLayer getGroupLayer() {
 		return groupLayer;
 	}
+	@Override
+	public Vect2d getPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setPosition(Vect2d position) {
+		// TODO Auto-generated method stub
+		
+	}
 }

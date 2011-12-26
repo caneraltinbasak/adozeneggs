@@ -29,4 +29,16 @@ public class BGScrolledImage extends GraphicsEntity {
 		return imageLayer;
 	}
 
+	@Override
+	public Vect2d getPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setPosition(Vect2d position) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -51,11 +51,11 @@ public class GameConstants {
 		/**
 		 * gravitational acceleration 
 		 */
-		public static final float gravity = - 10; // m/s^2
+		public static final float gravity = 10; // m/s^2
 		/**
 		 * Jump speed of the egg
 		 */
-		public static final float JumpSpeed = 5; // m/s
+		public static final float JumpSpeed = - 12f; // m/s original value is 7.5f 
 		/**
 		 * Virtual width in meters
 		 */
@@ -64,6 +64,11 @@ public class GameConstants {
 		 * virtual height in meters
 		 */
 		public static final float height = 10.0f; // m
+		
+		/**
+		 * Base scrolling speed of foreground
+		 */
+		public static final float ForegroundScrollSpeed = 5.0f; // m/s
 		
 		/**
 		 * Converts horizontal physical property(speed, position) to screen pixels.
@@ -84,5 +89,6 @@ public class GameConstants {
 		public static Vect2d convertToPixel(final Vect2d posInMeters){
 			return new Vect2d(horizontalInPixel(posInMeters.x), verticalInPixels(posInMeters.y));
 		}
+		
 	}
 }

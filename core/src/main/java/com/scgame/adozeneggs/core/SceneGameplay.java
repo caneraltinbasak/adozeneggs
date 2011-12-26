@@ -19,7 +19,7 @@ import playn.core.ResourceCallback;
 import playn.core.Pointer.Event;
 import pythagoras.f.Transform;
 
-public class SceneGameplay extends Scene {
+public class SceneGameplay extends Scene implements EggEventListener {
 
 	private static final float BASKET_VERTICAl_DISTANCE = 2.5f;
 	protected static final float BASKET_START_POSITION = 0.5f;
@@ -29,6 +29,7 @@ public class SceneGameplay extends Scene {
 	private List<Button> buttonList = new ArrayList<Button>();
 	private GameForeground foreGround;
 	private GameBackground backGround;
+	protected Egg egg;
 
 	public SceneGameplay () {
 	}
@@ -47,7 +48,8 @@ public class SceneGameplay extends Scene {
 		backGround.getGroupLayer().setDepth(40);
 		sceneRootLayer.add(backGround.getGroupLayer());
 
-
+		egg = new Egg();
+		egg.addEventListener(this);
 
 		assetManager().getText((String) LevelDataPath, new ResourceCallback<String>() {
 			@Override
@@ -86,7 +88,8 @@ public class SceneGameplay extends Scene {
 					}
 				}
 				
-				// Add Foreground Elements
+				// ***********Add Foreground Elements ***********
+				// add baskets
 				Json.Object gameElements = document.getObject("GameElements");
 				Json.Object jBasket = gameElements.getObject("basket");
 				resArray = jBasket.getArray("resolution");
@@ -101,6 +104,7 @@ public class SceneGameplay extends Scene {
 				}
 				Json.Array layArray = jBasket.getArray("layout");
 				float startY = BASKET_START_POSITION;
+				List<Basket> basketList = new ArrayList<Basket>();
 				for( int i = 0; i < layArray.length(); i++ ){
 					Json.Object basketLayout = layArray.getObject(i);
 					float startYinPixels = GameConstants.PhysicalProperties.verticalInPixels(startY);
@@ -112,9 +116,16 @@ public class SceneGameplay extends Scene {
 					float speedXinPixelsPerMs = GameConstants.PhysicalProperties.horizontalInPixel(speedX)/100;
 					Basket basket = new Basket(speedXinPixelsPerMs, new Vect2d(startXinPixels, startYinPixels), new Vect2d(endXinPixels, startYinPixels), basketImagePath);
 					foreGround.addItsEntity(basket);
-					startY = startY + BASKET_VERTICAl_DISTANCE; // each basket is 2.5m far away from each other 
+					basketList.add(basket);
+					startY = startY + BASKET_VERTICAl_DISTANCE; // each basket is 2.5m far away from each other 					
 				}
-				// Add Background Elements
+				// Add egg to last basket
+				egg.setTargetBaskets(basketList); // add target baskets to egg
+				egg.setCurrentBasket(layArray.length() - 1); // set it to bottom element.
+				foreGround.addItsEntity(egg); // add egg to foreground list
+				foreGround.setPosition(new Vect2d(0, GameConstants.ScreenProperties.height - egg.position.y - egg.sprite.height() * 2));
+				
+				// ***********Add Background Elements ***********
 				Json.Object jbgImage = gameElements.getObject("bg_image");
 				Json.Array jresArray = jbgImage.getArray("resolution");
 				for( int i = 0; i < jresArray.length(); i++ ){
@@ -148,9 +159,13 @@ public class SceneGameplay extends Scene {
 	}
 
 	private synchronized void firePointerEndEvent(Pointer.Event event) {
+		boolean handled = false; 
 		for (int i = 0; i < buttonList.size(); i++) {
-			buttonList.get(i).clicked(event);
+			handled = buttonList.get(i).clicked(event);
 		}
+		if(!handled)
+			egg.jump();
+			
 	}
 
 	public void update(float delta) {
@@ -171,5 +186,10 @@ public class SceneGameplay extends Scene {
 	public void shutdown() {
 		sceneRootLayer.destroy();
 		sceneRootLayer = null; 
+	}
+
+	@Override
+	public void onEggJump(JumpEvent event) {
+		foreGround.scrollTo(new Vect2d(0, GameConstants.ScreenProperties.height - egg.position.y - egg.sprite.height() * 2));
 	}
 }

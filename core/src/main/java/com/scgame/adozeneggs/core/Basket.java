@@ -79,9 +79,12 @@ public class Basket extends GraphicsEntity{
 		if(egg.velocity.y > 0) // if going downwards
 		{
 			// check if egg is 10 pixel margin of position.y
-			if(egg.sprite.height() + egg.position.y > position.y && egg.sprite.height() + egg.position.y < position.y+ 10) 
+			if(egg.sprite.height() + egg.position.y > position.y && egg.sprite.height() + egg.position.y < position.y+ 30) 
 			{
-				return 1;
+				if(egg.position.x >= position.x && egg.position.x <= position.x + width)
+				{
+					return 1;
+				}
 			}
 		}
 		return 0;

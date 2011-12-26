@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+
 import playn.core.GroupLayer;
+import playn.core.ImageLayer;
 import playn.core.ResourceCallback;
 
 import com.scgame.adozeneggs.core.SpriteLoader;
 
 
-public class Egg{
+public class Egg  extends GraphicsEntity{
 	public static String IMAGE = "sprites/peasprites.png";
 	public static String JSON = "sprites/peasprite.json";
 	public static String JSON_WITH_IMAGE = "sprites/peasprite2.json";
@@ -22,33 +25,30 @@ public class Egg{
 	private boolean hasLoaded = false; // set to true when resources have loaded
 	// and we can update
 	private Basket currentBasket;
-	private Basket targetBasket;
+	private List<Basket>targetBaskets = new ArrayList<Basket>();
 
 	// position
 	public Vect2d position;
 
 	// velocity(used when on air, uses currentBasket baskets velocity if not on air)
-	public Vect2d velocity;
+	public Vect2d velocity; // pixels/ms
 
 
 	/**
 	 * Egg Constructor
 	 * @param eggLayer Layer for egg graphics
-	 * @param currentBasket currentBasket basket the egg is in
 	 * @param targetBasket Next basket that egg is targetBasketing
 	 */
-	public Egg(final GroupLayer eggLayer, final Basket currentBasket, final Basket targetBasket) {
+	public Egg( ) {
 		// Sprite method #2: use json data describing the sprites and containing
 		// the image urls
-		this.targetBasket=targetBasket;
-		this.currentBasket=currentBasket;
+		this.velocity = new Vect2d(0, 0);
 		sprite = SpriteLoader.getSprite(JSON_WITH_IMAGE);
 		// Add a callback for when the image loads.
 		sprite.addCallback(new ResourceCallback<Sprite>() {
 			@Override
 			public void done(Sprite sprite) {
 				sprite.setSprite(spriteIndex);
-				eggLayer.add(sprite.layer());
 				hasLoaded = true;
 			}
 
@@ -58,11 +58,25 @@ public class Egg{
 			}
 		});
 	}
+	public void setCurrentBasket(int index){
+		if(targetBaskets.size() < index || index < 0 )
+		{
+			log().error("Egg::setCurrentBasket index out of range");
+		}else
+		{
+			currentBasket = targetBaskets.get(index);
+			position = currentBasket.getPosition().copy();
+			// delete the previous baskets from target list
+			while(currentBasket != targetBaskets.get(targetBaskets.size() - 1 )){
+				targetBaskets.remove(targetBaskets.size() - 1);
+			}
+		}
+	}
 	public void paint(float alpha) {
 		if (hasLoaded) {
 			spriteIndex = (spriteIndex + 1) % sprite.numSprites();
 			sprite.setSprite(spriteIndex);
-			sprite.layer().setTranslation(50, 50);
+			sprite.layer().setTranslation(position.x, position.y);
 		}
 	}
 	public void update(float delta) {
@@ -71,14 +85,18 @@ public class Egg{
 			// newPosition = position + velocity*time if on air
 			position=position.add(velocity.multiply(delta));
 			// newVelocity = velocity + gravitational accelaration constant * time
-			velocity=velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.gravity*delta));
+			velocity=velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.gravity)*delta/(1000*1000)));
 			int stars=0;
-			if(targetBasket.hit(this)!=0)
-			{
-				// generate event and update current basket
-				fireJumpEvent(targetBasket, stars);
-				currentBasket=targetBasket;
+			for (int i = 0; i < getTargetBaskets().size() ; i++){
+				if(getTargetBaskets().get(i).hit(this)!=0)
+				{
+					// generate event and update current basket
+					fireJumpEvent(getTargetBaskets().get(i), stars);
+					currentBasket=getTargetBaskets().get(i);
+					getTargetBaskets().remove(i);
+				}
 			}
+
 		}else{
 			// position is equal to currentBaskets position if they are attached.
 			position=this.currentBasket.getPosition();
@@ -92,20 +110,15 @@ public class Egg{
 	 * Use addEventListener and removeEventListener to catch these events.
 	 */
 	public void jump(){
-		// get currentBasket baskets velocity. y value is expected to be "0"
-		this.velocity.x=this.currentBasket.getVelocity();
-		// set y value to predefined jump speed
-		velocity.y=GameConstants.PhysicalProperties.JumpSpeed;
-		// set currentBasket basket to null since we are not attached to basket
-		this.currentBasket=null;
+		if(this.currentBasket != null)
+		{
+			// set y value to predefined jump speed
+			velocity.y=GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.JumpSpeed) / 1000;
+			// set currentBasket basket to null since we are not attached to basket
+			this.currentBasket=null;
+		}
 	}
-	/**
-	 * Adds a new targetBasket. Game should add a new targetBasket after each JumpEvent handler.
-	 * @param targetBasket New targetBasket for the jump.
-	 */
-	public void addNewtargetBasket(Basket targetBasket){
-		this.targetBasket=targetBasket;
-	}
+
 	/**
 	 * Removes listener
 	 * @param eventListener listener for jump events
@@ -126,5 +139,23 @@ public class Egg{
 		while( listeners.hasNext() ) {
 			( (EggEventListener) listeners.next() ).onEggJump(event);
 		}
+	}
+	@Override
+	public ImageLayer getImageLayer() {
+		return sprite.layer();
+	}
+	@Override
+	public Vect2d getPosition() {
+		return position.copy();
+	}
+	@Override
+	public void setPosition(Vect2d position) {
+		this.position = position.copy();
+	}
+	public List<Basket> getTargetBaskets() {
+		return targetBaskets;
+	}
+	public void setTargetBaskets(List<Basket> targetBaskets) {
+		this.targetBaskets = targetBaskets;
 	}
 }
