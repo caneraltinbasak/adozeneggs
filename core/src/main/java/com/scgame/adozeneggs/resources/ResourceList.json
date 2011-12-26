@@ -36,6 +36,10 @@
     {"type":"image" , "quality":"high",   	"url": "images/sound_on_high.png"},
     {"type":"image" , "quality":"high",   	"url": "images/sound_off_high.png"},
     {"type":"image" , "quality":"high",   	"url": "images/basket_high.png"},
-    {"type":"image" , "quality":"medium",   "url": "images/basket_medium.png"}
+    {"type":"image" , "quality":"medium",   "url": "images/basket_medium.png"},
+    {"type":"image" , "quality":"high",   	"url": "sprites/peasprites2.png"},
+    {"type":"image" , "quality":"high",     "url": "sprites/peasprites3.png"},
+    {"type":"image" , "quality":"medium",   "url": "sprites/peasprites2.png"},
+    {"type":"image" , "quality":"medium",   "url": "sprites/peasprites3.png"}
   ]
 }
