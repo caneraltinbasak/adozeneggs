@@ -71,7 +71,7 @@ public class CachedResource {
 									@Override
 									public void done(Image resource) {
 										loadedElements++;
-										//eventlistener.onPercentUpdate((float)loadedElements / (float)elementsToLoad);
+										eventlistener.onPercentUpdate((float)loadedElements / (float)elementsToLoad);
 										if(loadedElements == elementsToLoad)
 										{
 											hasLoaded = true;
@@ -91,7 +91,7 @@ public class CachedResource {
 							Sound aSound = assetManager().getSound(resourceUrl);
 							cachedResources.put(resourceUrl, aSound);
 							loadedElements++;
-							//eventlistener.onPercentUpdate((float)loadedElements / (float)elementsToLoad);
+							eventlistener.onPercentUpdate((float)loadedElements / (float)elementsToLoad);
 							if(loadedElements == elementsToLoad)
 							{
 								hasLoaded = true;
