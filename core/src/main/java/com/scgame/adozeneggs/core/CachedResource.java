@@ -18,8 +18,6 @@ public class CachedResource {
 	static private final String IMAGE_TYPE = "image";
 	static private final String SOUND_TYPE = "sound";
 	static private final String TEXT_TYPE = "text";
-	private int loadedElements = 0;
-	private int totalElements = 0;
 	private LoaderInterface eventlistener = null;
 	private static CachedResource instance = null;
 
@@ -39,12 +37,30 @@ public class CachedResource {
 		if(!hasLoaded){
 			assetManager().getText(JSON_PATH, new ResourceCallback<String>() {
 
+				private int elementsToLoad;
+				private int loadedElements;
+
 				@Override
 				public void done(String json) {
 					Json.Object document = json().parse(json);
 					Json.Array resourceArray = document.getArray("Resource");
-					totalElements = resourceArray.length();
-					for (int i = 0; i < totalElements; i++) {
+					elementsToLoad = 0;
+					// Count elements to be loaded
+					for (int i = 0; i < resourceArray.length(); i++) {
+						Json.Object resource = resourceArray.getObject(i);
+						String resourceType= resource.getString("type");
+						if (resourceType.equals(IMAGE_TYPE)) {
+							if (resource.getString("quality").equals(GameConstants.ScreenProperties.gQuality)) {
+								elementsToLoad++;
+							}
+						}else if (resourceType.equals(SOUND_TYPE)) {
+							elementsToLoad++;
+						}
+
+						
+					}
+					// Load elements
+					for (int i = 0; i < resourceArray.length(); i++) {
 						Json.Object resource = resourceArray.getObject(i);
 						String resourceType= resource.getString("type");
 						String resourceUrl = resource.getString("url");
@@ -55,7 +71,13 @@ public class CachedResource {
 									@Override
 									public void done(Image resource) {
 										loadedElements++;
-										eventlistener.onPercentUpdate((float)loadedElements / (float)totalElements);
+										//eventlistener.onPercentUpdate((float)loadedElements / (float)elementsToLoad);
+										if(loadedElements == elementsToLoad)
+										{
+											hasLoaded = true;
+											eventlistener.onLoadComplete();
+											eventlistener=null; // clear listener
+										}
 									}
 
 									@Override
@@ -69,7 +91,13 @@ public class CachedResource {
 							Sound aSound = assetManager().getSound(resourceUrl);
 							cachedResources.put(resourceUrl, aSound);
 							loadedElements++;
-							eventlistener.onPercentUpdate((float)loadedElements / (float)totalElements);
+							//eventlistener.onPercentUpdate((float)loadedElements / (float)elementsToLoad);
+							if(loadedElements == elementsToLoad)
+							{
+								hasLoaded = true;
+								eventlistener.onLoadComplete();
+								eventlistener=null; // clear listener
+							}
 						} else if (resourceType.equals(TEXT_TYPE)) {
 							log().error("Text is not supported yet");
 						}else{
@@ -83,10 +111,8 @@ public class CachedResource {
 					log().error("Failed to load"+ JSON_PATH,err);
 				}
 			});
-			hasLoaded = true;
+			
 		}
-		eventlistener.onLoadComplete();
-		eventlistener=null; // clear listener
 	}
 
 	public void purgeResources() {

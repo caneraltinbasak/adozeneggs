@@ -87,7 +87,8 @@ public class SceneLoading extends Scene implements LoaderInterface{
 	}
 	@Override
 	public void onPercentUpdate(float percent) {
-		percentComplete = percent;
+		if(this != null)
+			percentComplete = percent;
 	}
 	@Override
 	public void onLoadComplete() {
@@ -101,6 +102,7 @@ public class SceneLoading extends Scene implements LoaderInterface{
 	}
 	@Override
 	public void paint(float alpha) {
-		loadingBar.onPercentUpdate(percentComplete);
+		if(loadingBar!=null)
+			loadingBar.onPercentUpdate(percentComplete);
 	}
 }
