@@ -12,7 +12,7 @@ public class Button {
 	private float height;
 	private boolean isHit;
 	protected ImageLayer imageLayer = null;
-	private ButtonEventListener listener = null;
+	protected ButtonEventListener listener = null;
 	protected Image imgButton = null;
 
 	/**

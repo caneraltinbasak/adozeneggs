@@ -69,7 +69,7 @@ public class SceneGameplay extends Scene implements EggEventListener {
 						String offPath = pauseButton.getString("off_path");
 						int x = pauseButton.getInt("x");
 						int y = pauseButton.getInt("y");
-						Button pButton = new ToggleButton(x, y, onPath,offPath);
+						Button pButton = new ToggleButton(x, y, onPath,offPath, eToggle.ON);
 						pButton.setLayerDepth(70);
 						sceneRootLayer.add(pButton.getLayer());
 						buttonList.add(pButton);
@@ -163,8 +163,10 @@ public class SceneGameplay extends Scene implements EggEventListener {
 		for (int i = 0; i < buttonList.size(); i++) {
 			handled = buttonList.get(i).clicked(event);
 		}
-		if(!handled)
+		if(!handled) {
 			egg.jump();
+			SoundControl.getInstance().playJump();
+		}
 			
 	}
 

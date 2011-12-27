@@ -2,16 +2,31 @@ package com.scgame.adozeneggs.core;
 
 import static playn.core.PlayN.log;
 import playn.core.Image;
+import playn.core.Pointer;
 
+enum eToggle {
+	ON, OFF
+}
 public class ToggleButton extends Button {
 	Image imgButtonOff = null;
 	Image activeImage = null;
+	eToggle activeToogle;
 	
-	public ToggleButton(float px, float py, String onImagePath, String offImagePath) {
+	public ToggleButton(float px, float py, String onImagePath, String offImagePath, eToggle toggle) {
 		super(px, py, onImagePath);
-		activeImage = imgButton;
 		imgButtonOff = (Image)CachedResource.getInstance().getResource(offImagePath);	
 		
+		if (toggle == eToggle.ON) {
+			imageLayer.setImage(imgButton);
+			activeImage = imgButton;
+			activeToogle = eToggle.ON;
+		} 
+		else
+		{
+			imageLayer.setImage(imgButtonOff);
+			activeImage = imgButtonOff;
+			activeToogle = eToggle.OFF;
+		}
 	}
 	
 	public void toggle() {
@@ -19,10 +34,12 @@ public class ToggleButton extends Button {
 			if (activeImage == imgButton) {
 				imageLayer.setImage(imgButtonOff);
 				activeImage = imgButtonOff;
+				activeToogle = eToggle.OFF;
 			}
 			else {
 				imageLayer.setImage(imgButton);
 				activeImage = imgButton;
+				activeToogle = eToggle.ON;
 			}
 		}
 		else {
@@ -30,4 +47,20 @@ public class ToggleButton extends Button {
 		}
 		
 	}
+	
+	public boolean clicked(Pointer.Event event) {
+		if (hitTest(event.x(), event.y())) {
+			toggle();
+			if (listener != null) {
+				listener.onClick(event);
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public eToggle getToggle() {
+		return activeToogle;
+	}
+
 }

@@ -42,8 +42,7 @@ public class SceneMenu extends Scene {
 	    gLayer.setVisible(true);
     }
 	
-	private void initImageLayouts() {
-		
+	private void initImageLayouts() {    
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 
@@ -92,6 +91,7 @@ public class SceneMenu extends Scene {
 	    	    			  button.setEventListener(new ButtonEventListener() {
 	    	    				  @Override
 	    	    				  public void onClick(Event event) {
+	    	    					  
 	    	    					  SceneNavigator.getInstance().runScene(eScenes.LEVELS, null);
 	    	    				  }
 	    	    			  });
@@ -102,29 +102,85 @@ public class SceneMenu extends Scene {
 	    	    			  button.setEventListener(new ButtonEventListener() {
 	    	    				  @Override
 	    	    				  public void onClick(Event event) {
-
+	    	    					 
 	    	    				  }
 	    	    			  });
 	    	    		  }
 	    	    	  }
 	    	    	  
+	    	    	  int x, y;
 	    	    	  // Reading sound buttons
 	    	    	  Json.Object soundOnButton = resolution.getObject("sound_on_button");
 	    	    	  Json.Object soundOffButton = resolution.getObject("sound_off_button");
-	    	    	  int x = soundOnButton.getInt("x");
-    	    		  int y = soundOnButton.getInt("y");
+	    	    	  x = soundOnButton.getInt("x");
+    	    		  y = soundOnButton.getInt("y");
     	    		  String soundOnPath = soundOnButton.getString("path");
     	    		  String soundOffPath = soundOffButton.getString("path");
-    	    		  final ToggleButton button = new ToggleButton(x, y, soundOnPath, soundOffPath);
-    	    		  button.setLayerDepth(depth);
-    	    		  final ImageLayer btnLayer = button.getLayer();
-    	    		  gLayer.add(btnLayer);
-    	    		  buttonList.add(button);
     	    		  
-    	    		  button.setEventListener(new ButtonEventListener() {
+    	    		  eToggle soundToggle;
+    	    		  if (SoundControl.getInstance().isSoundOn()) {
+    	    			  // if game music is set to ON by the player 
+    	    			  soundToggle = eToggle.ON;
+    	    		  }
+    	    		  else {
+    	    			  // if game music is set to OFF by the player
+    	    			  soundToggle = eToggle.OFF;
+    	    		  }
+    	    		  
+    	    		  final ToggleButton btnSound = new ToggleButton(x, y, soundOnPath, soundOffPath, soundToggle);
+    	    		  btnSound.setLayerDepth(depth);
+    	    		  final ImageLayer btnSoundLayer = btnSound.getLayer();
+    	    		  gLayer.add(btnSoundLayer);
+    	    		  buttonList.add(btnSound);
+    	    		  
+    	    		  btnSound.setEventListener(new ButtonEventListener() {
     	    			  @Override
     	    			  public void onClick(Event event) {
-    	    				  button.toggle();
+    	    				  // Stop or Play game music
+    	    				  if (btnSound.getToggle() == eToggle.OFF) {
+    	    					  SoundControl.getInstance().setSoundOff();
+    	    				  }
+    	    				  else {
+    	    					  SoundControl.getInstance().setSoundOn();
+    	    				  }
+    	    			  }
+    	    		  });
+    	    		  
+    	    		  // Reading sound buttons
+	    	    	  Json.Object musicOnButton = resolution.getObject("music_on_button");
+	    	    	  Json.Object musicOffButton = resolution.getObject("music_off_button");
+	    	    	  x = musicOnButton.getInt("x");
+    	    		  y = musicOnButton.getInt("y");
+    	    		  String musicOnPath = musicOnButton.getString("path");
+    	    		  String musicOffPath = musicOffButton.getString("path");
+    	    		  
+    	    		  eToggle musicToggle;
+    	    		  if (SoundControl.getInstance().isMusicOn()) {
+    	    			  // if game music is set to ON by the player 
+    	    			  musicToggle = eToggle.ON;
+    	    		  }
+    	    		  else {
+    	    			// if game music is set to OFF by the player
+    	    			  musicToggle = eToggle.OFF;
+    	    		  }
+    	    		  final ToggleButton btnMusic = new ToggleButton(x, y, musicOnPath, musicOffPath, musicToggle);
+    	    		  btnMusic.setLayerDepth(depth);
+    	    		  final ImageLayer btnMusicLayer = btnMusic.getLayer();
+    	    		  gLayer.add(btnMusicLayer);
+    	    		  buttonList.add(btnMusic);
+    	    		  
+    	    		  btnMusic.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Event event) {
+    	    				  // Stop or Play game music
+    	    				  if (btnMusic.getToggle() == eToggle.OFF) {
+    	    					  SoundControl.getInstance().stopGameMusic();
+    	    					  SoundControl.getInstance().setMusicOff();
+    	    				  }
+    	    				  else {
+    	    					  SoundControl.getInstance().playGameMusic();
+    	    					  SoundControl.getInstance().setMusicOn();
+    	    				  }
     	    			  }
     	    		  });
 	    	      }
@@ -136,11 +192,17 @@ public class SceneMenu extends Scene {
 	    	  log().error("Error in loading menu screen! ", err);
 	      }
 	    });
+	    
+	    /*
+	    if (SoundControl.getInstance().isMusicOn()) {
+	    	SoundControl.getInstance().playGameMusic();
+	    }
+	    */
+	    
 	}
 	
-
-	
 	private synchronized void firePointerEndEvent(Pointer.Event event) {
+		
 		for (int i = 0; i < buttonList.size(); i++) {
 			buttonList.get(i).clicked(event);
 		}
