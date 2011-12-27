@@ -165,7 +165,9 @@ public class SceneGameplay extends Scene implements EggEventListener {
 		}
 		if(!handled) {
 			egg.jump();
-			SoundControl.getInstance().playJump();
+			if (SoundControl.getInstance().isSoundOn()) {
+				SoundControl.getInstance().playJump();
+			}
 		}
 			
 	}
