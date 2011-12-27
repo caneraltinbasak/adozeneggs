@@ -116,6 +116,11 @@ public class Egg  extends GraphicsEntity{
 			velocity.y=GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.JumpSpeed) / 1000;
 			// set currentBasket basket to null since we are not attached to basket
 			this.currentBasket=null;
+			
+			// play jump sound if game sound is on
+			if (SoundControl.getInstance().isSoundOn()) {
+				SoundControl.getInstance().playJump();
+			}
 		}
 	}
 
