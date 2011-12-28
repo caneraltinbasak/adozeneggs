@@ -20,7 +20,7 @@ public class SoundControl {
 		}
 		
 		
-		//gameMusic = (Sound)CachedResource.getInstance().getResource("sounds/game_music");
+		gameMusic = (Sound)CachedResource.getInstance().getResource("sounds/game_music");
 		jump = (Sound)CachedResource.getInstance().getResource("sounds/jump");
 		
 	}

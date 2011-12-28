@@ -117,14 +117,14 @@ public class SceneMenu extends Scene {
     	    		  String soundOnPath = soundOnButton.getString("path");
     	    		  String soundOffPath = soundOffButton.getString("path");
     	    		  
-    	    		  eToggle soundToggle;
+    	    		  int soundToggle;
     	    		  if (SoundControl.getInstance().isSoundOn()) {
     	    			  // if game music is set to ON by the player 
-    	    			  soundToggle = eToggle.ON;
+    	    			  soundToggle = Toggle.ON;
     	    		  }
     	    		  else {
     	    			  // if game music is set to OFF by the player
-    	    			  soundToggle = eToggle.OFF;
+    	    			  soundToggle = Toggle.OFF;
     	    		  }
     	    		  
     	    		  final ToggleButton btnSound = new ToggleButton(x, y, soundOnPath, soundOffPath, soundToggle);
@@ -137,7 +137,7 @@ public class SceneMenu extends Scene {
     	    			  @Override
     	    			  public void onClick(Vect2d pointer) {
     	    				  // Stop or Play game music
-    	    				  if (btnSound.getToggle() == eToggle.OFF) {
+    	    				  if (btnSound.getToggle() == Toggle.OFF) {
     	    					  SoundControl.getInstance().setSoundOff();
     	    				  }
     	    				  else {
@@ -154,14 +154,14 @@ public class SceneMenu extends Scene {
     	    		  String musicOnPath = musicOnButton.getString("path");
     	    		  String musicOffPath = musicOffButton.getString("path");
     	    		  
-    	    		  eToggle musicToggle;
+    	    		  int musicToggle;
     	    		  if (SoundControl.getInstance().isMusicOn()) {
     	    			  // if game music is set to ON by the player 
-    	    			  musicToggle = eToggle.ON;
+    	    			  musicToggle = Toggle.ON;
     	    		  }
     	    		  else {
     	    			// if game music is set to OFF by the player
-    	    			  musicToggle = eToggle.OFF;
+    	    			  musicToggle = Toggle.OFF;
     	    		  }
     	    		  final ToggleButton btnMusic = new ToggleButton(x, y, musicOnPath, musicOffPath, musicToggle);
     	    		  btnMusic.setLayerDepth(depth);
@@ -173,7 +173,7 @@ public class SceneMenu extends Scene {
     	    			  @Override
     	    			  public void onClick(Vect2d pointer) {
     	    				  // Stop or Play game music
-    	    				  if (btnMusic.getToggle() == eToggle.OFF) {
+    	    				  if (btnMusic.getToggle() == Toggle.OFF) {
     	    					  SoundControl.getInstance().stopGameMusic();
     	    					  SoundControl.getInstance().setMusicOff();
     	    				  }
@@ -193,11 +193,11 @@ public class SceneMenu extends Scene {
 	      }
 	    });
 	    
-	    /*
+	    
 	    if (SoundControl.getInstance().isMusicOn()) {
 	    	SoundControl.getInstance().playGameMusic();
 	    }
-	    */
+	    
 	    
 	}
 	

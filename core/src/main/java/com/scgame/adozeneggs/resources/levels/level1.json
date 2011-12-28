@@ -96,8 +96,8 @@
         "height" : 1024,
         "pause_button" : {
           "path" : "images/pause_medium.png",
-          "x" : 100,
-          "y" : 100
+          "x" : 500,
+          "y" : 50
         },
         "width" : 768
       }
@@ -148,13 +148,13 @@
   				{
   					"id" : "restart",
   					"image_path" : "images/refresh_medium.png",
-  					"x" : 40,
+  					"x" : 60,
   					"y" : 10
   				},
   				{
   					"id" : "resume",
   					"image_path" : "images/continue_medium.png",
-  					"x" : 70,
+  					"x" : 110,
   					"y" : 10
   				}
   			]
