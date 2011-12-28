@@ -45,14 +45,13 @@ public class ToggleButton extends Button {
 		else {
 			log().error("ToggleButton::toggle(), there is no active image for toggle button!");
 		}
-		
 	}
 	
-	public boolean clicked(Pointer.Event event) {
-		if (hitTest(event.x(), event.y())) {
+	public boolean clicked(Vect2d pointer) {
+		if (hitTest(pointer.x, pointer.y)) {
 			toggle();
 			if (listener != null) {
-				listener.onClick(event);
+				listener.onClick(pointer);
 			}
 			return true;
 		}

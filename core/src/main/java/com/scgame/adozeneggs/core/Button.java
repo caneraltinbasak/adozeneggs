@@ -27,6 +27,7 @@ public class Button {
 	    this.isHit = false;
 	    this.imageLayer = graphics().createImageLayer();
 	    this.imageLayer.setTranslation(px, py);
+	   
 	    	 
 		imgButton = (Image)CachedResource.getInstance().getResource(imagePath);	
 		imageLayer.setImage(imgButton);
@@ -44,7 +45,7 @@ public class Button {
 	 * @param x pointer (mouse, touch) value on x coordinate 
 	 * @param y pointer (mouse, touch) value on y coordinate
 	 */
-	public boolean hitTest(float x, float y) {		
+	public boolean hitTest(float x, float y) {	
 		if ((x > px) && (x < px + width) && (y > py) && (y < py + height)) {
 			this.isHit = true;
 		} else {
@@ -53,10 +54,10 @@ public class Button {
 		return this.isHit;
 	}
 	
-	public boolean clicked(Pointer.Event event) {
-		if (hitTest(event.x(), event.y())) {
+	public boolean clicked(Vect2d pointer) {
+		if (hitTest(pointer.x, pointer.y)) {
 			if (listener != null) {
-				listener.onClick(event);
+				listener.onClick(pointer);
 			}
 			return true;
 		}

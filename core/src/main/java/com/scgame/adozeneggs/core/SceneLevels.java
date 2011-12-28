@@ -72,7 +72,7 @@ public class SceneLevels extends Scene {
 	    	    		  
 	    	    		  button.setEventListener(new ButtonEventListener() {
 	    	    			  @Override
-	    	    			  public void onClick(Event event) {
+	    	    			  public void onClick(Vect2d pointer) {
 	    	    				  SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "levels/level1.json"); // TODO: Implement passing the correct data to start level
 	    	    			  }
 	    	    		  });
@@ -90,7 +90,7 @@ public class SceneLevels extends Scene {
     	    		  
     	    		  button.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Event event) {
+    	    			  public void onClick(Vect2d pointer) {
     	    				  SceneNavigator.getInstance().runScene(eScenes.MENU,null);
     	    			  }
     	    		  });
@@ -111,16 +111,17 @@ public class SceneLevels extends Scene {
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) {
-	    		firePointerEndEvent(event);		
+	    		Vect2d pointer = new Vect2d(event.x(), event.y());
+	    		firePointerEndEvent(pointer);		
 	    	}
 	    });
 	    
 	    gLayer.setVisible(true);
 	}
 	
-	private synchronized void firePointerEndEvent(Pointer.Event event) {
+	private synchronized void firePointerEndEvent(Vect2d pointer) {
 		for (int i = 0; i < buttonList.size(); i++) {
-			buttonList.get(i).clicked(event);
+			buttonList.get(i).clicked(pointer);
 		}
 	}
 

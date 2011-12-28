@@ -76,10 +76,10 @@ public class NonCachedButton {
 		return this.isHit;
 	}
 	
-	public void clicked(Pointer.Event event) {
-		if (hitTest(event.x(), event.y())) {
+	public void clicked(Vect2d pointer) {
+		if (hitTest(pointer.x, pointer.y)) {
 			if (listener != null) {
-				listener.onClick(event);
+				listener.onClick(pointer);
 			}
 		}
 	}

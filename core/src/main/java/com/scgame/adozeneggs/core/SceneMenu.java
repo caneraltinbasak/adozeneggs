@@ -35,7 +35,8 @@ public class SceneMenu extends Scene {
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) {
-	    		firePointerEndEvent(event);		
+	    		Vect2d pointer = new Vect2d(event.x(), event.y());
+	    		firePointerEndEvent(pointer);		
 	    	}
 	    });
 	    
@@ -90,9 +91,8 @@ public class SceneMenu extends Scene {
 	    	    		  if (id.equals("newGame")) {
 	    	    			  button.setEventListener(new ButtonEventListener() {
 	    	    				  @Override
-	    	    				  public void onClick(Event event) {
-	    	    					  
-	    	    					  SceneNavigator.getInstance().runScene(eScenes.LEVELS, null);
+	    	    				  public void onClick(Vect2d pointer) {
+	    	    					  SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
 	    	    				  }
 	    	    			  });
 	    	    		  }	
@@ -101,7 +101,7 @@ public class SceneMenu extends Scene {
 	    	    		  if (id.equals("options")) {
 	    	    			  button.setEventListener(new ButtonEventListener() {
 	    	    				  @Override
-	    	    				  public void onClick(Event event) {
+	    	    				  public void onClick(Vect2d pointer) {
 	    	    					 
 	    	    				  }
 	    	    			  });
@@ -135,7 +135,7 @@ public class SceneMenu extends Scene {
     	    		  
     	    		  btnSound.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Event event) {
+    	    			  public void onClick(Vect2d pointer) {
     	    				  // Stop or Play game music
     	    				  if (btnSound.getToggle() == eToggle.OFF) {
     	    					  SoundControl.getInstance().setSoundOff();
@@ -171,7 +171,7 @@ public class SceneMenu extends Scene {
     	    		  
     	    		  btnMusic.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Event event) {
+    	    			  public void onClick(Vect2d pointer) {
     	    				  // Stop or Play game music
     	    				  if (btnMusic.getToggle() == eToggle.OFF) {
     	    					  SoundControl.getInstance().stopGameMusic();
@@ -201,10 +201,10 @@ public class SceneMenu extends Scene {
 	    
 	}
 	
-	private synchronized void firePointerEndEvent(Pointer.Event event) {
+	private synchronized void firePointerEndEvent(Vect2d pointer) {
 		
 		for (int i = 0; i < buttonList.size(); i++) {
-			buttonList.get(i).clicked(event);
+			buttonList.get(i).clicked(pointer);
 		}
 	}
 	
