@@ -81,24 +81,22 @@ public class SceneResolution extends Scene {
 		
 		res1.setEventListener(new ButtonEventListener() {
 			@Override
-			public void onClick(Event event) {
+			public void onClick(Vect2d pointer) {
 				GameConstants.ScreenProperties.height = 1024;
 				GameConstants.ScreenProperties.width = 768;
 				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.HIGH;
 				graphics().setSize(768, 1024);
-				//SceneNavigator.getInstance().createScenes();
 				SceneNavigator.getInstance().runScene(eScenes.LOADING, null);
 			}
 		});
 		
 		res2.setEventListener(new ButtonEventListener() {	
 			@Override
-			public void onClick(Event event) {
+			public void onClick(Vect2d pointer) {
 				GameConstants.ScreenProperties.height = 480;
 				GameConstants.ScreenProperties.width = 320;
 				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.MEDIUM;
 				graphics().setSize(320, 480);
-				//SceneNavigator.getInstance().createScenes();
 				SceneNavigator.getInstance().runScene(eScenes.LOADING, null);
 			}
 		});
@@ -107,7 +105,8 @@ public class SceneResolution extends Scene {
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) {
-	    		firePointerEndEvent(event);		
+	    		Vect2d pointer = new Vect2d(event.x(), event.y());
+	    		firePointerEndEvent(pointer);		
 	    	}
 	    });
 	    
@@ -115,9 +114,9 @@ public class SceneResolution extends Scene {
 	}
 	
 
-	private synchronized void firePointerEndEvent(Pointer.Event event) {
+	private synchronized void firePointerEndEvent(Vect2d pointer) {
 		for (int i = 0; i < buttonList.size(); i++) {
-			buttonList.get(i).clicked(event);
+			buttonList.get(i).clicked(pointer);
 		}
 	}
 	

@@ -6,18 +6,14 @@ import static playn.core.PlayN.json;
 import static playn.core.PlayN.log;
 import static playn.core.PlayN.pointer;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import playn.core.GroupLayer;
-import playn.core.Image;
-import playn.core.ImageLayer;
 import playn.core.Json;
 import playn.core.Pointer;
-import playn.core.ResourceCallback;
 import playn.core.Pointer.Event;
-import pythagoras.f.Transform;
+import playn.core.ResourceCallback;
 
 public class SceneGameplay extends Scene implements EggEventListener {
 
@@ -29,13 +25,39 @@ public class SceneGameplay extends Scene implements EggEventListener {
 	private List<Button> buttonList = new ArrayList<Button>();
 	private GameForeground foreGround;
 	private GameBackground backGround;
+	private GamePauseScreen pauseScreen;
 	protected Egg egg;
+	private String LevelDataPath = "levels/level1.json";
 
 	public SceneGameplay () {
+		initLayout();
+		sceneRootLayer.setVisible(false);
+	}
+	
+	@Override
+	public void init(Object data) {
+		// add a listener for pointer (mouse, touch) input
+	    pointer().setListener(new Pointer.Adapter() {
+	    	@Override
+	    	public void onPointerEnd(Pointer.Event event) {
+	    		Vect2d pointer = new Vect2d(event.x(), event.y());
+	    		firePointerEndEvent(pointer);		
+	    	}
+	    });
+	    
+	    
+	    /* Todo for Caner
+	     * data parametresi "newgame", "restart", "resume" olarak geliyor. 	"resume" için bir şey yapmaya gerek yok, 
+	     * "restart" ve "newgame" için nesneleri başlangıç state'lerine çekmemiz lazım.
+	     */
+	    
+	    
+	    pauseScreen.hide();
+	    gamePaused = false;
+	    sceneRootLayer.setVisible(true);
 	}
 
-	@Override
-	public void init(final Object LevelDataPath) {
+	public void initLayout() {
 		// the top layer which doesn't move, static elements will be inside this layer.
 		sceneRootLayer = graphics().createGroupLayer();
 		graphics().rootLayer().add(sceneRootLayer);
@@ -47,6 +69,11 @@ public class SceneGameplay extends Scene implements EggEventListener {
 		backGround = new GameBackground();
 		backGround.getGroupLayer().setDepth(40);
 		sceneRootLayer.add(backGround.getGroupLayer());
+		
+		pauseScreen = new GamePauseScreen();
+		sceneRootLayer.add(pauseScreen.getGroupLayer());
+		pauseScreen.hide();
+		
 
 		egg = new Egg();
 		egg.addEventListener(this);
@@ -65,23 +92,23 @@ public class SceneGameplay extends Scene implements EggEventListener {
 					int height = resolution.getInt("height");
 					if ((width == GameConstants.ScreenProperties.width) && (height == GameConstants.ScreenProperties.height)) {
 						Json.Object pauseButton = resolution.getObject("pause_button");
-						String onPath = pauseButton.getString("on_path");
-						String offPath = pauseButton.getString("off_path");
+						String path = pauseButton.getString("path");
 						int x = pauseButton.getInt("x");
 						int y = pauseButton.getInt("y");
-						Button pButton = new ToggleButton(x, y, onPath,offPath);
+						Button pButton = new Button(x, y, path);
 						pButton.setLayerDepth(70);
 						sceneRootLayer.add(pButton.getLayer());
 						buttonList.add(pButton);
 						pButton.setEventListener(new ButtonEventListener() {
 							@Override
-							public void onClick(Event event) {
-								log().debug("Clicked pause\n");
+							public void onClick(Vect2d pointer) {
 								if (gamePaused) {
 									gamePaused = false;
+									pauseScreen.hide();
 								}
 								else {
 									gamePaused = true;
+									pauseScreen.show();
 								}
 							}
 						});
@@ -138,34 +165,67 @@ public class SceneGameplay extends Scene implements EggEventListener {
 						backGround.addItsEntity(bgImage);
 					}
 				}
+				
+				// ***********Add Pause Screen Elements ***********
+				Json.Object jPauseScreen = document.getObject("PauseScreenLayout");
+				Json.Array jarrResolution = jPauseScreen.getArray("resolution");
+				for (int i = 0; i < jarrResolution.length(); i++) {
+					Json.Object bgRes = jarrResolution.getObject(i);
+					int width = bgRes.getInt("width");
+					int height = bgRes.getInt("height");
+					if ((width == GameConstants.ScreenProperties.width) && (height == GameConstants.ScreenProperties.height)) {
+						String bgPath = bgRes.getString("bg_image_path");
+						int px = bgRes.getInt("x");
+						int py = bgRes.getInt("y");
+						Vect2d pos = new Vect2d(px, py);
+						pauseScreen.setPosition(pos);
+						pauseScreen.setBackground(bgPath);
+						Json.Array jarrButtons = bgRes.getArray("buttons");
+						for (int j = 0; j < jarrButtons.length(); j++) {
+							Json.Object jButton = jarrButtons.getObject(j);
+							int x = jButton.getInt("x");
+							int y = jButton.getInt("y");
+							String id = jButton.getString("id");
+							String path = jButton.getString("image_path");
+							
+							// adding buttons to Game Pause Screen
+							if (id.equals("main")) {
+								pauseScreen.addMainButton(x, y, path);
+							}
+							if (id.equals("restart")) {
+								pauseScreen.addRestartButton(x, y, path);
+							}
+							if (id.equals("resume")) {
+								pauseScreen.addResumeButton(x, y, path);
+							}
+						}
+					}
+				}
 			}
 
 			@Override
 			public void error(Throwable err) {
 				log().error(" Error in " + LevelDataPath + "\n" , err);				
 			}
-
-		});
-
-
-
-
-		pointer().setListener(new Pointer.Adapter() {
-			@Override
-			public void onPointerEnd(Pointer.Event event) {
-				firePointerEndEvent(event);		
-			}
 		});
 	}
 
-	private synchronized void firePointerEndEvent(Pointer.Event event) {
+	private synchronized void firePointerEndEvent(Vect2d pointer) {
 		boolean handled = false; 
-		for (int i = 0; i < buttonList.size(); i++) {
-			handled = buttonList.get(i).clicked(event);
+		
+		// if game is paused, pointer end event is sent to buttons on pause screen
+		// egg should not take any event when the game is paused
+		if (gamePaused) {
+			pauseScreen.firePointerEndEvent(pointer);
 		}
-		if(!handled)
-			egg.jump();
-			
+		else {
+			for (int i = 0; i < buttonList.size(); i++) {
+				handled = buttonList.get(i).clicked(pointer);
+			}
+			if(!handled) {
+				egg.jump();
+			}
+		}
 	}
 
 	public void update(float delta) {
@@ -184,8 +244,10 @@ public class SceneGameplay extends Scene implements EggEventListener {
 
 	@Override
 	public void shutdown() {
-		sceneRootLayer.destroy();
-		sceneRootLayer = null; 
+		pointer().setListener(null);
+		if (sceneRootLayer != null) {
+			sceneRootLayer.setVisible(false);
+		}
 	}
 
 	@Override
