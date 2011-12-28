@@ -45,6 +45,16 @@ public class GameConstants {
 		 * Quality of the sprites that will be used. The values should be HIGH(1),MEDIUM(2) or LOW(3)
 		 */
 		public static String gQuality;
+		
+		/**
+		 * Frame rate
+		 */
+		public static int FRAME_RATE = 30;
+		
+		/**
+		 * Update period in milliseconds.
+		 */
+		public static int UPDATE_MS = 1000/FRAME_RATE;
 	}
 
 	public static class PhysicalProperties{
