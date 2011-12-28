@@ -37,6 +37,8 @@
     {"type":"image" , "quality":"high",   	"url": "images/sound_off_high.png"},
     {"type":"image" , "quality":"medium",   "url": "images/music_on_medium.png"},
     {"type":"image" , "quality":"medium",   "url": "images/music_off_medium.png"},
+    {"type":"image" , "quality":"high",   "url": "images/music_on_medium.png"},
+    {"type":"image" , "quality":"high",   "url": "images/music_off_medium.png"},
     {"type":"image" , "quality":"high",   	"url": "images/basket_high.png"},
     {"type":"image" , "quality":"medium",   "url": "images/basket_medium.png"},
     {"type":"image" , "quality":"high",   	"url": "sprites/peasprites2.png"},
@@ -44,9 +46,15 @@
     {"type":"image" , "quality":"medium",   "url": "sprites/peasprites2.png"},
     {"type":"image" , "quality":"medium",   "url": "sprites/peasprites3.png"},
     {"type":"image" , "quality":"medium",   "url": "images/bg_pause_medium.png"},
+    {"type":"image" , "quality":"high",   "url": "images/bg_pause_medium.png"},
     {"type":"image" , "quality":"medium",   "url": "images/back_medium.png"},
+    {"type":"image" , "quality":"high",   "url": "images/back_medium.png"},
     {"type":"image" , "quality":"medium",   "url": "images/refresh_medium.png"},
     {"type":"image" , "quality":"medium",   "url": "images/continue_medium.png"},
-    {"type":"sound" , "quality":"medium",   "url": "sounds/jump"}
+    {"type":"image" , "quality":"high",   "url": "images/refresh_medium.png"},
+    {"type":"image" , "quality":"high",   "url": "images/continue_medium.png"},
+    {"type":"sound" , "quality":"medium",   "url": "sounds/jump"},
+    {"type":"sound" , "quality":"medium",   "url": "sounds/game_music"}
+    
   ]
 }

@@ -4,28 +4,27 @@ import static playn.core.PlayN.log;
 import playn.core.Image;
 import playn.core.Pointer;
 
-enum eToggle {
-	ON, OFF
-}
+
+
 public class ToggleButton extends Button {
 	Image imgButtonOff = null;
 	Image activeImage = null;
-	eToggle activeToogle;
+	int activeToogle;
 	
-	public ToggleButton(float px, float py, String onImagePath, String offImagePath, eToggle toggle) {
+	public ToggleButton(float px, float py, String onImagePath, String offImagePath, int toggle) {
 		super(px, py, onImagePath);
 		imgButtonOff = (Image)CachedResource.getInstance().getResource(offImagePath);	
 		
-		if (toggle == eToggle.ON) {
+		if (toggle == Toggle.ON) {
 			imageLayer.setImage(imgButton);
 			activeImage = imgButton;
-			activeToogle = eToggle.ON;
+			activeToogle = Toggle.ON;
 		} 
 		else
 		{
 			imageLayer.setImage(imgButtonOff);
 			activeImage = imgButtonOff;
-			activeToogle = eToggle.OFF;
+			activeToogle = Toggle.OFF;
 		}
 	}
 	
@@ -34,12 +33,12 @@ public class ToggleButton extends Button {
 			if (activeImage == imgButton) {
 				imageLayer.setImage(imgButtonOff);
 				activeImage = imgButtonOff;
-				activeToogle = eToggle.OFF;
+				activeToogle = Toggle.OFF;
 			}
 			else {
 				imageLayer.setImage(imgButton);
 				activeImage = imgButton;
-				activeToogle = eToggle.ON;
+				activeToogle = Toggle.ON;
 			}
 		}
 		else {
@@ -58,7 +57,7 @@ public class ToggleButton extends Button {
 		return false;
 	}
 	
-	public eToggle getToggle() {
+	public int getToggle() {
 		return activeToogle;
 	}
 

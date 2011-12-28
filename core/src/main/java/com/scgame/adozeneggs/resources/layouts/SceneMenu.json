@@ -79,6 +79,18 @@
                     "path": "images/sound_off_high.png",
                     "x": 650,
                     "y": 30
+                },
+                "music_on_button": {
+                    "id": "music_on",
+                    "path": "images/music_on_medium.png",
+                    "x": 530,
+                    "y": 20
+                },
+                "music_off_button": {
+                    "id": "music_off",
+                    "path": "images/music_off_medium.png",
+                    "x": 530,
+                    "y": 20
                 }
             }
         ]
