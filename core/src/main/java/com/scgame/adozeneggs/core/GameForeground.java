@@ -35,7 +35,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 		groupLayer.add(egg.getTopImageLayer()); // TODO: Move most of these to initGame()
 		entities.add(egg);
 	}
-	public void initGame() {
+	public void init() {
 		scrollToBottom();
 		float basketYinPixel = GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET);
 		float basketGapinPixel = GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.BASKET_GAP);

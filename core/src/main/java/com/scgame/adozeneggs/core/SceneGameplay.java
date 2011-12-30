@@ -27,6 +27,7 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	private GameBackground backGround;
 	private GamePauseScreen pauseScreen;
 	private String LevelDataPath = "levels/level1.json";
+	private List<Vect2d> pointerEventList = new ArrayList<Vect2d>();
 
 	public SceneGameplay () {
 		initLayout();
@@ -40,13 +41,14 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) {
 	    		Vect2d pointer = new Vect2d(event.x(), event.y());
-	    		firePointerEndEvent(pointer);		
+	    		pointerEventList.add(pointer);
 	    	}
 	    });
 	    String sData= (String)data;
 	    if(sData == "restart" || sData == "newgame")
 	    {
-	    	foreGround.initGame();
+	    	foreGround.init();
+	    	backGround.init();
 	    }
 	    
 	    pauseScreen.hide();
@@ -173,6 +175,11 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	}
 
 	public void update(float delta) {
+		while(pointerEventList.size() > 0)
+		{
+			firePointerEndEvent(pointerEventList.get(0));
+			pointerEventList.remove(0);
+		}
 		if (gamePaused == false) {
 			foreGround.update(delta);
 			backGround.update(delta);
