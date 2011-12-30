@@ -28,7 +28,6 @@ public class SceneGameplay extends Scene  {
 	private GamePauseScreen pauseScreen;
 	protected Egg egg;
 	private String LevelDataPath = "levels/level1.json";
-	private GameOver gameOver;
 
 	public SceneGameplay () {
 		initLayout();
