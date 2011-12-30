@@ -156,7 +156,7 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 		});
 	}
 
-	private synchronized void firePointerEndEvent(Vect2d pointer) {
+	private void firePointerEndEvent(Vect2d pointer) {
 		boolean handled = false; 
 		
 		// if game is paused, pointer end event is sent to buttons on pause screen
