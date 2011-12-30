@@ -25,12 +25,10 @@ public class GameForeground extends GroupEntity implements EggEventListener {
 		float basketYinPixel = GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET);
 		float basketGapinPixel = GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.BASKET_GAP);
 		for (int i = 0; i < NUMBER_OF_BASKETS;i++){
-			Basket basket = new Basket(i*0.1f, new Vect2d(0, basketYinPixel), new Vect2d(GameConstants.ScreenProperties.width, basketYinPixel));
+			Basket basket = new Basket();
 			groupLayer.add(basket.getBottomImageLayer());
 			groupLayer.add(basket.getTopImageLayer());
 			entities.add(basket);
-			if(i == 0)
-				egg.setCurrentBasket(basket);
 			egg.addTargetBasket(basket);
 			basketYinPixel = basketYinPixel - basketGapinPixel;
 		}
@@ -38,8 +36,37 @@ public class GameForeground extends GroupEntity implements EggEventListener {
 		entities.add(egg);
 	}
 	public void initGame() {
+		scrollToBottom();
+		float basketYinPixel = GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET);
+		float basketGapinPixel = GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.BASKET_GAP);
+		for(int i = 0 ; i <entities.size(); i++)
+		{
+
+				switch(entities.get(i).type){
+				case EGG:
+					egg.setCurrentBasket( (Basket)(entities.get(0)));
+					log().debug("Assign egg to first basket\n");
+					break;
+				case BASKET:
+					// reinitialize this basket
+					log().debug("Reinitilalizing the basket\n");
+					Basket basket = (Basket)(entities.get(i));
+					basket.initializeProperties(i*0.1f, new Vect2d(0, basketYinPixel), new Vect2d(GameConstants.ScreenProperties.width, basketYinPixel));
+					basketYinPixel = basketYinPixel - basketGapinPixel;
+					break;
+				default:
+					log().error("[GameForeground::update] Undefined Entity type\n");
+				}
+
+		}
 	}
 
+	private void scrollToBottom() {
+		position.assign(0, 0);
+		groupLayer.setTranslation(position.x, position.y);
+		scrollingSpeed=0;
+		scrollPosition=0;
+	}
 	@Override
 	public void paint(float alpha) {
 		for(int i = 0 ; i <entities.size(); i++)

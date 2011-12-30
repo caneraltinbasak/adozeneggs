@@ -44,8 +44,11 @@ public class SceneGameplay extends Scene  {
 	    		firePointerEndEvent(pointer);		
 	    	}
 	    });
-	    
-	    
+	    String sData= (String)data;
+	    if(sData == "restart" || sData == "newgame")
+	    {
+	    	foreGround.initGame();
+	    }
 	    /* Todo for Caner
 	     * data parametresi "newgame", "restart", "resume" olarak geliyor. 	"resume" için bir şey yapmaya gerek yok, 
 	     * "restart" ve "newgame" için nesneleri başlangıç state'lerine çekmemiz lazım.

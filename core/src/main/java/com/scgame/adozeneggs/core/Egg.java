@@ -24,16 +24,17 @@ public class Egg  extends GraphicsEntity{
 	public Sprite sprite;
 	private int spriteIndex = 1;
 	private boolean hasLoaded = false; // set to true when resources have loaded
+	private boolean hasInitialized = false; 
 	// and we can update
-	private Basket currentBasket;
-	private Basket lastBasket;
+	private Basket currentBasket = null;
+	private Basket lastBasket = null;
 	private List<Basket>targetBaskets = new ArrayList<Basket>();
 
 	// position
 	public Vect2d position;
 
 	// velocity(used when on air, uses currentBasket baskets velocity if not on air)
-	public Vect2d velocity; // pixels/ms
+	public Vect2d velocity= new Vect2d(0, 0); // pixels/ms
 
 
 	/**
@@ -44,7 +45,6 @@ public class Egg  extends GraphicsEntity{
 	public Egg( ) {
 		// Sprite method #2: use json data describing the sprites and containing
 		// the image urls
-		this.velocity = new Vect2d(0, 0);
 		type=eEntity.EGG;
 		sprite = SpriteLoader.getSprite(JSON_WITH_IMAGE);
 		// Add a callback for when the image loads.
@@ -66,43 +66,45 @@ public class Egg  extends GraphicsEntity{
 		sprite.layer().setDepth(IN_BASKET);
 		currentBasket = targetBasket;
 		position = currentBasket.getPosition();
+		hasInitialized =true;
 	}
 	public void paint(float alpha) {
-		if (hasLoaded) {
+		if (hasLoaded && hasInitialized) {
 			spriteIndex = (spriteIndex + 1) % sprite.numSprites();
 			sprite.setSprite(spriteIndex);
 			sprite.layer().setTranslation(position.x, position.y);
 		}
 	}
 	public void update(float delta) {
-		if(currentBasket==null)
-		{
-			// newPosition = position + velocity*time if on air
-			position=position.add(velocity.multiply(delta));
-			// newVelocity = velocity + gravitational accelaration constant * time
-			velocity=velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.gravity)*delta/(1000*1000)));
-			int stars=0;
-			for (int i = 0; i < getTargetBaskets().size() ; i++){
-				if(getTargetBaskets().get(i).hit(this)!=0)
-				{
-					// generate event and update current basket
-					if(getTargetBaskets().get(i) != lastBasket)
+		if (hasLoaded && hasInitialized) {
+			if(currentBasket==null)
+			{
+				// newPosition = position + velocity*time if on air
+				position=position.add(velocity.multiply(delta));
+				// newVelocity = velocity + gravitational accelaration constant * time
+				velocity=velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.gravity)*delta/(1000*1000)));
+				int stars=0;
+				for (int i = 0; i < getTargetBaskets().size() ; i++){
+					if(getTargetBaskets().get(i).hit(this)!=0)
 					{
-						fireJumpEvent(getTargetBaskets().get(i), stars);
-						currentBasket=getTargetBaskets().get(i);
-					}else{
-						currentBasket=lastBasket;
-						log().debug("currentBasket is target basket again!!\n");
+						// generate event and update current basket
+						if(getTargetBaskets().get(i) != lastBasket)
+						{
+							fireJumpEvent(getTargetBaskets().get(i), stars);
+							currentBasket=getTargetBaskets().get(i);
+						}else{
+							currentBasket=lastBasket;
+							log().debug("currentBasket is target basket again!!\n");
+						}
+						sprite.layer().setDepth(IN_BASKET);
 					}
-					sprite.layer().setDepth(IN_BASKET);
 				}
-			}
 
-		}else{
-			// position is equal to currentBaskets position if they are attached.
-			position=this.currentBasket.getPosition();
+			}else{
+				// position is equal to currentBaskets position if they are attached.
+				position=this.currentBasket.getPosition();
+			}
 		}
-		
 	}
 
 	/**
@@ -156,11 +158,11 @@ public class Egg  extends GraphicsEntity{
 	}
 	@Override
 	public Vect2d getPosition() {
-		return position.copy();
+		return position;
 	}
 	@Override
 	public void setPosition(Vect2d position) {
-		this.position = position.copy();
+		this.position = position;
 	}
 	public List<Basket> getTargetBaskets() {
 		return targetBaskets;
@@ -170,6 +172,9 @@ public class Egg  extends GraphicsEntity{
 	}
 	@Override
 	public boolean isInRect(float x, float y, float width, float height) {
-		return  position.y + sprite.height() < height;
+		if (hasLoaded && hasInitialized) 
+			return  position.y + sprite.height() < height;
+		else
+			return super.isInRect(x, y, width, height);
 	}
 }

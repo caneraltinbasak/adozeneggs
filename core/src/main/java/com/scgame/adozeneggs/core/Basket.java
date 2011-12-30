@@ -19,19 +19,16 @@ public class Basket extends DoubleLayerGraphicsEntity{
 	private Image bottomBasketImage = null; // image
 	private float width;  // pixel
 	private float height; // pixel
-	private float velocity; // pixels/milliseconds
-	private Vect2d position; // pixel
-	private Vect2d startPosition; //pixel
-	private Vect2d endPosition; //pixel
+	private float velocity = 0.0f; // pixels/milliseconds
+	private Vect2d position = new Vect2d(0, 0); //pixel
+	private Vect2d startPosition = new Vect2d(0, 0); //pixel
+	private Vect2d endPosition = new Vect2d(0, 0); //pixel
 	private ImageLayer topImageLayer = null;
 	private ImageLayer bottomImageLayer = null;
+	private boolean initComplete = false;
 
 	
-	public Basket( float velocity, Vect2d startPosition, Vect2d endPosition) {
-		this.velocity = velocity;
-		this.startPosition = startPosition.copy();
-		this.position = startPosition;
-	    this.endPosition = endPosition;
+	public Basket() {
 	    if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.HIGH){
 	    	topBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_HIGH_TOP_IMAGE_PATH);
 	    	bottomBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_HIGH_BOTTOM_IMAGE_PATH);
@@ -43,11 +40,9 @@ public class Basket extends DoubleLayerGraphicsEntity{
 	    	bottomBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_LOW_BOTTOM_IMAGE_PATH);
 	    }
 	    this.topImageLayer = graphics().createImageLayer();
-	    this.topImageLayer.setTranslation(startPosition.x, startPosition.y);
 	    topImageLayer.setImage(topBasketImage);
 	    topImageLayer.setDepth(TOP_LAYER);
 	    this.bottomImageLayer = graphics().createImageLayer();
-	    this.bottomImageLayer.setTranslation(startPosition.x, startPosition.y);
 	    bottomImageLayer.setImage(bottomBasketImage);
 	    bottomImageLayer.setDepth(BOTTOM_LAYER);
 		width = topBasketImage.width();
@@ -118,14 +113,20 @@ public class Basket extends DoubleLayerGraphicsEntity{
 		return 0;
 	}
 	public void paint(float alpha) {
-		topImageLayer.setTranslation(position.x+10, position.y+10); // TODO: remove this +10 translation
-		bottomImageLayer.setTranslation(position.x, position.y);
+		if(initComplete)
+		{
+			topImageLayer.setTranslation(position.x+10, position.y+10); // TODO: remove this +10 translation
+			bottomImageLayer.setTranslation(position.x, position.y);	
+		}
 	}
 	public void update(float delta) { // delta in milliseconds.
-		position.x += velocity * delta;
-		if(position.x + width > endPosition.x || position.x < startPosition.x) // return back if reached the end, or start
+		if(initComplete)
 		{
-			velocity = - velocity;
+			position.x += velocity * delta;
+			if(position.x + width > getEndPosition().x || position.x < getStartPosition().x) // return back if reached the end, or start
+			{
+				velocity = - velocity;
+			}
 		}
 	}
 
@@ -135,6 +136,33 @@ public class Basket extends DoubleLayerGraphicsEntity{
 	}
 	@Override
 	public boolean isInRect(float x, float y, float width, float height) {
-		return  position.y < height;
+		if(initComplete)
+			return  position.y < height;
+		else
+			return super.isInRect(x, y, width, height);
+	}
+
+	public Vect2d getStartPosition() {
+		return startPosition;
+	}
+
+	public void setStartPosition(Vect2d startPosition) {
+		this.startPosition = startPosition;
+	}
+
+	public Vect2d getEndPosition() {
+		return endPosition;
+	}
+
+	public void setEndPosition(Vect2d endPosition) {
+		this.endPosition = endPosition;
+	}
+	public void initializeProperties(float velocity, Vect2d startPosition, Vect2d endPosition)
+	{
+		this.startPosition=startPosition;
+		this.position = startPosition.copy();
+		this.endPosition = endPosition;
+		this.velocity =velocity;
+		initComplete = true;
 	}
 }
