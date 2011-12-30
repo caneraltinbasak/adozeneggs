@@ -12,6 +12,11 @@ public class Vect2d
 		this.x=x;
 		this.y=y;
 	}
+	public void assign(float x, float y)
+	{
+		this.x=x;
+		this.y=y;
+	}
 	public Vect2d add(Vect2d position){
 		Vect2d val=new Vect2d(0,0);
 		val.x=this.x+position.x;
