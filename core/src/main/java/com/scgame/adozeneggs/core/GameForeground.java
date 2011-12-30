@@ -8,7 +8,7 @@ import java.util.List;
 
 import playn.core.GroupLayer;
 
-public class GameForeground extends GroupEntity implements EggEventListener {
+public class GameForeground extends ScrollableGroupEntity implements EggEventListener {
 	private static final int NUMBER_OF_BASKETS = 8;
 	private Vect2d position = new Vect2d(0, 0);
 	private List<GraphicsEntity> entities = new ArrayList<GraphicsEntity>();
@@ -120,6 +120,7 @@ public class GameForeground extends GroupEntity implements EggEventListener {
 	public void setPosition(Vect2d position) {
 		this.position=position;
 	}
+	@Override
 	public void scrollTo(float scrollPosition){
 		if(scrollingSpeed == 0)
 			scrollingSpeed = GameConstants.PhysicalProperties.ForegroundScrollSpeed;
@@ -131,6 +132,7 @@ public class GameForeground extends GroupEntity implements EggEventListener {
 	}
 	@Override
 	public void onEggJump(JumpEvent event) {
+		log().debug("[GameForeground::onEggJump]\n");
 		scrollTo(-event.getBasket().getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 	}
 	@Override
@@ -140,5 +142,19 @@ public class GameForeground extends GroupEntity implements EggEventListener {
 
 	public void clicked(Vect2d pointer) {
 		egg.jump();
+	}
+	/**
+	 * Removes listener
+	 * @param eventListener listener for jump events
+	 */
+	public synchronized void removeEventListener(EggEventListener eventListener) {
+		egg.removeEventListener(eventListener);
+	}
+	/**
+	 * Adds a EggEventListener to listen JumpEvents.
+	 * @param eventListener listener for jump events.
+	 */
+	public synchronized void addEventListener(EggEventListener eventListener) {
+		egg.addEventListener(eventListener);
 	}
 }

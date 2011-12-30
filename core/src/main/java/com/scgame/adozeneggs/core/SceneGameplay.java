@@ -15,7 +15,7 @@ import playn.core.Pointer;
 import playn.core.Pointer.Event;
 import playn.core.ResourceCallback;
 
-public class SceneGameplay extends Scene  {
+public class SceneGameplay extends Scene  implements EggEventListener {
 
 	private static final float BASKET_VERTICAl_DISTANCE = 2.5f;
 	protected static final float BASKET_START_POSITION = 0.5f;
@@ -26,7 +26,6 @@ public class SceneGameplay extends Scene  {
 	private GameForeground foreGround;
 	private GameBackground backGround;
 	private GamePauseScreen pauseScreen;
-	protected Egg egg;
 	private String LevelDataPath = "levels/level1.json";
 
 	public SceneGameplay () {
@@ -49,10 +48,6 @@ public class SceneGameplay extends Scene  {
 	    {
 	    	foreGround.initGame();
 	    }
-	    /* Todo for Caner
-	     * data parametresi "newgame", "restart", "resume" olarak geliyor. 	"resume" için bir şey yapmaya gerek yok, 
-	     * "restart" ve "newgame" için nesneleri başlangıç state'lerine çekmemiz lazım.
-	     */
 	    
 	    pauseScreen.hide();
 	    gamePaused = false;
@@ -66,6 +61,7 @@ public class SceneGameplay extends Scene  {
 		
 		foreGround = new GameForeground();
 		foreGround.getGroupLayer().setDepth(50);
+		foreGround.addEventListener(this);
 		sceneRootLayer.add(foreGround.getGroupLayer());
 		
 		backGround = new GameBackground();
@@ -76,9 +72,6 @@ public class SceneGameplay extends Scene  {
 		sceneRootLayer.add(pauseScreen.getGroupLayer());
 		pauseScreen.hide();
 		
-
-		egg = new Egg();
-		egg.addEventListener(foreGround);
 
 		assetManager().getText((String) LevelDataPath, new ResourceCallback<String>() {
 			@Override
@@ -114,21 +107,6 @@ public class SceneGameplay extends Scene  {
 								}
 							}
 						});
-					}
-				}
-
-				// ***********Add Background Elements ***********
-				Json.Object gameElements = document.getObject("GameElements");
-				Json.Object jbgImage = gameElements.getObject("bg_image");
-				Json.Array jresArray = jbgImage.getArray("resolution");
-				for( int i = 0; i < jresArray.length(); i++ ){
-					Json.Object bgRes = jresArray.getObject(i);
-					int width = bgRes.getInt("width");
-					int height = bgRes.getInt("height");
-					if ((width == GameConstants.ScreenProperties.width) && (height == GameConstants.ScreenProperties.height)) {
-						String bgPath = bgRes.getString("path");
-						BGScrolledImage bgImage = new BGScrolledImage(bgPath);
-						backGround.addItsEntity(bgImage);
 					}
 				}
 				
@@ -214,5 +192,17 @@ public class SceneGameplay extends Scene  {
 		if (sceneRootLayer != null) {
 			sceneRootLayer.setVisible(false);
 		}
+	}
+
+	@Override
+	public void onEggJump(JumpEvent event) {
+		log().debug("[SceneGameplay::onEggJump]\n");
+		backGround.scrollTo(-event.getBasket().getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		foreGround.scrollTo(-event.getBasket().getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+	}
+
+	@Override
+	public void onEggFall(JumpEvent event) {
+		log().debug("[SceneGameplay::onFall]\n");
 	}
 }

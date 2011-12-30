@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
+import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.ResourceCallback;
 
@@ -17,9 +18,10 @@ public class Egg  extends GraphicsEntity{
 	private static final float IN_BASKET = 100f;
 	private static final float ON_TOP = 300f;
 	
-	public static String IMAGE = "sprites/peasprites.png";
-	public static String JSON = "sprites/peasprite.json";
-	public static String JSON_WITH_IMAGE = "sprites/peasprite2.json";
+	private static final String EGG_HIGH_SPRITE_PATH = "sprites/peasprite2.json";
+	private static final String EGG_MEDIUM_SPRITE_PATH = "sprites/peasprite2.json";
+	private static final String EGG_LOW_SPRITE_PATH = "sprites/peasprite2.json";
+	
 	private List<EggEventListener> eventListeners = new ArrayList<EggEventListener>();
 	public Sprite sprite;
 	private int spriteIndex = 1;
@@ -46,7 +48,13 @@ public class Egg  extends GraphicsEntity{
 		// Sprite method #2: use json data describing the sprites and containing
 		// the image urls
 		type=eEntity.EGG;
-		sprite = SpriteLoader.getSprite(JSON_WITH_IMAGE);
+	    if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.HIGH){
+	    	sprite = SpriteLoader.getSprite(EGG_HIGH_SPRITE_PATH);
+	    }else if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.MEDIUM){
+	    	sprite = SpriteLoader.getSprite(EGG_MEDIUM_SPRITE_PATH);
+	    }else if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.LOW){
+	    	sprite = SpriteLoader.getSprite(EGG_LOW_SPRITE_PATH);
+	    }
 		// Add a callback for when the image loads.
 		sprite.addCallback(new ResourceCallback<Sprite>() {
 			@Override
