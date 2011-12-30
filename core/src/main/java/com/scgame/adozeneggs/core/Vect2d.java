@@ -55,4 +55,8 @@ public class Vect2d
 	{
 		return (this.x*v2.x+this.y*v2.y);
 	}
+	@Override
+	public String toString() {
+		return ("x:" + this.x + "\ny: "+this.y+"\n");
+	}
 }

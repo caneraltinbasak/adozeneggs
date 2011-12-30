@@ -10,11 +10,12 @@ import playn.core.GroupLayer;
 public class GameBackground extends GroupEntity {
 	private List<GraphicsEntity> entities = new ArrayList<GraphicsEntity>();
 	GroupLayer groupLayer;
+	Vect2d position;
 	public GameBackground() {
 		this.groupLayer = graphics().createGroupLayer();
 	}
 	public void addItsEntity(GraphicsEntity entity){
-		groupLayer.add(entity.getImageLayer());
+		groupLayer.add(entity.getTopImageLayer());
 		entities.add(entity);
 	}
 	@Override
@@ -33,12 +34,10 @@ public class GameBackground extends GroupEntity {
 	}
 	@Override
 	public Vect2d getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		return position;
 	}
 	@Override
 	public void setPosition(Vect2d position) {
-		// TODO Auto-generated method stub
-		
+		this.position=position;
 	}
 }

@@ -5,28 +5,54 @@ import playn.core.Image;
 import playn.core.ImageLayer;
 
 
-public class Basket extends GraphicsEntity{
-	protected Image basketImage = null; // image
+public class Basket extends DoubleLayerGraphicsEntity{
+	private static final String BASKET_HIGH_TOP_IMAGE_PATH = "images/basket_high.png";
+	private static final String BASKET_MEDIUM_TOP_IMAGE_PATH = "images/basket_medium.png";
+	private static final String BASKET_LOW_TOP_IMAGE_PATH = "images/basket_medium.png";
+	private static final String BASKET_HIGH_BOTTOM_IMAGE_PATH = "images/basket_high.png";
+	private static final String BASKET_MEDIUM_BOTTOM_IMAGE_PATH = "images/basket_medium.png";
+	private static final String BASKET_LOW_BOTTOM_IMAGE_PATH = "images/basket_medium.png";
+	
+	private static final float TOP_LAYER = 200f;
+	private static final float BOTTOM_LAYER = 0f;
+	private Image topBasketImage = null; // image
+	private Image bottomBasketImage = null; // image
 	private float width;  // pixel
 	private float height; // pixel
 	private float velocity; // pixels/milliseconds
 	private Vect2d position; // pixel
 	private Vect2d startPosition; //pixel
 	private Vect2d endPosition; //pixel
-	protected ImageLayer imageLayer = null;
+	private ImageLayer topImageLayer = null;
+	private ImageLayer bottomImageLayer = null;
 
 	
-	public Basket( float velocity, Vect2d startPosition, Vect2d endPosition, String imagePath) {
+	public Basket( float velocity, Vect2d startPosition, Vect2d endPosition) {
 		this.velocity = velocity;
 		this.startPosition = startPosition.copy();
-		this.position = startPosition.copy();
-	    this.imageLayer = graphics().createImageLayer();
-	    this.imageLayer.setTranslation(startPosition.x, startPosition.y);
+		this.position = startPosition;
 	    this.endPosition = endPosition;
-		basketImage = (Image)CachedResource.getInstance().getResource(imagePath);
-		imageLayer.setImage(basketImage);
-		width = basketImage.width();
-		height = basketImage.height();
+	    if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.HIGH){
+	    	topBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_HIGH_TOP_IMAGE_PATH);
+	    	bottomBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_HIGH_BOTTOM_IMAGE_PATH);
+	    }else if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.MEDIUM){
+	    	topBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_MEDIUM_TOP_IMAGE_PATH);
+	    	bottomBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_MEDIUM_BOTTOM_IMAGE_PATH);
+	    }else if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.LOW){
+	    	topBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_LOW_TOP_IMAGE_PATH);
+	    	bottomBasketImage = (Image)CachedResource.getInstance().getResource(BASKET_LOW_BOTTOM_IMAGE_PATH);
+	    }
+	    this.topImageLayer = graphics().createImageLayer();
+	    this.topImageLayer.setTranslation(startPosition.x, startPosition.y);
+	    topImageLayer.setImage(topBasketImage);
+	    topImageLayer.setDepth(TOP_LAYER);
+	    this.bottomImageLayer = graphics().createImageLayer();
+	    this.bottomImageLayer.setTranslation(startPosition.x, startPosition.y);
+	    bottomImageLayer.setImage(bottomBasketImage);
+	    bottomImageLayer.setDepth(BOTTOM_LAYER);
+		width = topBasketImage.width();
+		height = topBasketImage.height();
+		type = eEntity.BASKET;
 	}
 
 	/**
@@ -65,8 +91,8 @@ public class Basket extends GraphicsEntity{
 	 * Returns the image layer of the basket.
 	 * @return Basket's image layer
 	 */
-	public ImageLayer getImageLayer() {
-		return imageLayer;
+	public ImageLayer getTopImageLayer() {
+		return topImageLayer;
 	}
 
 	/**
@@ -81,16 +107,19 @@ public class Basket extends GraphicsEntity{
 			// check if egg is 10 pixel margin of position.y
 			if(egg.sprite.height() + egg.position.y > position.y && egg.sprite.height() + egg.position.y < position.y+ 30) 
 			{
-				if(egg.position.x >= position.x && egg.position.x <= position.x + width)
-				{
+				// TODO: Commented out this part for easier testing. Comment in for real application
+				// TODO: Implement star rating
+				//if(egg.position.x >= position.x && egg.position.x <= position.x + width)
+				//{
 					return 1;
-				}
+				//}
 			}
 		}
 		return 0;
 	}
 	public void paint(float alpha) {
-		imageLayer.setTranslation(position.x, position.y);
+		topImageLayer.setTranslation(position.x+10, position.y+10); // TODO: remove this +10 translation
+		bottomImageLayer.setTranslation(position.x, position.y);
 	}
 	public void update(float delta) { // delta in milliseconds.
 		position.x += velocity * delta;
@@ -98,5 +127,14 @@ public class Basket extends GraphicsEntity{
 		{
 			velocity = - velocity;
 		}
+	}
+
+	@Override
+	public ImageLayer getBottomImageLayer() {
+		return bottomImageLayer;
+	}
+	@Override
+	public boolean isInRect(float x, float y, float width, float height) {
+		return  position.y < height;
 	}
 }

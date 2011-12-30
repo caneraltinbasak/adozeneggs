@@ -116,4 +116,5 @@ public class GamePauseScreen extends GroupEntity {
 	public void hide() {
 		groupLayer.setDepth(-1000);
 	}
+
 }

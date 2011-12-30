@@ -5,8 +5,10 @@ import playn.core.Image;
 import playn.core.ImageLayer;
 
 public class BGScrolledImage extends GraphicsEntity {
+
 	private Image bgImage;
 	private ImageLayer imageLayer;
+	private Vect2d position = new Vect2d(0, 0);
 
 	public BGScrolledImage(String imagePath){
 	    this.imageLayer = graphics().createImageLayer();
@@ -16,7 +18,7 @@ public class BGScrolledImage extends GraphicsEntity {
 
 	@Override
 	public void paint(float alpha) {
-		
+		imageLayer.setTranslation(position.x, position.y);
 	}
 
 	@Override
@@ -25,20 +27,18 @@ public class BGScrolledImage extends GraphicsEntity {
 	}
 
 	@Override
-	public ImageLayer getImageLayer() {
+	public ImageLayer getTopImageLayer() {
 		return imageLayer;
 	}
 
 	@Override
 	public Vect2d getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		return position;
 	}
 
 	@Override
 	public void setPosition(Vect2d position) {
-		// TODO Auto-generated method stub
-		
+		this.position = position;
 	}
 
 }

@@ -14,7 +14,11 @@ public class GameConstants {
 	private GameConstants(){
 		throw new AssertionError();
 	}
-	
+	public static class GameProperties{
+		public static final float FIRST_BASKET_Y_OFFSET = 1f;
+		public static final float BASKET_GAP = 2.5f;
+
+	}
 	public static class ScreenProperties{
 		/**
 		 * width of screen
@@ -58,6 +62,10 @@ public class GameConstants {
 	}
 
 	public static class PhysicalProperties{
+		/**
+		 * Limit Speed
+		 */
+		public static final float limitSpeed = 20;
 		/**
 		 * gravitational acceleration 
 		 */

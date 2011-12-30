@@ -15,7 +15,7 @@ import playn.core.Pointer;
 import playn.core.Pointer.Event;
 import playn.core.ResourceCallback;
 
-public class SceneGameplay extends Scene implements EggEventListener {
+public class SceneGameplay extends Scene  {
 
 	private static final float BASKET_VERTICAl_DISTANCE = 2.5f;
 	protected static final float BASKET_START_POSITION = 0.5f;
@@ -28,6 +28,7 @@ public class SceneGameplay extends Scene implements EggEventListener {
 	private GamePauseScreen pauseScreen;
 	protected Egg egg;
 	private String LevelDataPath = "levels/level1.json";
+	private GameOver gameOver;
 
 	public SceneGameplay () {
 		initLayout();
@@ -50,7 +51,6 @@ public class SceneGameplay extends Scene implements EggEventListener {
 	     * data parametresi "newgame", "restart", "resume" olarak geliyor. 	"resume" için bir şey yapmaya gerek yok, 
 	     * "restart" ve "newgame" için nesneleri başlangıç state'lerine çekmemiz lazım.
 	     */
-	    
 	    
 	    pauseScreen.hide();
 	    gamePaused = false;
@@ -76,7 +76,7 @@ public class SceneGameplay extends Scene implements EggEventListener {
 		
 
 		egg = new Egg();
-		egg.addEventListener(this);
+		egg.addEventListener(foreGround);
 
 		assetManager().getText((String) LevelDataPath, new ResourceCallback<String>() {
 			@Override
@@ -114,45 +114,9 @@ public class SceneGameplay extends Scene implements EggEventListener {
 						});
 					}
 				}
-				
-				// ***********Add Foreground Elements ***********
-				// add baskets
-				Json.Object gameElements = document.getObject("GameElements");
-				Json.Object jBasket = gameElements.getObject("basket");
-				resArray = jBasket.getArray("resolution");
-				String basketImagePath = null;
-				for( int i = 0; i < resArray.length(); i++ ){
-					Json.Object resolution = resArray.getObject(i);
-					int width = resolution.getInt("width");
-					int height = resolution.getInt("height");
-					if ((width == GameConstants.ScreenProperties.width) && (height == GameConstants.ScreenProperties.height)) {
-						basketImagePath = resolution.getString("path");
-					}
-				}
-				Json.Array layArray = jBasket.getArray("layout");
-				float startY = BASKET_START_POSITION;
-				List<Basket> basketList = new ArrayList<Basket>();
-				for( int i = 0; i < layArray.length(); i++ ){
-					Json.Object basketLayout = layArray.getObject(i);
-					float startYinPixels = GameConstants.PhysicalProperties.verticalInPixels(startY);
-					float endX = (float)basketLayout.getNumber("end_x");
-					float endXinPixels = GameConstants.PhysicalProperties.horizontalInPixel(endX);
-					float startX = (float) basketLayout.getNumber("start_x");
-					float startXinPixels = GameConstants.PhysicalProperties.horizontalInPixel(startX);
-					float speedX = (float) basketLayout.getNumber("speed");
-					float speedXinPixelsPerMs = GameConstants.PhysicalProperties.horizontalInPixel(speedX)/100;
-					Basket basket = new Basket(speedXinPixelsPerMs, new Vect2d(startXinPixels, startYinPixels), new Vect2d(endXinPixels, startYinPixels), basketImagePath);
-					foreGround.addItsEntity(basket);
-					basketList.add(basket);
-					startY = startY + BASKET_VERTICAl_DISTANCE; // each basket is 2.5m far away from each other 					
-				}
-				// Add egg to last basket
-				egg.setTargetBaskets(basketList); // add target baskets to egg
-				egg.setCurrentBasket(layArray.length() - 1); // set it to bottom element.
-				foreGround.addItsEntity(egg); // add egg to foreground list
-				foreGround.setPosition(new Vect2d(0, GameConstants.ScreenProperties.height - egg.position.y - egg.sprite.height() * 2));
-				
+
 				// ***********Add Background Elements ***********
+				Json.Object gameElements = document.getObject("GameElements");
 				Json.Object jbgImage = gameElements.getObject("bg_image");
 				Json.Array jresArray = jbgImage.getArray("resolution");
 				for( int i = 0; i < jresArray.length(); i++ ){
@@ -223,7 +187,7 @@ public class SceneGameplay extends Scene implements EggEventListener {
 				handled = buttonList.get(i).clicked(pointer);
 			}
 			if(!handled) {
-				egg.jump();
+				foreGround.clicked(pointer);
 			}
 		}
 	}
@@ -248,10 +212,5 @@ public class SceneGameplay extends Scene implements EggEventListener {
 		if (sceneRootLayer != null) {
 			sceneRootLayer.setVisible(false);
 		}
-	}
-
-	@Override
-	public void onEggJump(JumpEvent event) {
-		foreGround.scrollTo(new Vect2d(0, GameConstants.ScreenProperties.height - egg.position.y - egg.sprite.height() * 2));
 	}
 }

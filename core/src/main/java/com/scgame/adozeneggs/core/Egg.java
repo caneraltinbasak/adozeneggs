@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
 
-import playn.core.GroupLayer;
 import playn.core.ImageLayer;
 import playn.core.ResourceCallback;
 
@@ -16,6 +14,9 @@ import com.scgame.adozeneggs.core.SpriteLoader;
 
 
 public class Egg  extends GraphicsEntity{
+	private static final float IN_BASKET = 100f;
+	private static final float ON_TOP = 300f;
+	
 	public static String IMAGE = "sprites/peasprites.png";
 	public static String JSON = "sprites/peasprite.json";
 	public static String JSON_WITH_IMAGE = "sprites/peasprite2.json";
@@ -25,6 +26,7 @@ public class Egg  extends GraphicsEntity{
 	private boolean hasLoaded = false; // set to true when resources have loaded
 	// and we can update
 	private Basket currentBasket;
+	private Basket lastBasket;
 	private List<Basket>targetBaskets = new ArrayList<Basket>();
 
 	// position
@@ -43,6 +45,7 @@ public class Egg  extends GraphicsEntity{
 		// Sprite method #2: use json data describing the sprites and containing
 		// the image urls
 		this.velocity = new Vect2d(0, 0);
+		type=eEntity.EGG;
 		sprite = SpriteLoader.getSprite(JSON_WITH_IMAGE);
 		// Add a callback for when the image loads.
 		sprite.addCallback(new ResourceCallback<Sprite>() {
@@ -58,19 +61,11 @@ public class Egg  extends GraphicsEntity{
 			}
 		});
 	}
-	public void setCurrentBasket(int index){
-		if(targetBaskets.size() < index || index < 0 )
-		{
-			log().error("Egg::setCurrentBasket index out of range");
-		}else
-		{
-			currentBasket = targetBaskets.get(index);
-			position = currentBasket.getPosition().copy();
-			// delete the previous baskets from target list
-			while(currentBasket != targetBaskets.get(targetBaskets.size() - 1 )){
-				targetBaskets.remove(targetBaskets.size() - 1);
-			}
-		}
+	public void setCurrentBasket(Basket targetBasket){
+		// move it into depth between top and bottom of basket
+		sprite.layer().setDepth(IN_BASKET);
+		currentBasket = targetBasket;
+		position = currentBasket.getPosition();
 	}
 	public void paint(float alpha) {
 		if (hasLoaded) {
@@ -91,9 +86,15 @@ public class Egg  extends GraphicsEntity{
 				if(getTargetBaskets().get(i).hit(this)!=0)
 				{
 					// generate event and update current basket
-					fireJumpEvent(getTargetBaskets().get(i), stars);
-					currentBasket=getTargetBaskets().get(i);
-					getTargetBaskets().remove(i);
+					if(getTargetBaskets().get(i) != lastBasket)
+					{
+						fireJumpEvent(getTargetBaskets().get(i), stars);
+						currentBasket=getTargetBaskets().get(i);
+					}else{
+						currentBasket=lastBasket;
+						log().debug("currentBasket is target basket again!!\n");
+					}
+					sprite.layer().setDepth(IN_BASKET);
 				}
 			}
 
@@ -112,9 +113,13 @@ public class Egg  extends GraphicsEntity{
 	public void jump(){
 		if(this.currentBasket != null)
 		{
+			// Set the layer to TOP
+			sprite.layer().setDepth(ON_TOP);
+			
 			// set y value to predefined jump speed
 			velocity.y=GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.JumpSpeed) / 1000;
 			// set currentBasket basket to null since we are not attached to basket
+			lastBasket = currentBasket;
 			this.currentBasket=null;
 			
 			// play jump sound if game sound is on
@@ -139,14 +144,14 @@ public class Egg  extends GraphicsEntity{
 		eventListeners.add(eventListener);
 	}
 	private synchronized void fireJumpEvent(Basket basket, int stars) {
-		JumpEvent event = new JumpEvent( this, basket, stars);
+		JumpEvent event = new JumpEvent( this, basket);
 		Iterator<EggEventListener> listeners = eventListeners.iterator();
 		while( listeners.hasNext() ) {
 			( (EggEventListener) listeners.next() ).onEggJump(event);
 		}
 	}
 	@Override
-	public ImageLayer getImageLayer() {
+	public ImageLayer getTopImageLayer() {
 		return sprite.layer();
 	}
 	@Override
@@ -160,7 +165,11 @@ public class Egg  extends GraphicsEntity{
 	public List<Basket> getTargetBaskets() {
 		return targetBaskets;
 	}
-	public void setTargetBaskets(List<Basket> targetBaskets) {
-		this.targetBaskets = targetBaskets;
+	public void addTargetBasket(Basket targetBasket) {
+		targetBaskets.add(targetBasket);
+	}
+	@Override
+	public boolean isInRect(float x, float y, float width, float height) {
+		return  position.y + sprite.height() < height;
 	}
 }
