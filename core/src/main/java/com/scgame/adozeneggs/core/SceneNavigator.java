@@ -4,7 +4,7 @@ import static playn.core.PlayN.graphics;
 import playn.core.Game;
 
 enum eScenes {
-	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING
+	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING, CHARACTER_SELECT
 }
 
 public class SceneNavigator implements Game {
@@ -15,6 +15,7 @@ public class SceneNavigator implements Game {
 	private Scene scLevels; 
 	private Scene scGameplay;
 	private Scene scLoading;
+	private Scene scCharacterSelect;
 	
 	private SceneNavigator() {
 		// Creating scenes
@@ -23,8 +24,8 @@ public class SceneNavigator implements Game {
 	}
 	public void createScenes(){
 		scMenu = new SceneMenu();
-		scLevels = new SceneLevels(); 
 		scGameplay = new SceneGameplay(); 
+		scCharacterSelect = new SceneCharacterSelect();
 	}
 	public static SceneNavigator getInstance() {
 		if (instance == null) {
@@ -58,6 +59,9 @@ public class SceneNavigator implements Game {
 			activeScene = scLoading;
 			activeScene.init(null);
 			break;
+		case CHARACTER_SELECT:
+			activeScene = scCharacterSelect;
+			activeScene.init(null);
 		}
 	}
 	

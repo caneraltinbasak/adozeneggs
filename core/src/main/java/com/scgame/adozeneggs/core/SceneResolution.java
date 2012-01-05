@@ -13,7 +13,6 @@ import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.Pointer;
 import playn.core.ResourceCallback;
-import playn.core.Pointer.Event;
 
 public class SceneResolution extends Scene {
 	private GroupLayer gLayer = null;
@@ -24,6 +23,17 @@ public class SceneResolution extends Scene {
 
 	@Override
 	public void init(Object data) {
+		
+		SAHandler.getInstance().setHighScores(99);
+		
+		
+		System.out.println(SAHandler.getInstance().getHighScoreToday().user);
+		System.out.println(SAHandler.getInstance().getHighScoreToday().score);
+		System.out.println(SAHandler.getInstance().getHighScoreToday().dayOfMonth);
+		System.out.println(SAHandler.getInstance().getHighScoreToday().month);
+		System.out.println(SAHandler.getInstance().getHighScoreToday().year);
+		
+		
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 	    

@@ -8,10 +8,8 @@ import java.util.List;
 import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
-import playn.core.Pointer;
-import playn.core.Pointer.Event;
 
-public class GamePauseScreen extends GroupEntity {
+public class GamePauseScreen {
 	private Vect2d position;
 	private GroupLayer groupLayer;
 	private List<Button> buttonList = new ArrayList<Button>();
@@ -20,30 +18,15 @@ public class GamePauseScreen extends GroupEntity {
 	public GamePauseScreen() {
 		this.groupLayer = graphics().createGroupLayer();	
 	}
-	
-	@Override
-	public void paint(float alpha) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void update(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public GroupLayer getGroupLayer() {
 		return groupLayer;
 	}
 
-	@Override
 	public Vect2d getPosition() {
 		return position.copy();
 	}
 
-	@Override
 	public void setPosition(Vect2d position) {
 		groupLayer.setTranslation(position.x, position.y);
 		this.position=position;

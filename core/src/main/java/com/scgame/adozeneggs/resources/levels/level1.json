@@ -160,5 +160,21 @@
   			]
   		}
   	]
+  },
+  "AchievementScreenLayout" : {
+  	"resolution" : [
+  		{
+  			"height" : 480,
+  			"width" : 320,
+  			"x" : 50,
+  			"y" : 20
+  		},
+  		{
+  			"height" : 1024,
+  			"width" : 768,
+  			"x" : 150,
+  			"y" : 20
+  		}
+  	]
   }
 }

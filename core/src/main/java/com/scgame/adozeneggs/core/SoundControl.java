@@ -19,7 +19,6 @@ public class SoundControl {
 			storage().setItem("sound", "on");
 		}
 		
-		
 		gameMusic = (Sound)CachedResource.getInstance().getResource("sounds/game_music");
 		jump = (Sound)CachedResource.getInstance().getResource("sounds/jump");
 		

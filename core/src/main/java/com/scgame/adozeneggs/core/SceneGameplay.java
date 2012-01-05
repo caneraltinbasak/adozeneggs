@@ -1,3 +1,4 @@
+
 package com.scgame.adozeneggs.core;
 
 import static playn.core.PlayN.assetManager;
@@ -12,7 +13,6 @@ import java.util.List;
 import playn.core.GroupLayer;
 import playn.core.Json;
 import playn.core.Pointer;
-import playn.core.Pointer.Event;
 import playn.core.ResourceCallback;
 
 public class SceneGameplay extends Scene implements EggEventListener {
@@ -26,6 +26,7 @@ public class SceneGameplay extends Scene implements EggEventListener {
 	private GameForeground foreGround;
 	private GameBackground backGround;
 	private GamePauseScreen pauseScreen;
+	private AchievementScreen achievementScreen;
 	protected Egg egg;
 	private String LevelDataPath = "levels/level1.json";
 
@@ -74,7 +75,12 @@ public class SceneGameplay extends Scene implements EggEventListener {
 		sceneRootLayer.add(pauseScreen.getGroupLayer());
 		pauseScreen.hide();
 		
-
+		achievementScreen = new AchievementScreen();
+		sceneRootLayer.add(achievementScreen.getGroupLayer());
+		achievementScreen.hide();
+		
+		SAHandler.getInstance().setAchievementScreen(achievementScreen);
+		
 		egg = new Egg();
 		egg.addEventListener(this);
 
@@ -168,7 +174,8 @@ public class SceneGameplay extends Scene implements EggEventListener {
 				
 				// ***********Add Pause Screen Elements ***********
 				Json.Object jPauseScreen = document.getObject("PauseScreenLayout");
-				Json.Array jarrResolution = jPauseScreen.getArray("resolution");
+				Json.Array jarrResolution;
+				jarrResolution = jPauseScreen.getArray("resolution");
 				for (int i = 0; i < jarrResolution.length(); i++) {
 					Json.Object bgRes = jarrResolution.getObject(i);
 					int width = bgRes.getInt("width");
@@ -199,6 +206,21 @@ public class SceneGameplay extends Scene implements EggEventListener {
 								pauseScreen.addResumeButton(x, y, path);
 							}
 						}
+					}
+				}
+				
+				// ***********Add Achievement Screen Elements ***********
+				Json.Object jAchievementScreen = document.getObject("AchievementScreenLayout");
+				jarrResolution = jAchievementScreen.getArray("resolution");
+				for (int i = 0; i < jarrResolution.length(); i++) {
+					Json.Object bgRes = jarrResolution.getObject(i);
+					int width = bgRes.getInt("width");
+					int height = bgRes.getInt("height");
+					if ((width == GameConstants.ScreenProperties.width) && (height == GameConstants.ScreenProperties.height)) {
+						int px = bgRes.getInt("x");
+						int py = bgRes.getInt("y");
+						Vect2d pos = new Vect2d(px, py);
+						achievementScreen.setPosition(pos);
 					}
 				}
 			}
@@ -232,6 +254,13 @@ public class SceneGameplay extends Scene implements EggEventListener {
 		if (gamePaused == false) {
 			foreGround.update(delta);
 			backGround.update(delta);
+			
+			SAHandler.getInstance().update(delta);
+			
+			// update score when egg is on basket
+			if (egg.getCurrentBasket() != null) {
+				SAHandler.getInstance().updateLiveScoreWithUpdate(delta);
+			}
 		}
 	}
 	
@@ -239,6 +268,8 @@ public class SceneGameplay extends Scene implements EggEventListener {
 		if (gamePaused == false) {
 			foreGround.paint(alpha);
 			backGround.paint(alpha);
+			
+			SAHandler.getInstance().paint(alpha);
 		}
 	}
 
@@ -253,5 +284,8 @@ public class SceneGameplay extends Scene implements EggEventListener {
 	@Override
 	public void onEggJump(JumpEvent event) {
 		foreGround.scrollTo(new Vect2d(0, GameConstants.ScreenProperties.height - egg.position.y - egg.sprite.height() * 2));
+		
+		SAHandler.getInstance().jumped(3);
+		
 	}
 }

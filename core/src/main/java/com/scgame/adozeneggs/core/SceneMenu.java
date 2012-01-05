@@ -14,7 +14,6 @@ import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.Json;
 import playn.core.Pointer;
-import playn.core.Pointer.Event;
 import playn.core.ResourceCallback;
 
 public class SceneMenu extends Scene {
@@ -25,7 +24,7 @@ public class SceneMenu extends Scene {
 	private int depth = 0;
 	
 	public SceneMenu () {
-	    initImageLayouts();
+	    initLayout();
 	    gLayer.setVisible(false);
 	}
 	
@@ -43,7 +42,7 @@ public class SceneMenu extends Scene {
 	    gLayer.setVisible(true);
     }
 	
-	private void initImageLayouts() {    
+	private void initLayout() {    
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 
@@ -72,50 +71,75 @@ public class SceneMenu extends Scene {
 					  gLayer.add(bgLayer);
 
 					  depth++; // Buttons have same depth
-	    	    	  // Reading buttons
-	    	    	  Json.Array arrButton = resolution.getArray("button");
-	    	    	  for (int j = 0; j < arrButton.length(); j++) {
-	    	    		  Json.Object objButton = arrButton.getObject(j);
-	    	    		  // id is to understand which button it is
-	    	    		  String id = objButton.getString("id");
-	    	    		  int x = objButton.getInt("x");
-	    	    		  int y = objButton.getInt("y");
-	    	    		  String path = objButton.getString("path");
-	    	    		  Button button = new Button(x, y, path);
-	    	    		  button.setLayerDepth(depth);
-	    	    		  final ImageLayer layer = button.getLayer();
-	    	    		  gLayer.add(layer);
-	    	    		  buttonList.add(button);
-	    	    		  
-	    	    		  // Adding click listener for newGame button
-	    	    		  if (id.equals("newGame")) {
-	    	    			  button.setEventListener(new ButtonEventListener() {
-	    	    				  @Override
-	    	    				  public void onClick(Vect2d pointer) {
-	    	    					  SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
-	    	    				  }
-	    	    			  });
-	    	    		  }	
-	    	    		  
-	    	    		  // Adding click listener for options button
-	    	    		  if (id.equals("options")) {
-	    	    			  button.setEventListener(new ButtonEventListener() {
-	    	    				  @Override
-	    	    				  public void onClick(Vect2d pointer) {
-	    	    					 
-	    	    				  }
-	    	    			  });
-	    	    		  }
-	    	    	  }
 	    	    	  
-	    	    	  int x, y;
-	    	    	  // Reading sound buttons
-	    	    	  Json.Object soundOnButton = resolution.getObject("sound_on_button");
-	    	    	  Json.Object soundOffButton = resolution.getObject("sound_off_button");
-	    	    	  x = soundOnButton.getInt("x");
-    	    		  y = soundOnButton.getInt("y");
-    	    		  String soundOnPath = soundOnButton.getString("path");
-    	    		  String soundOffPath = soundOffButton.getString("path");
+					  // Reading buttons
+					  int x, y;
+					  String path;
+					  
+					  // Adding new game button
+					  Json.Object objNewGame = resolution.getObject("newgame_button");
+    	    		  x = objNewGame.getInt("x");
+    	    		  y = objNewGame.getInt("y");
+    	    		  path = objNewGame.getString("path");
+    	    		  Button btnNewGame = new Button(x, y, path);
+    	    		  btnNewGame.setLayerDepth(depth);
+    	    		  final ImageLayer btnNewGameLayer = btnNewGame.getLayer();
+    	    		  gLayer.add(btnNewGameLayer);
+    	    		  buttonList.add(btnNewGame);
+    	    		  
+    	    		  // Adding event listener for newGame button
+    	    		  btnNewGame.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Vect2d pointer) {
+    	    				  SceneNavigator.getInstance().runScene(eScenes.CHARACTER_SELECT, null);
+    	    			  }
+    	    		  });
+    	    
+    	    		  // Adding high scores button
+					  Json.Object objHighScores = resolution.getObject("highscores_button");
+    	    		  x = objHighScores.getInt("x");
+    	    		  y = objHighScores.getInt("y");
+    	    		  path = objHighScores.getString("path");
+    	    		  Button btnHighScores = new Button(x, y, path);
+    	    		  btnHighScores.setLayerDepth(depth);
+    	    		  final ImageLayer btnHighScoresLayer = btnHighScores.getLayer();
+    	    		  gLayer.add(btnHighScoresLayer);
+    	    		  buttonList.add(btnHighScores);
+    	    		  
+    	    		  // Adding event listener for High Scores button
+    	    		  btnHighScores.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Vect2d pointer) {
+    	    				  
+    	    			  }
+    	    		  });
+    	    		  
+    	    		  // Adding achievements button
+					  Json.Object objAchievements = resolution.getObject("achievements_button");
+    	    		  x = objAchievements.getInt("x");
+    	    		  y = objAchievements.getInt("y");
+    	    		  path = objAchievements.getString("path");
+    	    		  Button btnAchievements = new Button(x, y, path);
+    	    		  btnAchievements.setLayerDepth(depth);
+    	    		  final ImageLayer btnAchievementsLayer = btnAchievements.getLayer();
+    	    		  gLayer.add(btnAchievementsLayer);
+    	    		  buttonList.add(btnAchievements);
+    	    		  
+    	    		  // Adding event listener for High Scores button
+    	    		  btnAchievements.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Vect2d pointer) {
+    	    				  
+    	    			  }
+    	    		  });
+    	    		  
+    	    		  // Adding sound buttons
+	    	    	  Json.Object objSoundOn = resolution.getObject("sound_on_button");
+	    	    	  Json.Object objSoundOff = resolution.getObject("sound_off_button");
+	    	    	  x = objSoundOn.getInt("x");
+    	    		  y = objSoundOn.getInt("y");
+    	    		  String soundOnPath = objSoundOn.getString("path");
+    	    		  String soundOffPath = objSoundOff.getString("path");
     	    		  
     	    		  int soundToggle;
     	    		  if (SoundControl.getInstance().isSoundOn()) {
@@ -146,13 +170,13 @@ public class SceneMenu extends Scene {
     	    			  }
     	    		  });
     	    		  
-    	    		  // Reading sound buttons
-	    	    	  Json.Object musicOnButton = resolution.getObject("music_on_button");
-	    	    	  Json.Object musicOffButton = resolution.getObject("music_off_button");
-	    	    	  x = musicOnButton.getInt("x");
-    	    		  y = musicOnButton.getInt("y");
-    	    		  String musicOnPath = musicOnButton.getString("path");
-    	    		  String musicOffPath = musicOffButton.getString("path");
+    	    		  // Adding sound buttons
+	    	    	  Json.Object objMusicOn = resolution.getObject("music_on_button");
+	    	    	  Json.Object objMusicOff = resolution.getObject("music_off_button");
+	    	    	  x = objMusicOn.getInt("x");
+    	    		  y = objMusicOn.getInt("y");
+    	    		  String musicOnPath = objMusicOn.getString("path");
+    	    		  String musicOffPath = objMusicOff.getString("path");
     	    		  
     	    		  int musicToggle;
     	    		  if (SoundControl.getInstance().isMusicOn()) {
@@ -189,7 +213,7 @@ public class SceneMenu extends Scene {
 
 	      @Override
 	      public void error(Throwable err) {
-	    	  log().error("Error in loading menu screen! ", err);
+	    	  log().error("Error in loading Scene Menu! ", err);
 	      }
 	    });
 	    
@@ -197,8 +221,7 @@ public class SceneMenu extends Scene {
 	    if (SoundControl.getInstance().isMusicOn()) {
 	    	SoundControl.getInstance().playGameMusic();
 	    }
-	    
-	    
+ 
 	}
 	
 	private synchronized void firePointerEndEvent(Vect2d pointer) {

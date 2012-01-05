@@ -6,13 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
-
-import playn.core.GroupLayer;
 import playn.core.ImageLayer;
 import playn.core.ResourceCallback;
-
-import com.scgame.adozeneggs.core.SpriteLoader;
 
 
 public class Egg  extends GraphicsEntity{
@@ -72,6 +67,11 @@ public class Egg  extends GraphicsEntity{
 			}
 		}
 	}
+	
+	public Basket getCurrentBasket() {
+		return currentBasket;
+	}
+	
 	public void paint(float alpha) {
 		if (hasLoaded) {
 			spriteIndex = (spriteIndex + 1) % sprite.numSprites();

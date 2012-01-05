@@ -8,20 +8,24 @@
                     "id":"bg",
                     "path":"images/bg_medium.png"
                 },
-                "button":[
-                    {
-                        "id":"newGame",
-                        "path":"images/newGame_medium.png",
-                        "x":10,
-                        "y":20
-                    },
-                    {
-                        "id":"options",
-                        "path":"images/options_medium.png",
-                        "x":10,
-                        "y":100
-                    }              
-                ],
+                "newgame_button": {
+                	"id":"newGame",
+                    "path":"images/newGame_medium.png",
+                    "x":10,
+                    "y":20
+                 },
+                "highscores_button": {
+                  	"id":"options",
+                    "path":"images/highscores_medium.png",
+                    "x":10,
+                    "y":100
+                },
+                "achievements_button": {
+                  	"id":"options",
+                    "path":"images/achievements_medium.png",
+                    "x":10,
+                    "y":180
+                },
                 "sound_on_button": {
                     "id": "sound_on",
                     "path": "images/sound_on_medium.png",
@@ -50,24 +54,28 @@
             {
                 "x":768,
                 "y":1024,
-                "bg_image":{
+                "bg_image": {
                     "id":"bg",
                     "path":"images/bg_high.png"
                 },
-                "button":[
-                    {
-                        "id":"newGame",
-                        "path":"images/newGame_high.png",
-                        "x":10,
-                        "y":20
-                    },
-                    {
-                        "id":"options",
-                        "path":"images/options_high.png",
-                        "x":10,
-                        "y":250
-                    }
-                ],
+                "newgame_button": {
+                	"id":"newGame",
+                    "path":"images/newGame_high.png",
+                    "x":10,
+                    "y":20
+                },
+                "highscores_button": {
+                	"id":"options",
+                    "path":"images/highscores_high.png",
+                    "x":10,
+                    "y":250
+                },
+                "achievements_button": {
+                  	"id":"options",
+                    "path":"images/achievements_high.png",
+                    "x":10,
+                    "y":480
+                },
                 "sound_on_button": {
                     "id": "sound_on",
                     "path": "images/sound_on_high.png",
