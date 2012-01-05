@@ -22,17 +22,11 @@ public class SceneLevels extends Scene {
 	private List<Button> buttonList = new ArrayList<Button>();
 	private Image bgImage;
 	private String jsonPath = "layouts/SceneLevels.json";
-	private float depth = 1;
+	private float depth = 0;
 	
 	public SceneLevels () {
 		initImageLayouts();
 		gLayer.setVisible(false);
-	}
-	
-	@Override
-	public String name() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	private void initImageLayouts() {
@@ -57,21 +51,13 @@ public class SceneLevels extends Scene {
 	    	    	  Json.Object objBgImage = resolution.getObject("bg_image");
 	    	    	  String bgImagePath = objBgImage.getString("path");
 	    	    	  // create and add background image layer
-	    	    	  bgImage = assetManager().getImage(bgImagePath);
-	    	    	  bgImage.addCallback(new ResourceCallback<Image>() {
-						@Override
-						public void done(Image resource) {
-						    // create and add background image layer
-						    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-						    bgLayer.setDepth(0);
-						    gLayer.add(bgLayer);	
-						}
-						@Override
-						public void error(Throwable err) {
-							log().error("SceneLevels.initImageLayouts : Error loading backgroung image!", err);
-						}
-	    	    	  });
 	    	    	  
+	    	    	  bgImage = (Image)CachedResource.getInstance().getResource(bgImagePath);
+	    	    	  ImageLayer bgLayer = graphics().createImageLayer(bgImage);
+	    	    	  bgLayer.setDepth(depth);
+					  gLayer.add(bgLayer);
+	    	    	  
+					  depth++; 
 	    	    	  // Reading level buttons
 	    	    	  Json.Array arrButton = resolution.getArray("level_button");
 	    	    	  for (int j = 0; j < arrButton.length(); j++) {
@@ -79,56 +65,32 @@ public class SceneLevels extends Scene {
 	    	    		  int x = levelButton.getInt("x");
 	    	    		  int y = levelButton.getInt("y");
 	    	    		  String path = levelButton.getString("path");
-	    	    		  final Button button = new Button(x, y, path);
-	    	    
-	    	    		  button.addCallback(new ButtonCallback() {
-							@Override
-							public void error(Throwable err) {
-								log().error("SceneLevels.initImageLayouts : Error loading level button", err);
-								
-							}
-							@Override
-							public void done() {
-								depth++;
-								button.setLayerDepth(depth);
-								gLayer.add(button.getLayer());
-								buttonList.add(button);
-							}
-	    	    		  });
+	    	    		  Button button = new Button(x, y, path);
+	    	    		  button.setLayerDepth(depth);
+	    	    		  gLayer.add(button.getLayer());
+	    	    		  buttonList.add(button);
 	    	    		  
 	    	    		  button.setEventListener(new ButtonEventListener() {
 	    	    			  @Override
-	    	    			  public void onClick(Event event) {
+	    	    			  public void onClick(Vect2d pointer) {
 	    	    				  SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "levels/level1.json"); // TODO: Implement passing the correct data to start level
 	    	    			  }
 	    	    		  });
 	    	    	  }
 	    	    	  
-	    	    	  // Reading back buttons
+	    	    	  // Reading back button
 	    	    	  Json.Object backButton = resolution.getObject("back_button");
 	    	    	  int x = backButton.getInt("x");
     	    		  int y = backButton.getInt("y");
     	    		  String path = backButton.getString("path");
-    	    		  final Button button = new Button(x, y, path);
-    	    		  
-    	    		  button.addCallback(new ButtonCallback() {
-							@Override
-							public void error(Throwable err) {
-								log().error("SceneLevels.initImageLayouts : Error loading level button", err);
-								
-							}
-							@Override
-							public void done() {
-								depth++;
-								button.setLayerDepth(depth);
-								gLayer.add(button.getLayer());
-								buttonList.add(button);
-							}
-    	    		  });
+    	    		  Button button = new Button(x, y, path);
+    	    		  button.setLayerDepth(depth);
+    	    		  gLayer.add(button.getLayer());
+    	    		  buttonList.add(button);
     	    		  
     	    		  button.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Event event) {
+    	    			  public void onClick(Vect2d pointer) {
     	    				  SceneNavigator.getInstance().runScene(eScenes.MENU,null);
     	    			  }
     	    		  });
@@ -149,16 +111,17 @@ public class SceneLevels extends Scene {
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) {
-	    		firePointerEndEvent(event);		
+	    		Vect2d pointer = new Vect2d(event.x(), event.y());
+	    		firePointerEndEvent(pointer);		
 	    	}
 	    });
 	    
 	    gLayer.setVisible(true);
 	}
 	
-	private synchronized void firePointerEndEvent(Pointer.Event event) {
+	private synchronized void firePointerEndEvent(Vect2d pointer) {
 		for (int i = 0; i < buttonList.size(); i++) {
-			buttonList.get(i).clicked(event);
+			buttonList.get(i).clicked(pointer);
 		}
 	}
 
@@ -169,8 +132,4 @@ public class SceneLevels extends Scene {
 			gLayer.setVisible(false);
 		}
 	}
-	 public void update(float delta) {
-		 
-	 }
-	 
 }

@@ -1,20 +1,21 @@
 function adozeneggs(){
-  var $wnd_0 = window, $doc_0 = document, $stats = $wnd_0.__gwtStatsEvent?function(a){
-    return $wnd_0.__gwtStatsEvent(a);
+  var $intern_0 = '', $intern_35 = '" for "gwt:onLoadErrorFn"', $intern_33 = '" for "gwt:onPropertyErrorFn"', $intern_21 = '"><\/script>', $intern_10 = '#', $intern_45 = '.cache.html', $intern_12 = '/', $intern_44 = ':', $intern_27 = '::', $intern_47 = '<script defer="defer">adozeneggs.onInjectionDone(\'adozeneggs\')<\/script>', $intern_20 = '<script id="', $intern_30 = '=', $intern_11 = '?', $intern_43 = 'AD71DEEE69697F43207B32642F0E2A6B', $intern_32 = 'Bad handler "', $intern_46 = 'DOMContentLoaded', $intern_22 = 'SCRIPT', $intern_19 = '__gwt_marker_adozeneggs', $intern_1 = 'adozeneggs', $intern_17 = 'adozeneggs.nocache.js', $intern_26 = 'adozeneggs::', $intern_23 = 'base', $intern_15 = 'baseUrl', $intern_4 = 'begin', $intern_3 = 'bootstrap', $intern_14 = 'clear.cache.gif', $intern_29 = 'content', $intern_9 = 'end', $intern_5 = 'gwt.codesvr=', $intern_6 = 'gwt.hosted=', $intern_7 = 'gwt.hybrid', $intern_34 = 'gwt:onLoadErrorFn', $intern_31 = 'gwt:onPropertyErrorFn', $intern_28 = 'gwt:property', $intern_41 = 'hosted.html?adozeneggs', $intern_36 = 'iframe', $intern_13 = 'img', $intern_37 = "javascript:''", $intern_40 = 'loadExternalRefs', $intern_24 = 'meta', $intern_39 = 'moduleRequested', $intern_8 = 'moduleStartup', $intern_25 = 'name', $intern_38 = 'position:absolute;width:0;height:0;border:none', $intern_16 = 'script', $intern_42 = 'selectingPermutation', $intern_2 = 'startup', $intern_18 = 'undefined';
+  var $wnd = window, $doc = document, $stats = $wnd.__gwtStatsEvent?function(a){
+    return $wnd.__gwtStatsEvent(a);
   }
-  :null, $sessionId_0 = $wnd_0.__gwtStatsSessionId?$wnd_0.__gwtStatsSessionId:null, scriptsDone, loadDone, bodyDone, base = '', metaProps = {}, values = [], providers = [], answers = [], softPermutationId = 0, onLoadErrorFunc, propertyErrorFunc;
-  $stats && $stats({moduleName:'adozeneggs', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'bootstrap', millis:(new Date).getTime(), type:'begin'});
-  if (!$wnd_0.__gwt_stylesLoaded) {
-    $wnd_0.__gwt_stylesLoaded = {};
+  :null, $sessionId = $wnd.__gwtStatsSessionId?$wnd.__gwtStatsSessionId:null, scriptsDone, loadDone, bodyDone, base = $intern_0, metaProps = {}, values = [], providers = [], answers = [], softPermutationId = 0, onLoadErrorFunc, propertyErrorFunc;
+  $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_3, millis:(new Date).getTime(), type:$intern_4});
+  if (!$wnd.__gwt_stylesLoaded) {
+    $wnd.__gwt_stylesLoaded = {};
   }
-  if (!$wnd_0.__gwt_scriptsLoaded) {
-    $wnd_0.__gwt_scriptsLoaded = {};
+  if (!$wnd.__gwt_scriptsLoaded) {
+    $wnd.__gwt_scriptsLoaded = {};
   }
   function isHostedMode(){
     var result = false;
     try {
-      var query = $wnd_0.location.search;
-      return (query.indexOf('gwt.codesvr=') != -1 || (query.indexOf('gwt.hosted=') != -1 || $wnd_0.external && $wnd_0.external.gwtOnLoad)) && query.indexOf('gwt.hybrid') == -1;
+      var query = $wnd.location.search;
+      return (query.indexOf($intern_5) != -1 || (query.indexOf($intern_6) != -1 || $wnd.external && $wnd.external.gwtOnLoad)) && query.indexOf($intern_7) == -1;
     }
      catch (e) {
     }
@@ -27,72 +28,72 @@ function adozeneggs(){
 
   function maybeStartModule(){
     if (scriptsDone && loadDone) {
-      var iframe = $doc_0.getElementById('adozeneggs');
+      var iframe = $doc.getElementById($intern_1);
       var frameWnd = iframe.contentWindow;
       if (isHostedMode()) {
-        frameWnd.__gwt_getProperty = function(name_0){
-          return computePropValue(name_0);
+        frameWnd.__gwt_getProperty = function(name){
+          return computePropValue(name);
         }
         ;
       }
       adozeneggs = null;
-      frameWnd.gwtOnLoad(onLoadErrorFunc, 'adozeneggs', base, softPermutationId);
-      $stats && $stats({moduleName:'adozeneggs', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'moduleStartup', millis:(new Date).getTime(), type:'end'});
+      frameWnd.gwtOnLoad(onLoadErrorFunc, $intern_1, base, softPermutationId);
+      $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_8, millis:(new Date).getTime(), type:$intern_9});
     }
   }
 
   function computeScriptBase(){
     function getDirectoryOfFile(path){
-      var hashIndex = path.lastIndexOf('#');
+      var hashIndex = path.lastIndexOf($intern_10);
       if (hashIndex == -1) {
         hashIndex = path.length;
       }
-      var queryIndex = path.indexOf('?');
+      var queryIndex = path.indexOf($intern_11);
       if (queryIndex == -1) {
         queryIndex = path.length;
       }
-      var slashIndex = path.lastIndexOf('/', Math.min(queryIndex, hashIndex));
-      return slashIndex >= 0?path.substring(0, slashIndex + 1):'';
+      var slashIndex = path.lastIndexOf($intern_12, Math.min(queryIndex, hashIndex));
+      return slashIndex >= 0?path.substring(0, slashIndex + 1):$intern_0;
     }
 
     function ensureAbsoluteUrl(url){
       if (url.match(/^\w+:\/\//)) {
       }
        else {
-        var img = $doc_0.createElement('img');
-        img.src = url + 'clear.cache.gif';
+        var img = $doc.createElement($intern_13);
+        img.src = url + $intern_14;
         url = getDirectoryOfFile(img.src);
       }
       return url;
     }
 
     function tryMetaTag(){
-      var metaVal = __gwt_getMetaProperty('baseUrl');
+      var metaVal = __gwt_getMetaProperty($intern_15);
       if (metaVal != null) {
         return metaVal;
       }
-      return '';
+      return $intern_0;
     }
 
     function tryNocacheJsTag(){
-      var scriptTags = $doc_0.getElementsByTagName('script');
+      var scriptTags = $doc.getElementsByTagName($intern_16);
       for (var i = 0; i < scriptTags.length; ++i) {
-        if (scriptTags[i].src.indexOf('adozeneggs.nocache.js') != -1) {
+        if (scriptTags[i].src.indexOf($intern_17) != -1) {
           return getDirectoryOfFile(scriptTags[i].src);
         }
       }
-      return '';
+      return $intern_0;
     }
 
     function tryMarkerScript(){
       var thisScript;
-      if (typeof isBodyLoaded == 'undefined' || !isBodyLoaded()) {
-        var markerId = '__gwt_marker_adozeneggs';
+      if (typeof isBodyLoaded == $intern_18 || !isBodyLoaded()) {
+        var markerId = $intern_19;
         var markerScript;
-        $doc_0.write('<script id="' + markerId + '"><\/script>');
-        markerScript = $doc_0.getElementById(markerId);
+        $doc.write($intern_20 + markerId + $intern_21);
+        markerScript = $doc.getElementById(markerId);
         thisScript = markerScript && markerScript.previousSibling;
-        while (thisScript && thisScript.tagName != 'SCRIPT') {
+        while (thisScript && thisScript.tagName != $intern_22) {
           thisScript = thisScript.previousSibling;
         }
         if (markerScript) {
@@ -102,29 +103,29 @@ function adozeneggs(){
           return getDirectoryOfFile(thisScript.src);
         }
       }
-      return '';
+      return $intern_0;
     }
 
     function tryBaseTag(){
-      var baseElements = $doc_0.getElementsByTagName('base');
+      var baseElements = $doc.getElementsByTagName($intern_23);
       if (baseElements.length > 0) {
         return baseElements[baseElements.length - 1].href;
       }
-      return '';
+      return $intern_0;
     }
 
     var tempBase = tryMetaTag();
-    if (tempBase == '') {
+    if (tempBase == $intern_0) {
       tempBase = tryNocacheJsTag();
     }
-    if (tempBase == '') {
+    if (tempBase == $intern_0) {
       tempBase = tryMarkerScript();
     }
-    if (tempBase == '') {
+    if (tempBase == $intern_0) {
       tempBase = tryBaseTag();
     }
-    if (tempBase == '') {
-      tempBase = getDirectoryOfFile($doc_0.location.href);
+    if (tempBase == $intern_0) {
+      tempBase = getDirectoryOfFile($doc.location.href);
     }
     tempBase = ensureAbsoluteUrl(tempBase);
     base = tempBase;
@@ -132,48 +133,48 @@ function adozeneggs(){
   }
 
   function processMetas(){
-    var metas = document.getElementsByTagName('meta');
+    var metas = document.getElementsByTagName($intern_24);
     for (var i = 0, n = metas.length; i < n; ++i) {
-      var meta = metas[i], name_0 = meta.getAttribute('name'), content_0;
-      if (name_0) {
-        name_0 = name_0.replace('adozeneggs::', '');
-        if (name_0.indexOf('::') >= 0) {
+      var meta = metas[i], name = meta.getAttribute($intern_25), content;
+      if (name) {
+        name = name.replace($intern_26, $intern_0);
+        if (name.indexOf($intern_27) >= 0) {
           continue;
         }
-        if (name_0 == 'gwt:property') {
-          content_0 = meta.getAttribute('content');
-          if (content_0) {
-            var value, eq = content_0.indexOf('=');
+        if (name == $intern_28) {
+          content = meta.getAttribute($intern_29);
+          if (content) {
+            var value, eq = content.indexOf($intern_30);
             if (eq >= 0) {
-              name_0 = content_0.substring(0, eq);
-              value = content_0.substring(eq + 1);
+              name = content.substring(0, eq);
+              value = content.substring(eq + 1);
             }
              else {
-              name_0 = content_0;
-              value = '';
+              name = content;
+              value = $intern_0;
             }
-            metaProps[name_0] = value;
+            metaProps[name] = value;
           }
         }
-         else if (name_0 == 'gwt:onPropertyErrorFn') {
-          content_0 = meta.getAttribute('content');
-          if (content_0) {
+         else if (name == $intern_31) {
+          content = meta.getAttribute($intern_29);
+          if (content) {
             try {
-              propertyErrorFunc = eval(content_0);
+              propertyErrorFunc = eval(content);
             }
              catch (e) {
-              alert('Bad handler "' + content_0 + '" for "gwt:onPropertyErrorFn"');
+              alert($intern_32 + content + $intern_33);
             }
           }
         }
-         else if (name_0 == 'gwt:onLoadErrorFn') {
-          content_0 = meta.getAttribute('content');
-          if (content_0) {
+         else if (name == $intern_34) {
+          content = meta.getAttribute($intern_29);
+          if (content) {
             try {
-              onLoadErrorFunc = eval(content_0);
+              onLoadErrorFunc = eval(content);
             }
              catch (e) {
-              alert('Bad handler "' + content_0 + '" for "gwt:onLoadErrorFn"');
+              alert($intern_32 + content + $intern_35);
             }
           }
         }
@@ -181,8 +182,8 @@ function adozeneggs(){
     }
   }
 
-  function __gwt_getMetaProperty(name_0){
-    var value = metaProps[name_0];
+  function __gwt_getMetaProperty(name){
+    var value = metaProps[name];
     return value == null?null:value;
   }
 
@@ -205,13 +206,13 @@ function adozeneggs(){
   function maybeInjectFrame(){
     if (!frameInjected) {
       frameInjected = true;
-      var iframe = $doc_0.createElement('iframe');
-      iframe.src = "javascript:''";
-      iframe.id = 'adozeneggs';
-      iframe.style.cssText = 'position:absolute;width:0;height:0;border:none';
+      var iframe = $doc.createElement($intern_36);
+      iframe.src = $intern_37;
+      iframe.id = $intern_1;
+      iframe.style.cssText = $intern_38;
       iframe.tabIndex = -1;
-      $doc_0.body.appendChild(iframe);
-      $stats && $stats({moduleName:'adozeneggs', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'moduleStartup', millis:(new Date).getTime(), type:'moduleRequested'});
+      $doc.body.appendChild(iframe);
+      $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_8, millis:(new Date).getTime(), type:$intern_39});
       iframe.contentWindow.location.replace(base + initialHtml);
     }
   }
@@ -225,7 +226,7 @@ function adozeneggs(){
   ;
   adozeneggs.onInjectionDone = function(){
     scriptsDone = true;
-    $stats && $stats({moduleName:'adozeneggs', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'loadExternalRefs', millis:(new Date).getTime(), type:'end'});
+    $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_40, millis:(new Date).getTime(), type:$intern_9});
     maybeStartModule();
   }
   ;
@@ -234,23 +235,23 @@ function adozeneggs(){
   var strongName;
   var initialHtml;
   if (isHostedMode()) {
-    if ($wnd_0.external && ($wnd_0.external.initModule && $wnd_0.external.initModule('adozeneggs'))) {
-      $wnd_0.location.reload();
+    if ($wnd.external && ($wnd.external.initModule && $wnd.external.initModule($intern_1))) {
+      $wnd.location.reload();
       return;
     }
-    initialHtml = 'hosted.html?adozeneggs';
-    strongName = '';
+    initialHtml = $intern_41;
+    strongName = $intern_0;
   }
-  $stats && $stats({moduleName:'adozeneggs', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'bootstrap', millis:(new Date).getTime(), type:'selectingPermutation'});
+  $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_3, millis:(new Date).getTime(), type:$intern_42});
   if (!isHostedMode()) {
     try {
-      strongName = '25002B2CB651CF0CE8CC5FE3FCDAD9A4';
-      var idx = strongName.indexOf(':');
+      strongName = $intern_43;
+      var idx = strongName.indexOf($intern_44);
       if (idx != -1) {
         softPermutationId = Number(strongName.substring(idx + 1));
         strongName = strongName.substring(0, idx);
       }
-      initialHtml = strongName + '.cache.html';
+      initialHtml = strongName + $intern_45;
     }
      catch (e) {
       return;
@@ -261,8 +262,8 @@ function adozeneggs(){
     if (!bodyDone) {
       bodyDone = true;
       maybeStartModule();
-      if ($doc_0.removeEventListener) {
-        $doc_0.removeEventListener('DOMContentLoaded', onBodyDone, false);
+      if ($doc.removeEventListener) {
+        $doc.removeEventListener($intern_46, onBodyDone, false);
       }
       if (onBodyDoneTimerId) {
         clearInterval(onBodyDoneTimerId);
@@ -270,23 +271,23 @@ function adozeneggs(){
     }
   }
 
-  if ($doc_0.addEventListener) {
-    $doc_0.addEventListener('DOMContentLoaded', function(){
+  if ($doc.addEventListener) {
+    $doc.addEventListener($intern_46, function(){
       maybeInjectFrame();
       onBodyDone();
     }
     , false);
   }
   var onBodyDoneTimerId = setInterval(function(){
-    if (/loaded|complete/.test($doc_0.readyState)) {
+    if (/loaded|complete/.test($doc.readyState)) {
       maybeInjectFrame();
       onBodyDone();
     }
   }
   , 50);
-  $stats && $stats({moduleName:'adozeneggs', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'bootstrap', millis:(new Date).getTime(), type:'end'});
-  $stats && $stats({moduleName:'adozeneggs', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'loadExternalRefs', millis:(new Date).getTime(), type:'begin'});
-  $doc_0.write('<script defer="defer">adozeneggs.onInjectionDone(\'adozeneggs\')<\/script>');
+  $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_3, millis:(new Date).getTime(), type:$intern_9});
+  $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_40, millis:(new Date).getTime(), type:$intern_4});
+  $doc.write($intern_47);
 }
 
 adozeneggs();

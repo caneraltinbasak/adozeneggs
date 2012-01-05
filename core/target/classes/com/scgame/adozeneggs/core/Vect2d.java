@@ -12,6 +12,11 @@ public class Vect2d
 		this.x=x;
 		this.y=y;
 	}
+	public void assign(float x, float y)
+	{
+		this.x=x;
+		this.y=y;
+	}
 	public Vect2d add(Vect2d position){
 		Vect2d val=new Vect2d(0,0);
 		val.x=this.x+position.x;
@@ -54,5 +59,9 @@ public class Vect2d
 	public float dot(Vect2d v2) 
 	{
 		return (this.x*v2.x+this.y*v2.y);
+	}
+	@Override
+	public String toString() {
+		return ("x:" + this.x + "\ny: "+this.y+"\n");
 	}
 }

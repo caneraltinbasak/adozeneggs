@@ -18,23 +18,20 @@ public class adozeneggs implements Game {
 	
 	@Override
 	public void paint(float alpha) {
-		/*
-		if (sceneNavigator.activeScene != null) {
-			sceneNavigator.activeScene.paint(alpha);
+		if (SceneNavigator.getInstance().getActiveScene() != null) {
+			SceneNavigator.getInstance().getActiveScene().paint(alpha);
 		}
-		*/
 	}
 
 	@Override
 	public void update(float delta) {
-		System.out.println("adozeneggs update");
 		if (SceneNavigator.getInstance().getActiveScene() != null) {
-			//System.out.println("not null");
+			SceneNavigator.getInstance().getActiveScene().update(delta);
 		}
 	}
 
 	@Override
 	public int updateRate() {
-		return 25;
+		return 1000/GameConstants.ScreenProperties.UPDATE_MS;
 	}
 }

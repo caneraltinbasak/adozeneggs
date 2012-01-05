@@ -14,7 +14,11 @@ public class GameConstants {
 	private GameConstants(){
 		throw new AssertionError();
 	}
-	
+	public static class GameProperties{
+		public static final float FIRST_BASKET_Y_OFFSET = 1f;
+		public static final float BASKET_GAP = 2.5f;
+
+	}
 	public static class ScreenProperties{
 		/**
 		 * width of screen
@@ -45,9 +49,23 @@ public class GameConstants {
 		 * Quality of the sprites that will be used. The values should be HIGH(1),MEDIUM(2) or LOW(3)
 		 */
 		public static String gQuality;
+		
+		/**
+		 * Frame rate
+		 */
+		public static int FRAME_RATE = 30;
+		
+		/**
+		 * Update period in milliseconds.
+		 */
+		public static int UPDATE_MS = 1000/FRAME_RATE;
 	}
 
 	public static class PhysicalProperties{
+		/**
+		 * Limit Speed
+		 */
+		public static final float limitSpeed = 20;
 		/**
 		 * gravitational acceleration 
 		 */

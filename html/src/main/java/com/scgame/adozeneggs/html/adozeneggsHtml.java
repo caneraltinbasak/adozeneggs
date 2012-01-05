@@ -1,10 +1,11 @@
 package com.scgame.adozeneggs.html;
 
+import com.scgame.adozeneggs.core.*;
+
 import playn.core.PlayN;
 import playn.html.HtmlGame;
 import playn.html.HtmlPlatform;
 
-import com.scgame.adozeneggs.core.adozeneggs;
 
 public class adozeneggsHtml extends HtmlGame {
 

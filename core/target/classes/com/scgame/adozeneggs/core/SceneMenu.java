@@ -14,7 +14,6 @@ import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.Json;
 import playn.core.Pointer;
-import playn.core.Pointer.Event;
 import playn.core.ResourceCallback;
 
 public class SceneMenu extends Scene {
@@ -22,20 +21,28 @@ public class SceneMenu extends Scene {
 	private Image bgImage;
 	private GroupLayer gLayer = null;
 	private String jsonPath = "layouts/SceneMenu.json";
-	private int depth = 1;
+	private int depth = 0;
 	
 	public SceneMenu () {
-	    initImageLayouts();
+	    initLayout();
 	    gLayer.setVisible(false);
 	}
 	
 	@Override
-	public String name() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private void initImageLayouts() {
+	public void init(Object data) {	
+		// add a listener for pointer (mouse, touch) input
+	    pointer().setListener(new Pointer.Adapter() {
+	    	@Override
+	    	public void onPointerEnd(Pointer.Event event) {
+	    		Vect2d pointer = new Vect2d(event.x(), event.y());
+	    		firePointerEndEvent(pointer);		
+	    	}
+	    });
+	    
+	    gLayer.setVisible(true);
+    }
+	
+	private void initLayout() {    
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 
@@ -58,92 +65,169 @@ public class SceneMenu extends Scene {
 	    	    	  String bgImagePath = objBgImage.getString("path");
 	    	    	  
 	    	    	  // create and add background image layer
-	    	    	  bgImage = assetManager().getImage(bgImagePath);
-	    	    	  bgImage.addCallback(new ResourceCallback<Image>() {
-						@Override
-						public void done(Image resource) {
-						    // create and add background image layer
-						    ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-						    bgLayer.setDepth(0);
-						    gLayer.add(bgLayer);
-						    
-						}
-						@Override
-						public void error(Throwable err) {
-							log().error("SceneMenu.initImageLayouts : Error loading backgroung image!", err);
-						}
-	    	    	  });
-	    	    	 
-	    	    	  // Reading buttons
+	    	    	  bgImage = (Image)CachedResource.getInstance().getResource(bgImagePath);
+	    	    	  ImageLayer bgLayer = graphics().createImageLayer(bgImage);
+	    	    	  bgLayer.setDepth(depth);
+					  gLayer.add(bgLayer);
+
+					  depth++; // Buttons have same depth
 	    	    	  
-	    	    	  Json.Array arrButton = resolution.getArray("button");
-	    	    	  for (int j = 0; j < arrButton.length(); j++) {
-	    	    		  Json.Object objButton = arrButton.getObject(j);
-	    	    		  // id is to understand which button it is
-	    	    		  String id = objButton.getString("id");
-	    	    		  int x = objButton.getInt("x");
-	    	    		  int y = objButton.getInt("y");
-	    	    		  String path = objButton.getString("path");
-	    	    		  final Button button = new Button(x, y, path);
-	    	    		  button.addCallback(new ButtonCallback() {
-							@Override
-							public void error(Throwable err) {
-								log().error("SceneMenu.initImageLayouts : Error loading button", err);
-							}
-							@Override
-							public void done() {
-								depth++;
-								button.setLayerDepth(depth);
-								gLayer.add(button.getLayer());
-								buttonList.add(button);
-							}
-	    	    		  });
-	    	    		  
-	    	    		  // Adding click listener for newGame button
-	    	    		  if (id.equals("newGame")) {
-	    	    			  button.setEventListener(new ButtonEventListener() {
-	    	    				  @Override
-	    	    				  public void onClick(Event event) {
-	    	    					  SceneNavigator.getInstance().runScene(eScenes.LEVELS, null);
-	    	    				  }
-	    	    			  });
-	    	    		  }	
-	    	    		  
-	    	    		  // Adding click listener for options button
-	    	    		  if (id.equals("options")) {
-	    	    			  
-	    	    		  }
-	    	    		 
-	    	    	  }
-	    	    	  break; // resolution is found
+					  // Reading buttons
+					  int x, y;
+					  String path;
+					  
+					  // Adding new game button
+					  Json.Object objNewGame = resolution.getObject("newgame_button");
+    	    		  x = objNewGame.getInt("x");
+    	    		  y = objNewGame.getInt("y");
+    	    		  path = objNewGame.getString("path");
+    	    		  Button btnNewGame = new Button(x, y, path);
+    	    		  btnNewGame.setLayerDepth(depth);
+    	    		  final ImageLayer btnNewGameLayer = btnNewGame.getLayer();
+    	    		  gLayer.add(btnNewGameLayer);
+    	    		  buttonList.add(btnNewGame);
+    	    		  
+    	    		  // Adding event listener for newGame button
+    	    		  btnNewGame.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Vect2d pointer) {
+    	    				  SceneNavigator.getInstance().runScene(eScenes.CHARACTER_SELECT, null);
+    	    			  }
+    	    		  });
+    	    
+    	    		  // Adding high scores button
+					  Json.Object objHighScores = resolution.getObject("highscores_button");
+    	    		  x = objHighScores.getInt("x");
+    	    		  y = objHighScores.getInt("y");
+    	    		  path = objHighScores.getString("path");
+    	    		  Button btnHighScores = new Button(x, y, path);
+    	    		  btnHighScores.setLayerDepth(depth);
+    	    		  final ImageLayer btnHighScoresLayer = btnHighScores.getLayer();
+    	    		  gLayer.add(btnHighScoresLayer);
+    	    		  buttonList.add(btnHighScores);
+    	    		  
+    	    		  // Adding event listener for High Scores button
+    	    		  btnHighScores.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Vect2d pointer) {
+    	    				  
+    	    			  }
+    	    		  });
+    	    		  
+    	    		  // Adding achievements button
+					  Json.Object objAchievements = resolution.getObject("achievements_button");
+    	    		  x = objAchievements.getInt("x");
+    	    		  y = objAchievements.getInt("y");
+    	    		  path = objAchievements.getString("path");
+    	    		  Button btnAchievements = new Button(x, y, path);
+    	    		  btnAchievements.setLayerDepth(depth);
+    	    		  final ImageLayer btnAchievementsLayer = btnAchievements.getLayer();
+    	    		  gLayer.add(btnAchievementsLayer);
+    	    		  buttonList.add(btnAchievements);
+    	    		  
+    	    		  // Adding event listener for High Scores button
+    	    		  btnAchievements.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Vect2d pointer) {
+    	    				  
+    	    			  }
+    	    		  });
+    	    		  
+    	    		  // Adding sound buttons
+	    	    	  Json.Object objSoundOn = resolution.getObject("sound_on_button");
+	    	    	  Json.Object objSoundOff = resolution.getObject("sound_off_button");
+	    	    	  x = objSoundOn.getInt("x");
+    	    		  y = objSoundOn.getInt("y");
+    	    		  String soundOnPath = objSoundOn.getString("path");
+    	    		  String soundOffPath = objSoundOff.getString("path");
+    	    		  
+    	    		  int soundToggle;
+    	    		  if (SoundControl.getInstance().isSoundOn()) {
+    	    			  // if game music is set to ON by the player 
+    	    			  soundToggle = Toggle.ON;
+    	    		  }
+    	    		  else {
+    	    			  // if game music is set to OFF by the player
+    	    			  soundToggle = Toggle.OFF;
+    	    		  }
+    	    		  
+    	    		  final ToggleButton btnSound = new ToggleButton(x, y, soundOnPath, soundOffPath, soundToggle);
+    	    		  btnSound.setLayerDepth(depth);
+    	    		  final ImageLayer btnSoundLayer = btnSound.getLayer();
+    	    		  gLayer.add(btnSoundLayer);
+    	    		  buttonList.add(btnSound);
+    	    		  
+    	    		  btnSound.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Vect2d pointer) {
+    	    				  // Stop or Play game music
+    	    				  if (btnSound.getToggle() == Toggle.OFF) {
+    	    					  SoundControl.getInstance().setSoundOff();
+    	    				  }
+    	    				  else {
+    	    					  SoundControl.getInstance().setSoundOn();
+    	    				  }
+    	    			  }
+    	    		  });
+    	    		  
+    	    		  // Adding sound buttons
+	    	    	  Json.Object objMusicOn = resolution.getObject("music_on_button");
+	    	    	  Json.Object objMusicOff = resolution.getObject("music_off_button");
+	    	    	  x = objMusicOn.getInt("x");
+    	    		  y = objMusicOn.getInt("y");
+    	    		  String musicOnPath = objMusicOn.getString("path");
+    	    		  String musicOffPath = objMusicOff.getString("path");
+    	    		  
+    	    		  int musicToggle;
+    	    		  if (SoundControl.getInstance().isMusicOn()) {
+    	    			  // if game music is set to ON by the player 
+    	    			  musicToggle = Toggle.ON;
+    	    		  }
+    	    		  else {
+    	    			// if game music is set to OFF by the player
+    	    			  musicToggle = Toggle.OFF;
+    	    		  }
+    	    		  final ToggleButton btnMusic = new ToggleButton(x, y, musicOnPath, musicOffPath, musicToggle);
+    	    		  btnMusic.setLayerDepth(depth);
+    	    		  final ImageLayer btnMusicLayer = btnMusic.getLayer();
+    	    		  gLayer.add(btnMusicLayer);
+    	    		  buttonList.add(btnMusic);
+    	    		  
+    	    		  btnMusic.setEventListener(new ButtonEventListener() {
+    	    			  @Override
+    	    			  public void onClick(Vect2d pointer) {
+    	    				  // Stop or Play game music
+    	    				  if (btnMusic.getToggle() == Toggle.OFF) {
+    	    					  SoundControl.getInstance().stopGameMusic();
+    	    					  SoundControl.getInstance().setMusicOff();
+    	    				  }
+    	    				  else {
+    	    					  SoundControl.getInstance().playGameMusic();
+    	    					  SoundControl.getInstance().setMusicOn();
+    	    				  }
+    	    			  }
+    	    		  });
 	    	      }
 	    	  }
 	      }
 
 	      @Override
 	      public void error(Throwable err) {
-	    	  log().error("Error in loading menu screen! ", err);
+	    	  log().error("Error in loading Scene Menu! ", err);
 	      }
 	    });
+	    
+	    
+	    if (SoundControl.getInstance().isMusicOn()) {
+	    	SoundControl.getInstance().playGameMusic();
+	    }
+ 
 	}
 	
-	@Override
-	public void init(Object data) {	
-		// add a listener for pointer (mouse, touch) input
-	    pointer().setListener(new Pointer.Adapter() {
-	    	@Override
-	    	public void onPointerEnd(Pointer.Event event) {
-	    		firePointerEndEvent(event);		
-	    	}
-	    });
-	    
-	    gLayer.setVisible(true);
-	    
-    }
-	
-	private synchronized void firePointerEndEvent(Pointer.Event event) {
+	private synchronized void firePointerEndEvent(Vect2d pointer) {
+		
 		for (int i = 0; i < buttonList.size(); i++) {
-			buttonList.get(i).clicked(event);
+			buttonList.get(i).clicked(pointer);
 		}
 	}
 	
@@ -154,7 +238,4 @@ public class SceneMenu extends Scene {
 			gLayer.setVisible(false);
 		}
 	}
-	
-	
-	
 }

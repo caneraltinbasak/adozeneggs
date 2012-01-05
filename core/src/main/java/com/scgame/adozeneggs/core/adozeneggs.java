@@ -32,6 +32,6 @@ public class adozeneggs implements Game {
 
 	@Override
 	public int updateRate() {
-		return 25;
+		return 1000/GameConstants.ScreenProperties.UPDATE_MS;
 	}
 }

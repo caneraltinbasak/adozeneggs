@@ -55,7 +55,7 @@ public class SpriteLoader {
    * </pre>
    */
   public static Sprite getSprite(String imagePath, String jsonPath) {
-    Image image = assetManager().getImage(imagePath);
+    Image image = (Image) CachedResource.getInstance().getResource(imagePath);
     final Image[] images = new Image[]{image};
     // temp image to prevent NPE if using the Sprite's Layer (Sprite.getLayer()) before the image
     // has loaded or before a sprite has been set (Sprite.setSprite()).
@@ -176,7 +176,7 @@ public class SpriteLoader {
       Asserts.checkNotNull(urls, "No urls provided for sprite images");
       images = new Image[urls.length()];
       for (int i = 0; i < urls.length(); i++) {
-        images[i] = assetManager().getImage(urls.getString(i));
+        images[i] = (Image) CachedResource.getInstance().getResource(urls.getString(i));
       }
     }
 

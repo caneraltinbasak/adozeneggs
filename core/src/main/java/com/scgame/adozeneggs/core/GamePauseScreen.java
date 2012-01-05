@@ -99,4 +99,5 @@ public class GamePauseScreen {
 	public void hide() {
 		groupLayer.setDepth(-1000);
 	}
+
 }

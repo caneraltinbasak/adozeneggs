@@ -13,21 +13,13 @@ public class JumpEvent extends EventObject {
 	 * If eggs falls on ground the value is NULL.
 	 */
 	private Basket basket;
-	/**
-	 * if there is an Basket object in basket variable, check for the stars for how good the landing is.
-	 */
-	private int stars;
 
-	public JumpEvent(Object source, Basket basket, int stars) {
+	public JumpEvent(Object source, Basket basket) {
 		super(source);
 		this.basket = basket;
-		this.stars = stars;
 	}
 
 	public Basket getBasket() {
 		return basket;
-	}
-	public int getStars() {
-		return stars;
 	}
 }

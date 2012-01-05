@@ -190,7 +190,7 @@ public class SceneCharacterSelect extends Scene {
 						
 						@Override
 						public void onClick(Vect2d pointer) {
-							SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newGame");
+							SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
 							
 						}
     	    		  });

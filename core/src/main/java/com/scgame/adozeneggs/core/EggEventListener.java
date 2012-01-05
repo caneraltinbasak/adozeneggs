@@ -6,4 +6,5 @@ package com.scgame.adozeneggs.core;
  */
 public interface EggEventListener {
     public void onEggJump( JumpEvent event );
+    public void onEggFall( JumpEvent event);
 }
