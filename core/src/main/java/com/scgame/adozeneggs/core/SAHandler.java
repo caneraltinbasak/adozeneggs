@@ -232,6 +232,7 @@ public class SAHandler {
 		updateLiveScoreWithJump(star);
 		
 		if (timeElapsedOnBasket < SAConstants.FAST_JUMP_INTERVAL) {
+			System.out.println(timeElapsedOnBasket + " < " + SAConstants.FAST_JUMP_INTERVAL);
 			fastJumpCount++;
 		}
 		
