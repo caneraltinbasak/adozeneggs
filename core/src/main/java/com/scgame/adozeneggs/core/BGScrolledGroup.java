@@ -54,6 +54,14 @@ public class BGScrolledGroup extends ScrollableGroupEntity {
 				hasScroll = false;
 			}
 		}
+		
+		for(int i = 0 ; i <entities.size(); i++)
+		{
+			if(entities.get(i).isInRect(0, GameConstants.ScreenProperties.height - position.y, GameConstants.ScreenProperties.width, GameConstants.ScreenProperties.height - position.y)!=true)
+			{
+				entities.get(i).getPosition().y-=entities.get(i).getTopImageLayer().height()*3;
+			}
+		}
 	}
 
 
@@ -79,5 +87,6 @@ public class BGScrolledGroup extends ScrollableGroupEntity {
 	public GroupLayer getGroupLayer() {
 		return gLayer;
 	}
+
 
 }
