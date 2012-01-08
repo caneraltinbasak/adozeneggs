@@ -69,13 +69,21 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	}
 	@Override
 	public void paint(float alpha) {
+		// ENTITY PAINT
 		for(int i = 0 ; i <entities.size(); i++)
 			entities.get(i).paint(alpha);
+		
+		// SCROLL PAINT
 		if(scrollingSpeed != 0.0)
 			groupLayer.setTranslation(position.x, position.y);
+
+		// GAMESCORE PAINT
+		SAHandler.getInstance().paint(alpha);
+
 	}
 	@Override
 	public void update(float delta) {
+		// SCROLL
 		if(scrollingSpeed != 0.0f)
 		{
 			position.y = position.y + GameConstants.PhysicalProperties.verticalInPixels(scrollingSpeed) * delta / 1000;
@@ -84,9 +92,12 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 				scrollingSpeed = 0;
 			}
 		}
+		
+		// UPDATE POSITIONS
 		for(int i = 0 ; i <entities.size(); i++)
 			entities.get(i).update(delta);
 		
+		// ON SCREEN CHECK
 		for(int i = 0 ; i <entities.size(); i++)
 		{
 			if(entities.get(i).isInRect(0, GameConstants.ScreenProperties.height - position.y, GameConstants.ScreenProperties.width, GameConstants.ScreenProperties.height - position.y)!=true)
@@ -106,7 +117,14 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 				}
 			}
 		}
-			
+		
+		// GAMESCORE UPDATE
+		SAHandler.getInstance().update(delta);
+		
+		// update score when egg is on basket
+		if (egg.getCurrentBasket() != null) {
+			SAHandler.getInstance().updateLiveScoreWithUpdate(delta);
+		}
 	}
 	@Override
 	public GroupLayer getGroupLayer() {

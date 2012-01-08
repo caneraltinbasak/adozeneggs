@@ -27,7 +27,6 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	private GameBackground backGround;
 	private GamePauseScreen pauseScreen;
 	private AchievementScreen achievementScreen;
-	protected Egg egg;
 	private String LevelDataPath = "levels/level1.json";
 	private List<Vect2d> pointerEventList = new ArrayList<Vect2d>();
 
@@ -82,8 +81,6 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 		
 		SAHandler.getInstance().setAchievementScreen(achievementScreen);
 		
-		egg = new Egg();
-		egg.addEventListener(this);
 
 
 		assetManager().getText((String) LevelDataPath, new ResourceCallback<String>() {
@@ -211,17 +208,7 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 		if (gamePaused == false) {
 			foreGround.update(delta);
 			backGround.update(delta);
-			
-			SAHandler.getInstance().update(delta);
-			
-			// update score when egg is on basket
-			if (egg.getCurrentBasket() != null) {
-				SAHandler.getInstance().updateLiveScoreWithUpdate(delta);
-				System.out.println("update : " + delta);
-			}
-			else {
-				System.out.println("current basket is null");
-			}
+
 		}
 	}
 	
@@ -230,7 +217,6 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 			foreGround.paint(alpha);
 			backGround.paint(alpha);
 			
-			SAHandler.getInstance().paint(alpha);
 		}
 	}
 

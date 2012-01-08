@@ -104,10 +104,10 @@ public class Basket extends DoubleLayerGraphicsEntity{
 			{
 				// TODO: Commented out this part for easier testing. Comment in for real application
 				// TODO: Implement star rating
-				//if(egg.position.x >= position.x && egg.position.x <= position.x + width)
-				//{
+				if(egg.position.x >= position.x && egg.position.x <= position.x + width)
+				{
 					return 1;
-				//}
+				}
 			}
 		}
 		return 0;
