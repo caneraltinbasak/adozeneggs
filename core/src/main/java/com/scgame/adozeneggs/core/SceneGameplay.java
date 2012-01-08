@@ -229,15 +229,15 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	}
 
 	@Override
-	public void onEggJump(JumpEvent event) {
+	public void onEggJump(Basket basket, int stars) {
 		SAHandler.getInstance().jumped(3);
 		log().debug("[SceneGameplay::onEggJump]\n");
-		backGround.scrollTo(-event.getBasket().getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
-		foreGround.scrollTo(-event.getBasket().getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		backGround.scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		foreGround.scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 	}
 
 	@Override
-	public void onEggFall(JumpEvent event) {
+	public void onEggFall() {
 		log().debug("[SceneGameplay::onFall]\n");
 
 	}

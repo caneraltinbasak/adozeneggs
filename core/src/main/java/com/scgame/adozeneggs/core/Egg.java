@@ -35,6 +35,7 @@ public class Egg  extends GraphicsEntity{
 
 	// velocity(used when on air, uses currentBasket baskets velocity if not on air)
 	public Vect2d velocity= new Vect2d(0, 0); // pixels/ms
+	private OnScreenCheckInterface screenRect;
 
 
 	/**
@@ -94,6 +95,7 @@ public class Egg  extends GraphicsEntity{
 				position=position.add(velocity.multiply(delta));
 				// newVelocity = velocity + gravitational accelaration constant * time
 				velocity=velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.gravity)*delta/(1000*1000)));
+				// check if it is in a basket
 				int stars=0;
 				for (int i = 0; i < getTargetBaskets().size() ; i++){
 					if(getTargetBaskets().get(i).hit(this)!=0)
@@ -146,21 +148,20 @@ public class Egg  extends GraphicsEntity{
 	 * Removes listener
 	 * @param eventListener listener for jump events
 	 */
-	public synchronized void removeEventListener(EggEventListener eventListener) {
+	public void removeEventListener(EggEventListener eventListener) {
 		eventListeners.remove(eventListener);
 	}
 	/**
 	 * Adds a EggEventListener to listen JumpEvents.
 	 * @param eventListener listener for jump events.
 	 */
-	public synchronized void addEventListener(EggEventListener eventListener) {
+	public void addEventListener(EggEventListener eventListener) {
 		eventListeners.add(eventListener);
 	}
-	private synchronized void fireJumpEvent(Basket basket, int stars) {
-		JumpEvent event = new JumpEvent( this, basket);
+	private void fireJumpEvent(Basket basket, int stars) {
 		Iterator<EggEventListener> listeners = eventListeners.iterator();
 		while( listeners.hasNext() ) {
-			( (EggEventListener) listeners.next() ).onEggJump(event);
+			( (EggEventListener) listeners.next() ).onEggJump(basket,stars);
 		}
 	}
 	@Override

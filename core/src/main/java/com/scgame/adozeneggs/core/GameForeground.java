@@ -149,12 +149,12 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 		this.scrollPosition = scrollPosition;
 	}
 	@Override
-	public void onEggJump(JumpEvent event) {
+	public void onEggJump(Basket basket, int stars) {
 		log().debug("[GameForeground::onEggJump]\n");
-		scrollTo(-event.getBasket().getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 	}
 	@Override
-	public void onEggFall(JumpEvent event) {
+	public void onEggFall() {
 		
 	}
 
