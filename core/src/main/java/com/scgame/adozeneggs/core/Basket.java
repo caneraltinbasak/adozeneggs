@@ -26,6 +26,8 @@ public class Basket extends DoubleLayerGraphicsEntity{
 	private ImageLayer topImageLayer = null;
 	private ImageLayer bottomImageLayer = null;
 	private boolean initComplete = false;
+	private OnScreenCheckInterface parentRect;
+
 
 	
 	public Basket() {
@@ -128,6 +130,14 @@ public class Basket extends DoubleLayerGraphicsEntity{
 				velocity = - velocity;
 			}
 		}
+		switch(getParentRect().isInRect(this))
+		{
+		case TOP_IS_UNDER_VISIBLE_AREA:
+			position.y-=GameConstants.ScreenProperties.height*2;
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -169,5 +179,13 @@ public class Basket extends DoubleLayerGraphicsEntity{
 	@Override
 	public float getHeight() {
 		return this.height;
+	}
+
+	public OnScreenCheckInterface getParentRect() {
+		return parentRect;
+	}
+
+	public void setParentRect(OnScreenCheckInterface parentRect) {
+		this.parentRect = parentRect;
 	}
 }
