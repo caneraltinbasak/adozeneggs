@@ -87,6 +87,13 @@ public class BGScrolledGroup extends ScrollableGroupEntity {
 	public GroupLayer getGroupLayer() {
 		return gLayer;
 	}
+	@Override
+	public float getHeight() {
+		float height=0;
+		for (int i=0;i<entities.size();i++)
+			height+=entities.get(i).getHeight();
+		return height;
+	}
 
 
 }

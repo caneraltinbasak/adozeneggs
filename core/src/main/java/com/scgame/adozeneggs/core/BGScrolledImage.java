@@ -55,5 +55,9 @@ public class BGScrolledImage extends ScrollableGraphicsEntity {
 	public boolean isInRect(float x, float y, float width, float height) {
 		return  position.y < height;
 	}
+	@Override
+	public float getHeight() {
+		return this.imageLayer.height();
+	}
 
 }

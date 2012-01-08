@@ -165,4 +165,9 @@ public class Basket extends DoubleLayerGraphicsEntity{
 		this.velocity =velocity;
 		initComplete = true;
 	}
+
+	@Override
+	public float getHeight() {
+		return this.height;
+	}
 }

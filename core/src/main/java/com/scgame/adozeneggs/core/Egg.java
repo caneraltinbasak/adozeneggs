@@ -35,7 +35,7 @@ public class Egg  extends GraphicsEntity{
 
 	// velocity(used when on air, uses currentBasket baskets velocity if not on air)
 	public Vect2d velocity= new Vect2d(0, 0); // pixels/ms
-	private OnScreenCheckInterface screenRect;
+	private OnScreenCheckInterface parentRect;
 
 
 	/**
@@ -117,6 +117,14 @@ public class Egg  extends GraphicsEntity{
 				// position is equal to currentBaskets position if they are attached.
 				position=this.currentBasket.getPosition();
 			}
+			switch(getParentRect().isInRect(this))
+			{
+			case BOTTOM_IS_UNDER_VISIBLE_AREA:
+				fireFallEvent();
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -164,6 +172,12 @@ public class Egg  extends GraphicsEntity{
 			( (EggEventListener) listeners.next() ).onEggJump(basket,stars);
 		}
 	}
+	private void fireFallEvent() {
+		Iterator<EggEventListener> listeners = eventListeners.iterator();
+		while( listeners.hasNext() ) {
+			( (EggEventListener) listeners.next() ).onEggFall();
+		}
+	}
 	@Override
 	public ImageLayer getTopImageLayer() {
 		return sprite.layer();
@@ -188,5 +202,15 @@ public class Egg  extends GraphicsEntity{
 			return  position.y + sprite.height() < height;
 		else
 			return super.isInRect(x, y, width, height);
+	}
+	public OnScreenCheckInterface getParentRect() {
+		return parentRect;
+	}
+	public void setParentRect(OnScreenCheckInterface parentRect) {
+		this.parentRect = parentRect;
+	}
+	@Override
+	public float getHeight() {
+		return this.sprite.height();
 	}
 }
