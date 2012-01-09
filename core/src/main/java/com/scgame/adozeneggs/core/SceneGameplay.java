@@ -27,7 +27,6 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	private GameBackground backGround;
 	private GamePauseScreen pauseScreen;
 	private AchievementScreen achievementScreen;
-	protected Egg egg;
 	private String LevelDataPath = "levels/level1.json";
 	private List<Vect2d> pointerEventList = new ArrayList<Vect2d>();
 
@@ -82,8 +81,6 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 		
 		SAHandler.getInstance().setAchievementScreen(achievementScreen);
 		
-		egg = new Egg();
-		egg.addEventListener(this);
 
 
 		assetManager().getText((String) LevelDataPath, new ResourceCallback<String>() {
@@ -211,17 +208,7 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 		if (gamePaused == false) {
 			foreGround.update(delta);
 			backGround.update(delta);
-			
-			SAHandler.getInstance().update(delta);
-			
-			// update score when egg is on basket
-			if (egg.getCurrentBasket() != null) {
-				SAHandler.getInstance().updateLiveScoreWithUpdate(delta);
-				System.out.println("update : " + delta);
-			}
-			else {
-				System.out.println("current basket is null");
-			}
+
 		}
 	}
 	
@@ -230,7 +217,6 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 			foreGround.paint(alpha);
 			backGround.paint(alpha);
 			
-			SAHandler.getInstance().paint(alpha);
 		}
 	}
 
@@ -243,15 +229,15 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	}
 
 	@Override
-	public void onEggJump(JumpEvent event) {
+	public void onEggJump(Basket basket, int stars) {
 		SAHandler.getInstance().jumped(3);
 		log().debug("[SceneGameplay::onEggJump]\n");
-		backGround.scrollTo(-event.getBasket().getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
-		foreGround.scrollTo(-event.getBasket().getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		backGround.scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		foreGround.scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 	}
 
 	@Override
-	public void onEggFall(JumpEvent event) {
+	public void onEggFall() {
 		log().debug("[SceneGameplay::onFall]\n");
 
 	}

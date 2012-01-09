@@ -1,7 +1,6 @@
 package com.scgame.adozeneggs.core;
 
 import static playn.core.PlayN.graphics;
-import static playn.core.PlayN.log;
 import playn.core.Image;
 import playn.core.ImageLayer;
 
@@ -51,6 +50,14 @@ public class BGScrolledImage extends ScrollableGraphicsEntity {
 				scrollingSpeed = 0;
 			}
 		}
+	}
+	@Override
+	public boolean isInRect(float x, float y, float width, float height) {
+		return  position.y < height;
+	}
+	@Override
+	public float getHeight() {
+		return this.imageLayer.height();
 	}
 
 }

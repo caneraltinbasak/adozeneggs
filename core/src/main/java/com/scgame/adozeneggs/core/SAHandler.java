@@ -99,6 +99,7 @@ public class SAHandler {
 	
 	public void updateLiveScoreWithJump(int star) {
 		liveScore += star * SAConstants.JUMP_SCORE;
+		log().debug("liveScore:"+liveScore);
 	}
 	
 	public void updateLiveScoreWithUpdate(float delta) {
