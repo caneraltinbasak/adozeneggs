@@ -207,6 +207,7 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 			firePointerEndEvent(pointerEventList.get(0));
 			pointerEventList.remove(0);
 		}
+		
 		if (gamePaused == false) {
 			foreGround.update(delta);
 			backGround.update(delta);
@@ -216,6 +217,10 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 			// update score when egg is on basket
 			if (egg.getCurrentBasket() != null) {
 				SAHandler.getInstance().updateLiveScoreWithUpdate(delta);
+				System.out.println("update : " + delta);
+			}
+			else {
+				System.out.println("current basket is null");
 			}
 		}
 	}
