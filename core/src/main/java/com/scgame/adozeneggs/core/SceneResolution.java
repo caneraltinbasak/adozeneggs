@@ -24,7 +24,7 @@ public class SceneResolution extends Scene {
 	@Override
 	public void init(Object data) {
 		
-		SAHandler.getInstance().setHighScores(99);
+		SAHandler.getInstance().setHighScores(105);
 		
 		
 		System.out.println(SAHandler.getInstance().getHighScoreToday().user);
@@ -74,7 +74,7 @@ public class SceneResolution extends Scene {
 			
 			@Override
 			public void error(Throwable err) {
-				log().error("Button colud not be created", err);
+				log().error("Button could not be created", err);
 				
 			}
 			

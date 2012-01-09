@@ -99,7 +99,6 @@ public class SAHandler {
 	
 	public void updateLiveScoreWithJump(int star) {
 		liveScore += star * SAConstants.JUMP_SCORE;
-		log().debug("liveScore:"+liveScore);
 	}
 	
 	public void updateLiveScoreWithUpdate(float delta) {
@@ -157,6 +156,8 @@ public class SAHandler {
 				Json.Object objScore = document.getObject("score");
 		   	  	String url = objScore.getString("url");
 		   	  	url = url + "?user=serhat&score=" + score;
+		   	  	
+		   	  	System.out.println(url);
 		   	  	
 		   	  	net().get(url, new Callback<String>() {
 					
