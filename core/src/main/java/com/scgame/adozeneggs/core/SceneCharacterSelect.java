@@ -19,13 +19,14 @@ import playn.core.ResourceCallback;
 
 public class SceneCharacterSelect extends Scene {
 	private List<Button> buttonList = new ArrayList<Button>();
+	private List<Button> buttonPlayList = new ArrayList<Button>();
 	private Image bgImage;
 	private GroupLayer gLayer = null;
 	private String jsonPath = "layouts/SceneCharacterSelect.json";
-	private int depth = 0;
-	private ArrayList<ImageLayer> characterLayers = new ArrayList<ImageLayer>();
-	private ImageLayer activeCharacterLayer = null;
+	
+	private ArrayList<GroupLayer> characterLayers = new ArrayList<GroupLayer>();
 	private int activeChIndex = 0;
+
 	
 	public SceneCharacterSelect() {
 		initLayout();
@@ -71,79 +72,22 @@ public class SceneCharacterSelect extends Scene {
 	    	    	  // create and add background image layer
 	    	    	  bgImage = (Image)CachedResource.getInstance().getResource(bgImagePath);
 	    	    	  ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-	    	    	  bgLayer.setDepth(depth);
+	    	    	  //bgLayer.setDepth(depth);
 					  gLayer.add(bgLayer);
 
-					  depth++; // character images have same depth
-	    	    	  
-					 
-					  int x, y;
-					  String path;
+					  //depth++; // character images have same depth
 					  
-					  // Reading character1
-					  Json.Object objChImage1 = resolution.getObject("character1_image");
-					  String chImage1Path;
-					  if (storage().getItem(SAConstants.CHARACTER1_LOCK).equals(SAConstants.UNLOCKED)) {
-						  chImage1Path = objChImage1.getString("path");
-					  }  
-					  else {
-						  chImage1Path = objChImage1.getString("path_locked");
-					  }
+					  gLayer.add(createCharacter(resolution, "character1_image", SAConstants.CHARACTER1_LOCK));
+					  gLayer.add(createCharacter(resolution, "character2_image", SAConstants.CHARACTER2_LOCK));
+					  gLayer.add(createCharacter(resolution, "character3_image", SAConstants.CHARACTER3_LOCK));
 					  
-					  Image chImage1 = (Image) CachedResource.getInstance().getResource(chImage1Path);
-					  ImageLayer chImage1Layer = graphics().createImageLayer(chImage1);
-					  x = objChImage1.getInt("x");
-					  y = objChImage1.getInt("y");
-					  chImage1Layer.setTranslation(x, y);
-					  chImage1Layer.setVisible(true);
-					  activeCharacterLayer = chImage1Layer;
-					  characterLayers.add(chImage1Layer);
-					  gLayer.add(chImage1Layer);
+					  characterLayers.get(0).setVisible(true);
 					  
-					  // Reading character2
-					  Json.Object objChImage2 = resolution.getObject("character2_image");
-					  String chImage2Path;
-					  if (storage().getItem(SAConstants.CHARACTER2_LOCK).equals(SAConstants.UNLOCKED)) {
-						  chImage2Path = objChImage2.getString("path");
-					  }
-					  else {
-						  chImage2Path = objChImage2.getString("path_locked");
-					  }
-					  Image chImage2 = (Image) CachedResource.getInstance().getResource(chImage2Path);
-					  ImageLayer chImage2Layer = graphics().createImageLayer(chImage2);
-					  x = objChImage2.getInt("x");
-					  y = objChImage2.getInt("y");
-					  chImage2Layer.setTranslation(x, y);
-					  chImage2Layer.setVisible(false);
-					  characterLayers.add(chImage2Layer);
-					  gLayer.add(chImage2Layer);
-					  
-					  // Reading character3
-					  Json.Object objChImage3 = resolution.getObject("character3_image");
-					  String chImage3Path;
-					  if (storage().getItem(SAConstants.CHARACTER3_LOCK).equals(SAConstants.UNLOCKED)) {
-						  chImage3Path = objChImage3.getString("path");
-					  }
-					  else {
-						  chImage3Path = objChImage3.getString("path_locked");
-					  }
-					  Image chImage3 = (Image) CachedResource.getInstance().getResource(chImage3Path);
-					  ImageLayer chImage3Layer = graphics().createImageLayer(chImage3);
-					  x = objChImage3.getInt("x");
-					  y = objChImage3.getInt("y");
-					  chImage3Layer.setTranslation(x, y);
-					  chImage3Layer.setVisible(false);
-					  characterLayers.add(chImage3Layer);
-					  gLayer.add(chImage3Layer);
-					  
+
 					  // previous button
 					  Json.Object objPrevious = resolution.getObject("previous_button");
-    	    		  x = objPrevious.getInt("x");
-    	    		  y = objPrevious.getInt("y");
-    	    		  path = objPrevious.getString("path");
-    	    		  Button btnPrevious = new Button(x, y, path);
-    	    		  btnPrevious.setLayerDepth(depth);
-    	    		  final ImageLayer btnPreviousLayer = btnPrevious.getLayer();
+					  Button btnPrevious = createButton(objPrevious);
+					  final ImageLayer btnPreviousLayer = btnPrevious.getLayer();
     	    		  gLayer.add(btnPreviousLayer);
     	    		  buttonList.add(btnPrevious);
     	    		  
@@ -151,18 +95,13 @@ public class SceneCharacterSelect extends Scene {
 						
 						@Override
 						public void onClick(Vect2d pointer) {
-							
-							
+							showPreviousCharacter();
 						}
     	    		  });
     	    		  
     	    		  // next button
 					  Json.Object objNext = resolution.getObject("next_button");
-    	    		  x = objNext.getInt("x");
-    	    		  y = objNext.getInt("y");
-    	    		  path = objNext.getString("path");
-    	    		  Button btnNext = new Button(x, y, path);
-    	    		  btnNext.setLayerDepth(depth);
+    	    		  Button btnNext = createButton(objNext);
     	    		  final ImageLayer btnNextLayer = btnNext.getLayer();
     	    		  gLayer.add(btnNextLayer);
     	    		  buttonList.add(btnNext);
@@ -171,27 +110,7 @@ public class SceneCharacterSelect extends Scene {
 						
 						@Override
 						public void onClick(Vect2d pointer) {
-						
-						}
-    	    		  });
-    	    		  
-    	    		  // play button
-					  Json.Object objPlay = resolution.getObject("play_button");
-    	    		  x = objPlay.getInt("x");
-    	    		  y = objPlay.getInt("y");
-    	    		  path = objPlay.getString("path");
-    	    		  Button btnPlay = new Button(x, y, path);
-    	    		  btnPlay.setLayerDepth(depth);
-    	    		  final ImageLayer btnPlayLayer = btnPlay.getLayer();
-    	    		  gLayer.add(btnPlayLayer);
-    	    		  buttonList.add(btnPlay);
-    	    		  
-    	    		  btnPlay.setEventListener(new ButtonEventListener() {
-						
-						@Override
-						public void onClick(Vect2d pointer) {
-							SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
-							
+							showNextCharacter();
 						}
     	    		  });
 	    	      }
@@ -203,15 +122,93 @@ public class SceneCharacterSelect extends Scene {
 	    	  log().error("Error in loading Character Select scene! ", err);
 	      }
 	    });
-	    
-	    
- 
 	}
 	private synchronized void firePointerEndEvent(Vect2d pointer) {
 		
 		for (int i = 0; i < buttonList.size(); i++) {
 			buttonList.get(i).clicked(pointer);
 		}
+	
+		if (buttonPlayList.get(activeChIndex) != null) {
+			buttonPlayList.get(activeChIndex).clicked(pointer);
+		}
+		
+	}
+	
+	public Button createButton(Json.Object objButton) {
+		int x = objButton.getInt("x");
+		int y = objButton.getInt("y");
+		String path = objButton.getString("path");
+		Button btnPlay = new Button(x, y, path);
+		
+		return btnPlay;
+	}
+	
+	public GroupLayer createCharacter(Json.Object resolution, String characterName, String strLock) {
+		GroupLayer gChLayer = graphics().createGroupLayer();
+		ImageLayer btnPlayLayer = null;
+		String chImagePath;
+		  
+		Json.Object objCharacter = resolution.getObject(characterName);
+			
+		if (storage().getItem(strLock).equals(SAConstants.UNLOCKED)) {
+			chImagePath = objCharacter.getString("path");
+			Json.Object objButton = resolution.getObject("play_button");
+			Button btnPlay = createButton(objButton);
+			
+			btnPlayLayer = btnPlay.getLayer();
+			buttonPlayList.add(btnPlay);
+			
+			btnPlay.setEventListener(new ButtonEventListener() {
+				
+				@Override
+				public void onClick(Vect2d pointer) {
+					SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
+				}
+			});
+		}  
+		else {
+			chImagePath = objCharacter.getString("path_locked");
+			buttonPlayList.add(null);
+		}
+		  
+		Image chImage = (Image) CachedResource.getInstance().getResource(chImagePath);
+		ImageLayer chImageLayer = graphics().createImageLayer(chImage);
+		int x = objCharacter.getInt("x");
+		int y = objCharacter.getInt("y");
+		chImageLayer.setTranslation(x, y);
+		
+		gChLayer.add(chImageLayer);
+		if (btnPlayLayer != null) {
+			gChLayer.add(btnPlayLayer);
+		}
+		gChLayer.setVisible(false);
+		characterLayers.add(gChLayer);
+		return gChLayer;
+	}
+	
+	public void showPreviousCharacter() {
+		for (int i = 0; i < characterLayers.size(); i++) {
+			characterLayers.get(i).setVisible(false);
+		}
+		
+		activeChIndex--;
+		if (activeChIndex < 0) {
+			activeChIndex = characterLayers.size() - 1;
+		}
+		characterLayers.get(activeChIndex).setVisible(true);
+	}
+	
+	public void showNextCharacter() {
+		for (int i = 0; i < characterLayers.size(); i++) {
+			characterLayers.get(i).setVisible(false);
+		}
+		
+		activeChIndex++;
+		if (activeChIndex == characterLayers.size()) {
+			activeChIndex = 0;
+		}
+		characterLayers.get(activeChIndex).setVisible(true);
 	}
 	
 	@Override

@@ -1,0 +1,58 @@
+{
+    "image_layout":{
+        "resolution":[
+            {
+                "x":320,
+                "y":480,
+                "bg_image":{
+                    "id":"bg",
+                    "path":"images/bg_medium.png"
+                },
+                "local_button": {
+                	"id":"local",
+                    "path":"images/local_medium.png",
+                    "x":50,
+                    "y":20
+                 },
+                "global_button": {
+                  	"id":"global",
+                    "path":"images/global_medium.png",
+                    "x":180,
+                    "y":20
+                },
+                "back_button": {
+                    "id": "back",
+                    "path": "images/back_medium.png",
+                    "x": 10,
+                    "y": 400
+                }
+            },
+            {
+                "x":768,
+                "y":1024,
+                "bg_image": {
+                    "id":"bg",
+                    "path":"images/bg_high.png"
+                },
+                "local_button": {
+                	"id":"newGame",
+                    "path":"images/local_medium.png",
+                    "x":10,
+                    "y":20
+                },
+                "global_button": {
+                	"id":"options",
+                    "path":"images/global_medium.png",
+                    "x":10,
+                    "y":250
+                },
+                "back_button": {
+                    "id": "back",
+                    "path": "images/back_high.png",
+                    "x": 20,
+                    "y": 700
+                }
+            }
+        ]
+    }
+}

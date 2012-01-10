@@ -1,10 +1,11 @@
 package com.scgame.adozeneggs.core;
 
 import static playn.core.PlayN.graphics;
+
 import playn.core.Game;
 
 enum eScenes {
-	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING, CHARACTER_SELECT
+	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING, CHARACTER_SELECT, HIGH_SCORES
 }
 
 public class SceneNavigator implements Game {
@@ -16,6 +17,7 @@ public class SceneNavigator implements Game {
 	private Scene scGameplay;
 	private Scene scLoading;
 	private Scene scCharacterSelect;
+	private Scene scHighScores;
 	
 	private SceneNavigator() {
 		// Creating scenes
@@ -26,6 +28,7 @@ public class SceneNavigator implements Game {
 		scMenu = new SceneMenu();
 		scGameplay = new SceneGameplay(); 
 		scCharacterSelect = new SceneCharacterSelect();
+		scHighScores = new SceneHighScores();
 	}
 	public static SceneNavigator getInstance() {
 		if (instance == null) {
@@ -62,7 +65,13 @@ public class SceneNavigator implements Game {
 		case CHARACTER_SELECT:
 			activeScene = scCharacterSelect;
 			activeScene.init(null);
+			break;
+		case HIGH_SCORES:
+			activeScene = scHighScores;
+			activeScene.init(null);
+			break;
 		}
+			
 	}
 	
 	public Scene getActiveScene() {
