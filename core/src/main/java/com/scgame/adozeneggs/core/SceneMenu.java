@@ -214,7 +214,6 @@ public class SceneMenu extends Scene {
     	    		  });
     	    		  
     	    		  Layer layer = createGlobalScoresLayer();
-    	    		  layer.setTranslation(20, 250);
     	    		  layer.setDepth(depth);
     	    		  gLayer.add(layer);
 	    	      }
@@ -262,6 +261,7 @@ public class SceneMenu extends Scene {
 		pointer().setListener(null);
 		if (gLayer != null) {
 			gLayer.setVisible(false);
+			
 		}
 	}
 }

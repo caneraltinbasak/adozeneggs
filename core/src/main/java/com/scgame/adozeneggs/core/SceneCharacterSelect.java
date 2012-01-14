@@ -45,6 +45,7 @@ public class SceneCharacterSelect extends Scene {
 	    });
 	    
 	    gLayer.setVisible(true);
+
 	}
 	
 	private void initLayout() {    

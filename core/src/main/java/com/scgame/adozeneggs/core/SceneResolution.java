@@ -26,14 +26,6 @@ public class SceneResolution extends Scene {
 		
 		SAHandler.getInstance().setHighScores(105);
 		
-		
-		System.out.println(SAHandler.getInstance().getHighScoreToday().user);
-		System.out.println(SAHandler.getInstance().getHighScoreToday().score);
-		System.out.println(SAHandler.getInstance().getHighScoreToday().dayOfMonth);
-		System.out.println(SAHandler.getInstance().getHighScoreToday().month);
-		System.out.println(SAHandler.getInstance().getHighScoreToday().year);
-		
-		
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 	    
