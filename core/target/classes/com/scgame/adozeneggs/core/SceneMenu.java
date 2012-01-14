@@ -9,12 +9,17 @@ import static playn.core.PlayN.pointer;
 import java.util.ArrayList;
 import java.util.List;
 
+import playn.core.CanvasLayer;
+import playn.core.Font;
 import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.Json;
+import playn.core.Layer;
 import playn.core.Pointer;
 import playn.core.ResourceCallback;
+import playn.core.TextFormat;
+import playn.core.TextLayout;
 
 public class SceneMenu extends Scene {
 	private List<Button> buttonList = new ArrayList<Button>();
@@ -110,7 +115,7 @@ public class SceneMenu extends Scene {
     	    		  btnHighScores.setEventListener(new ButtonEventListener() {
     	    			  @Override
     	    			  public void onClick(Vect2d pointer) {
-    	    				  
+    	    				  SceneNavigator.getInstance().runScene(eScenes.HIGH_SCORES, null);
     	    			  }
     	    		  });
     	    		  
@@ -207,6 +212,10 @@ public class SceneMenu extends Scene {
     	    				  }
     	    			  }
     	    		  });
+    	    		  
+    	    		  Layer layer = createGlobalScoresLayer();
+    	    		  layer.setDepth(depth);
+    	    		  gLayer.add(layer);
 	    	      }
 	    	  }
 	      }
@@ -224,6 +233,22 @@ public class SceneMenu extends Scene {
  
 	}
 	
+	private Layer createGlobalScoresLayer() {
+		Score scoreAllTime = SAHandler.getInstance().getHighScoreAllTime();
+		
+		Font font = graphics().createFont("Helvetica", Font.Style.BOLD_ITALIC, 16);
+        TextFormat format = new TextFormat().withFont(font);
+        TextLayout layout = graphics().layoutText(scoreAllTime.user + " has highest score of all time\n              " + scoreAllTime.score + "\n\n Can you beat him?" , format);
+        Layer layer = createTextLayer(layout);
+        return layer;
+	}
+	
+	private Layer createTextLayer(TextLayout layout) {
+		CanvasLayer layer = graphics().createCanvasLayer((int)Math.ceil(layout.width()), (int)Math.ceil(layout.height()));
+		layer.canvas().drawText(layout, 0, 0);
+		return layer;
+	}
+	
 	private synchronized void firePointerEndEvent(Vect2d pointer) {
 		
 		for (int i = 0; i < buttonList.size(); i++) {
@@ -236,6 +261,7 @@ public class SceneMenu extends Scene {
 		pointer().setListener(null);
 		if (gLayer != null) {
 			gLayer.setVisible(false);
+			
 		}
 	}
 }

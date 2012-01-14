@@ -27,6 +27,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 		float basketGapinPixel = GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.BASKET_GAP);
 		for (int i = 0; i < NUMBER_OF_BASKETS;i++){
 			Basket basket = new Basket();
+			basket.setParentRect(this);
 			groupLayer.add(basket.getBottomImageLayer());
 			groupLayer.add(basket.getTopImageLayer());
 			entities.add(basket);
@@ -98,27 +99,6 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 		for(int i = 0 ; i <entities.size(); i++)
 			entities.get(i).update(delta);
 		
-		// ON SCREEN CHECK
-		for(int i = 0 ; i <entities.size(); i++)
-		{
-			if(entities.get(i).isInRect(0, GameConstants.ScreenProperties.height - position.y, GameConstants.ScreenProperties.width, GameConstants.ScreenProperties.height - position.y)!=true)
-			{
-				switch(entities.get(i).type){
-				case EGG:
-					// game over
-					log().debug("GAME OVER\n");
-					break;
-				case BASKET:
-					// reinitialize this basket
-					log().debug("Reinitilalizing the basket\n");
-					entities.get(i).getPosition().y-=GameConstants.ScreenProperties.height*2;
-					break;
-				default:
-					log().error("[GameForeground::update] Undefined Entity type\n");
-				}
-			}
-		}
-		
 		// GAMESCORE UPDATE
 		SAHandler.getInstance().update(delta);
 		
@@ -155,8 +135,8 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 		scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 	}
 	@Override
-	public void onEggFall() {
-		log().debug("EGG is falling\n");
+	public void onEggFall(float y) {
+		log().debug("EGG is falling: "+ y + "\n");
 	}
 
 	public void clicked(Vect2d pointer) {
@@ -178,10 +158,10 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	}
 	@Override
 	public eOnScreenState isInRect(Entity entity) {
-		if(entity.getPosition().y + entity.getHeight() > GameConstants.ScreenProperties.height - position.y){
-			return eOnScreenState.BOTTOM_IS_UNDER_VISIBLE_AREA;
-		}else if( entity.getPosition().y > GameConstants.ScreenProperties.height - position.y){
+		if( entity.getPosition().y > GameConstants.ScreenProperties.height - position.y){
 			return eOnScreenState.TOP_IS_UNDER_VISIBLE_AREA;
+		}else if(entity.getPosition().y + entity.getHeight() > GameConstants.ScreenProperties.height - position.y){
+			return eOnScreenState.BOTTOM_IS_UNDER_VISIBLE_AREA;
 		}
 
 		return eOnScreenState.TOTAL_IS_IN_VISIBLE_AREA;

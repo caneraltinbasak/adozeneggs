@@ -25,7 +25,6 @@ public class SceneResolution extends Scene {
 	public void init(Object data) {
 		
 		SAHandler.getInstance().setHighScores(105);
-		
 		gLayer = graphics().createGroupLayer();
 	    graphics().rootLayer().add(gLayer);
 	    
