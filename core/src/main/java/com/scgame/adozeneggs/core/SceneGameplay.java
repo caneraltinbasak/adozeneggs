@@ -237,7 +237,9 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	}
 
 	@Override
-	public void onEggFall() {
+	public void onEggFall(float y) {
+		backGround.scrollTo(- y + GameConstants.ScreenProperties.height );
+
 		log().debug("[SceneGameplay::onFall]\n");
 
 	}

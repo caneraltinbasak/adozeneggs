@@ -175,7 +175,7 @@ public class Egg  extends GraphicsEntity{
 	private void fireFallEvent() {
 		Iterator<EggEventListener> listeners = eventListeners.iterator();
 		while( listeners.hasNext() ) {
-			( (EggEventListener) listeners.next() ).onEggFall();
+			( (EggEventListener) listeners.next() ).onEggFall(position.y);
 		}
 	}
 	@Override

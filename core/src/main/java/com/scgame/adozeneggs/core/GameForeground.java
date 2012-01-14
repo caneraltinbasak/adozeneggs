@@ -53,7 +53,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 					// reinitialize this basket
 					log().debug("Reinitilalizing the basket\n");
 					Basket basket = (Basket)(entities.get(i));
-					basket.initializeProperties(/*i*0.1f+0.1f*/0, new Vect2d(0, basketYinPixel), new Vect2d(GameConstants.ScreenProperties.width, basketYinPixel));
+					basket.initializeProperties(i*0.1f+0.1f, new Vect2d(0, basketYinPixel), new Vect2d(GameConstants.ScreenProperties.width, basketYinPixel));
 					basketYinPixel = basketYinPixel - basketGapinPixel;
 					break;
 				default:
@@ -135,8 +135,8 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 		scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 	}
 	@Override
-	public void onEggFall() {
-		log().debug("EGG is falling\n");
+	public void onEggFall(float y) {
+		log().debug("EGG is falling: "+ y + "\n");
 	}
 
 	public void clicked(Vect2d pointer) {
