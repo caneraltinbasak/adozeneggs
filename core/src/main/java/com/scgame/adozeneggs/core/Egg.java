@@ -92,9 +92,16 @@ public class Egg  extends GraphicsEntity{
 			if(currentBasket==null)
 			{
 				// newPosition = position + velocity*time if on air
-				position=position.add(velocity.multiply(delta));
+				position = position.add(velocity.multiply(delta));
+				if(position.y > GameConstants.ScreenProperties.height)
+				{
+					fireEggCrashedGroundEvent();
+				}
+					
 				// newVelocity = velocity + gravitational accelaration constant * time
-				velocity=velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.gravity)*delta/(1000*1000)));
+				Vect2d newVelocity = velocity.add(new Vect2d(0, GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.gravity)*delta/(1000*1000)));
+				if(newVelocity.y < GameConstants.PhysicalProperties.verticalInPixels(GameConstants.PhysicalProperties.limitSpeed))
+					velocity=newVelocity;
 				// check if it is in a basket
 				int stars=0;
 				for (int i = 0; i < getTargetBaskets().size() ; i++){
@@ -103,7 +110,7 @@ public class Egg  extends GraphicsEntity{
 						// generate event and update current basket
 						if(getTargetBaskets().get(i) != lastBasket)
 						{
-							fireJumpEvent(getTargetBaskets().get(i), stars);
+							fireJumpEvent(this, stars);
 							currentBasket=getTargetBaskets().get(i);
 						}else{
 							currentBasket=lastBasket;
@@ -120,7 +127,9 @@ public class Egg  extends GraphicsEntity{
 			switch(getParentRect().isInRect(this))
 			{
 			case BOTTOM_IS_UNDER_VISIBLE_AREA:
-				fireFallEvent();
+			case TOP_IS_UNDER_VISIBLE_AREA:
+				if(position.y < GameConstants.ScreenProperties.height)
+					fireFallEvent();
 				break;
 			default:
 				break;
@@ -128,6 +137,12 @@ public class Egg  extends GraphicsEntity{
 		}
 	}
 
+	private void fireEggCrashedGroundEvent() {
+		Iterator<EggEventListener> listeners = eventListeners.iterator();
+		while( listeners.hasNext() ) {
+			( (EggEventListener) listeners.next() ).onEggOnCrashGround();
+		}
+	}
 	/**
 	 * Use this function to make egg jump. 
 	 * Jump generates JumpEvent as a result of failure or a success in landing. 
@@ -166,16 +181,16 @@ public class Egg  extends GraphicsEntity{
 	public void addEventListener(EggEventListener eventListener) {
 		eventListeners.add(eventListener);
 	}
-	private void fireJumpEvent(Basket basket, int stars) {
+	private void fireJumpEvent(Egg egg, int stars) {
 		Iterator<EggEventListener> listeners = eventListeners.iterator();
 		while( listeners.hasNext() ) {
-			( (EggEventListener) listeners.next() ).onEggJump(basket,stars);
+			( (EggEventListener) listeners.next() ).onEggJump(egg,stars);
 		}
 	}
 	private void fireFallEvent() {
 		Iterator<EggEventListener> listeners = eventListeners.iterator();
 		while( listeners.hasNext() ) {
-			( (EggEventListener) listeners.next() ).onEggFall(position.y);
+			( (EggEventListener) listeners.next() ).onEggFall(this);
 		}
 	}
 	@Override
@@ -196,13 +211,6 @@ public class Egg  extends GraphicsEntity{
 	public void addTargetBasket(Basket targetBasket) {
 		targetBaskets.add(targetBasket);
 	}
-	@Override
-	public boolean isInRect(float x, float y, float width, float height) {
-		if (hasLoaded && hasInitialized) 
-			return  position.y + sprite.height() < height;
-		else
-			return super.isInRect(x, y, width, height);
-	}
 	public OnScreenCheckInterface getParentRect() {
 		return parentRect;
 	}
@@ -212,5 +220,8 @@ public class Egg  extends GraphicsEntity{
 	@Override
 	public float getHeight() {
 		return this.sprite.height();
+	}
+	public void crashOnGround() {
+		velocity.assign(0, 0);
 	}
 }

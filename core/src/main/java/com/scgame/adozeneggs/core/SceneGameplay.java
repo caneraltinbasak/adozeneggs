@@ -229,18 +229,26 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 	}
 
 	@Override
-	public void onEggJump(Basket basket, int stars) {
+	public void onEggJump(Egg egg, int stars) {
 		SAHandler.getInstance().jumped(3);
-		log().debug("[SceneGameplay::onEggJump]\n");
-		backGround.scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
-		foreGround.scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		log().debug("[SceneGameplay::onEggJump]"+egg.getPosition().toString()+"\n");
+		backGround.scrollTo(-egg.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		foreGround.scrollTo(-egg.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 	}
 
 	@Override
-	public void onEggFall(float y) {
-		backGround.scrollTo(- y + GameConstants.ScreenProperties.height );
+	public void onEggFall(Egg egg) {
+		backGround.scrollTo(-egg.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		foreGround.scrollTo(-egg.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 
-		log().debug("[SceneGameplay::onFall]\n");
+		log().debug("[SceneGameplay::onFall]"+egg.getPosition().toString()+"\n");
 
+	}
+
+	@Override
+	public void onEggOnCrashGround() {		
+		log().debug("[SceneGameplay::onEggOnCrashGround]");
+		backGround.stopScroll();
+		foreGround.stopScroll();
 	}
 }

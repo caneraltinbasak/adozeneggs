@@ -4,20 +4,18 @@ import static playn.core.PlayN.graphics;
 import playn.core.Image;
 import playn.core.ImageLayer;
 
-public class BGScrolledImage extends ScrollableGraphicsEntity {
+public class BGScrolledImage extends GraphicsEntity {
 	private Vect2d position = new Vect2d(0, 0);;
 	private ImageLayer imageLayer = null;
-	private float scrollingSpeed = 0.0f;
-	private float scrollPosition = 0.0f;
 	private Image bgImage = null;
+	private OnScreenCheckInterface parentRect;
+	private Vect2d initialPosition = null;
+
 
 	public BGScrolledImage(String bgImagePath) {
 		this.imageLayer = graphics().createImageLayer();
 		bgImage = (Image)CachedResource.getInstance().getResource(bgImagePath);
 		imageLayer.setImage(bgImage);
-	}
-	@Override
-	public void scrollTo(float scrollPosition) {
 	}
 
 	@Override
@@ -32,6 +30,7 @@ public class BGScrolledImage extends ScrollableGraphicsEntity {
 
 	@Override
 	public void setPosition(Vect2d position) {
+		this.initialPosition = position.copy();
 		this.position=position;
 	}
 
@@ -42,22 +41,30 @@ public class BGScrolledImage extends ScrollableGraphicsEntity {
 
 	@Override
 	public void update(float delta) {
-		if(scrollingSpeed != 0.0f)
+		switch(getParentRect().isInRect(this))
 		{
-			position.y = position.y + GameConstants.PhysicalProperties.verticalInPixels(scrollingSpeed) * delta / 1000;
-			if(scrollPosition <= position.y)
-			{
-				scrollingSpeed = 0;
-			}
+		case TOP_IS_UNDER_VISIBLE_AREA:
+			position.y -= bgImage.height()*3;
+			break;
+		case BOTTOM_IS_OVER_VISIBLE_AREA: // this should happen scrolling down.
+			if(position.y != initialPosition.y)
+				position.y += bgImage.height()*3;
+			break;
+		default:
+			break;
 		}
-	}
-	@Override
-	public boolean isInRect(float x, float y, float width, float height) {
-		return  position.y < height;
 	}
 	@Override
 	public float getHeight() {
 		return this.imageLayer.height();
+	}
+
+	public OnScreenCheckInterface getParentRect() {
+		return parentRect;
+	}
+
+	public void setParentRect(OnScreenCheckInterface parentRect) {
+		this.parentRect = parentRect;
 	}
 
 }

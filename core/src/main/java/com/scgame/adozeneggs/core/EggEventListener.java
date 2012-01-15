@@ -5,6 +5,7 @@ package com.scgame.adozeneggs.core;
  * Event listener interface for listening JumpEvents
  */
 public interface EggEventListener {
-    public void onEggFall(float y);
-	public void onEggJump(Basket basket, int stars);
+    public void onEggFall(Egg egg);
+	public void onEggJump(Egg egg, int stars);
+	public void onEggOnCrashGround();
 }

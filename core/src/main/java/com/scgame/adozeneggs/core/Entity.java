@@ -17,6 +17,5 @@ public abstract class Entity {
 	public abstract void update(float delta) ;
 	public abstract float getHeight();
 	public void clicked(Vect2d pointer){};
-	public boolean isInRect(float x, float y, float width, float height) {return true;}
 	public void init(){}
 }

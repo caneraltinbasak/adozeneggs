@@ -13,7 +13,6 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	private Vect2d position = new Vect2d(0, 0);
 	private List<GraphicsEntity> entities = new ArrayList<GraphicsEntity>();
 	private GroupLayer groupLayer;
-	private float scrollingSpeed = 0.0f;
 	private float scrollPosition = 0.0f;
 	private Egg egg;
 
@@ -53,7 +52,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 					// reinitialize this basket
 					log().debug("Reinitilalizing the basket\n");
 					Basket basket = (Basket)(entities.get(i));
-					basket.initializeProperties(i*0.1f+0.1f, new Vect2d(0, basketYinPixel), new Vect2d(GameConstants.ScreenProperties.width, basketYinPixel));
+					basket.initializeProperties((i/6)*0.1f, new Vect2d(0, basketYinPixel), new Vect2d(GameConstants.ScreenProperties.width, basketYinPixel));
 					basketYinPixel = basketYinPixel - basketGapinPixel;
 					break;
 				default:
@@ -66,7 +65,6 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	private void scrollToBottom() {
 		position.assign(0, 0);
 		groupLayer.setTranslation(position.x, position.y);
-		scrollingSpeed=0;
 		scrollPosition=0;
 	}
 	@Override
@@ -76,8 +74,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 			entities.get(i).paint(alpha);
 		
 		// SCROLL PAINT
-		if(scrollingSpeed != 0.0)
-			groupLayer.setTranslation(position.x, position.y);
+		groupLayer.setTranslation(position.x, position.y);
 
 		// GAMESCORE PAINT
 		SAHandler.getInstance().paint(alpha);
@@ -86,14 +83,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	@Override
 	public void update(float delta) {
 		// SCROLL
-		if(scrollingSpeed != 0.0f)
-		{
-			position.y = position.y + GameConstants.PhysicalProperties.verticalInPixels(scrollingSpeed) * delta / 1000;
-			if(scrollPosition <= position.y)
-			{
-				scrollingSpeed = 0;
-			}
-		}
+		position.y = position.y + ( scrollPosition -position.y )*GameConstants.ScreenProperties.FRAME_RATE/1000;
 		
 		// UPDATE POSITIONS
 		for(int i = 0 ; i <entities.size(); i++)
@@ -121,22 +111,15 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	}
 	@Override
 	public void scrollTo(float scrollPosition){
-		if(scrollingSpeed == 0)
-			scrollingSpeed = GameConstants.PhysicalProperties.ForegroundScrollSpeed;
-		else
-			scrollingSpeed *= 2;
-		if(scrollPosition < 0)
-			scrollingSpeed = -scrollingSpeed;
 		this.scrollPosition = scrollPosition;
 	}
 	@Override
-	public void onEggJump(Basket basket, int stars) {
+	public void onEggJump(Egg egg, int stars) {
 		log().debug("[GameForeground::onEggJump]\n");
-		scrollTo(-basket.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
+		scrollTo(-egg.getPosition().y + GameConstants.ScreenProperties.height - GameConstants.PhysicalProperties.verticalInPixels(GameConstants.GameProperties.FIRST_BASKET_Y_OFFSET));
 	}
 	@Override
-	public void onEggFall(float y) {
-		log().debug("EGG is falling: "+ y + "\n");
+	public void onEggFall(Egg egg) {
 	}
 
 	public void clicked(Vect2d pointer) {
@@ -170,5 +153,13 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	public float getHeight() {
 		// Height of the gamescreen is two times the device screen
 		return GameConstants.ScreenProperties.height*2;
+	}
+	@Override
+	public void onEggOnCrashGround() {
+		//scrollingSpeed=0; // stop scrolling when crashes ground
+		egg.crashOnGround();
+	}
+	@Override
+	public void stopScroll() {
 	}
 }
