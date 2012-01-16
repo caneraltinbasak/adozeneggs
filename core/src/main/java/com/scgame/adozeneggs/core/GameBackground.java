@@ -45,17 +45,17 @@ public class GameBackground extends ScrollableGroupEntity {
 		BGScrolledGroup scrolledImage1 = null;
 		BGScrolledGroup scrolledImage2 = null;
 	    if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.HIGH){
-			scrolledImage0 = new BGScrolledGroup(BG_HIGH_LAYER0_0_IMAGE_PATH,BG_HIGH_LAYER0_1_IMAGE_PATH,BG_HIGH_LAYER0_2_IMAGE_PATH,GameConstants.PhysicalProperties.ForegroundScrollSpeed);
-			scrolledImage1 = new BGScrolledGroup(BG_HIGH_LAYER1_0_IMAGE_PATH,BG_HIGH_LAYER1_1_IMAGE_PATH,BG_HIGH_LAYER1_2_IMAGE_PATH,GameConstants.PhysicalProperties.ForegroundScrollSpeed*2);
-			scrolledImage2 = new BGScrolledGroup(BG_HIGH_LAYER2_0_IMAGE_PATH,BG_HIGH_LAYER2_1_IMAGE_PATH,BG_HIGH_LAYER2_2_IMAGE_PATH,GameConstants.PhysicalProperties.ForegroundScrollSpeed*4);
+			scrolledImage0 = new BGScrolledGroup(BG_HIGH_LAYER0_0_IMAGE_PATH,BG_HIGH_LAYER0_1_IMAGE_PATH,BG_HIGH_LAYER0_2_IMAGE_PATH,0.25f);
+			scrolledImage1 = new BGScrolledGroup(BG_HIGH_LAYER1_0_IMAGE_PATH,BG_HIGH_LAYER1_1_IMAGE_PATH,BG_HIGH_LAYER1_2_IMAGE_PATH,0.5f);
+			scrolledImage2 = new BGScrolledGroup(BG_HIGH_LAYER2_0_IMAGE_PATH,BG_HIGH_LAYER2_1_IMAGE_PATH,BG_HIGH_LAYER2_2_IMAGE_PATH,1f);
 	    }else if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.MEDIUM){
-			scrolledImage0 = new BGScrolledGroup(BG_MEDIUM_LAYER0_0_IMAGE_PATH,BG_MEDIUM_LAYER0_1_IMAGE_PATH,BG_MEDIUM_LAYER0_2_IMAGE_PATH, GameConstants.PhysicalProperties.ForegroundScrollSpeed);
-			scrolledImage1 = new BGScrolledGroup(BG_MEDIUM_LAYER1_0_IMAGE_PATH,BG_MEDIUM_LAYER1_1_IMAGE_PATH,BG_MEDIUM_LAYER1_2_IMAGE_PATH, GameConstants.PhysicalProperties.ForegroundScrollSpeed*2);
-			scrolledImage2 = new BGScrolledGroup(BG_MEDIUM_LAYER2_0_IMAGE_PATH,BG_MEDIUM_LAYER2_1_IMAGE_PATH,BG_MEDIUM_LAYER2_2_IMAGE_PATH, GameConstants.PhysicalProperties.ForegroundScrollSpeed*4);
+			scrolledImage0 = new BGScrolledGroup(BG_MEDIUM_LAYER0_0_IMAGE_PATH,BG_MEDIUM_LAYER0_1_IMAGE_PATH,BG_MEDIUM_LAYER0_2_IMAGE_PATH, 0.25f);
+			scrolledImage1 = new BGScrolledGroup(BG_MEDIUM_LAYER1_0_IMAGE_PATH,BG_MEDIUM_LAYER1_1_IMAGE_PATH,BG_MEDIUM_LAYER1_2_IMAGE_PATH, 0.5f);
+			scrolledImage2 = new BGScrolledGroup(BG_MEDIUM_LAYER2_0_IMAGE_PATH,BG_MEDIUM_LAYER2_1_IMAGE_PATH,BG_MEDIUM_LAYER2_2_IMAGE_PATH, 1);
 	    }else if(GameConstants.ScreenProperties.gQuality == GameConstants.ScreenProperties.LOW){
-			scrolledImage0 = new BGScrolledGroup(BG_LOW_LAYER0_0_IMAGE_PATH,BG_LOW_LAYER0_1_IMAGE_PATH,BG_LOW_LAYER0_2_IMAGE_PATH,GameConstants.PhysicalProperties.ForegroundScrollSpeed);
-			scrolledImage1 = new BGScrolledGroup(BG_LOW_LAYER1_0_IMAGE_PATH,BG_LOW_LAYER1_1_IMAGE_PATH,BG_LOW_LAYER1_2_IMAGE_PATH, GameConstants.PhysicalProperties.ForegroundScrollSpeed*2);
-			scrolledImage2 = new BGScrolledGroup(BG_LOW_LAYER2_0_IMAGE_PATH,BG_LOW_LAYER2_1_IMAGE_PATH,BG_LOW_LAYER2_2_IMAGE_PATH, GameConstants.PhysicalProperties.ForegroundScrollSpeed*4);
+			scrolledImage0 = new BGScrolledGroup(BG_LOW_LAYER0_0_IMAGE_PATH,BG_LOW_LAYER0_1_IMAGE_PATH,BG_LOW_LAYER0_2_IMAGE_PATH, 0.25f);
+			scrolledImage1 = new BGScrolledGroup(BG_LOW_LAYER1_0_IMAGE_PATH,BG_LOW_LAYER1_1_IMAGE_PATH,BG_LOW_LAYER1_2_IMAGE_PATH, 0.5f);
+			scrolledImage2 = new BGScrolledGroup(BG_LOW_LAYER2_0_IMAGE_PATH,BG_LOW_LAYER2_1_IMAGE_PATH,BG_LOW_LAYER2_2_IMAGE_PATH, 1f);
 	    }
 		groupLayer.add(scrolledImage0.getGroupLayer());
 		groupLayer.add(scrolledImage1.getGroupLayer());

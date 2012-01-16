@@ -92,10 +92,12 @@ public class Egg  extends GraphicsEntity{
 			if(currentBasket==null)
 			{
 				// newPosition = position + velocity*time if on air
-				position = position.add(velocity.multiply(delta));
+				Vect2d newPosition = position.add(velocity.multiply(delta));
 				if(position.y > GameConstants.ScreenProperties.height)
 				{
 					fireEggCrashedGroundEvent();
+				}else{
+					position = newPosition;
 				}
 					
 				// newVelocity = velocity + gravitational accelaration constant * time
