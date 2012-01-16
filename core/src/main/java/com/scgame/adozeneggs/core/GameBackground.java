@@ -37,8 +37,8 @@ public class GameBackground extends ScrollableGroupEntity {
 	private static final String BG_LOW_LAYER2_2_IMAGE_PATH = "images/Layer2_2.png";
 	
 	private List<ScrollableGroupEntity> entities = new ArrayList<ScrollableGroupEntity>();
-	GroupLayer groupLayer;
-	Vect2d position;
+	private GroupLayer groupLayer;
+	private Vect2d position;
 	public GameBackground() {
 		this.groupLayer = graphics().createGroupLayer();
 		BGScrolledGroup scrolledImage0 = null;

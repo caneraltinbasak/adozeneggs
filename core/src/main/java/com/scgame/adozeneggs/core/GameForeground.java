@@ -15,6 +15,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	private GroupLayer groupLayer;
 	private float scrollPosition = 0.0f;
 	private Egg egg;
+	private GameOverScreen gameOverScreen;
 
 
 	public GameForeground() {
@@ -35,6 +36,8 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 		}
 		groupLayer.add(egg.getTopImageLayer()); // TODO: Move most of these to initGame()
 		entities.add(egg);
+		gameOverScreen = new GameOverScreen();
+		groupLayer.add(gameOverScreen.getGroupLayer());
 	}
 	public void init() {
 		scrollToBottom();
@@ -60,6 +63,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 				}
 
 		}
+		gameOverScreen.init();
 	}
 
 	private void scrollToBottom() {
@@ -78,6 +82,9 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 
 		// GAMESCORE PAINT
 		SAHandler.getInstance().paint(alpha);
+		
+		// GAMEOVER PAINT
+		gameOverScreen.paint(alpha);
 
 	}
 	@Override
@@ -96,6 +103,9 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 		if (egg.getCurrentBasket() != null) {
 			SAHandler.getInstance().updateLiveScoreWithUpdate(delta);
 		}
+		
+		// GAMEOVER UPDATE
+		gameOverScreen.update(delta);
 	}
 	@Override
 	public GroupLayer getGroupLayer() {
@@ -158,6 +168,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	public void onEggOnCrashGround() {
 		//scrollingSpeed=0; // stop scrolling when crashes ground
 		egg.crashOnGround();
+		gameOverScreen.show();
 	}
 	@Override
 	public void stopScroll() {
