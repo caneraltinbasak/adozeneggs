@@ -15,7 +15,7 @@ public class GameConstants {
 		throw new AssertionError();
 	}
 	public static class GameProperties{
-		public static final float FIRST_BASKET_Y_OFFSET = 1f;
+		public static final float FIRST_BASKET_Y_OFFSET = 2f;
 		public static final float BASKET_GAP = 2.5f;
 
 	}

@@ -106,7 +106,7 @@ public class Basket extends DoubleLayerGraphicsEntity{
 			{
 				// TODO: Commented out this part for easier testing. Comment in for real application
 				// TODO: Implement star rating
-				if(egg.position.x >= position.x && egg.position.x <= position.x + width)
+				if(egg.position.x >= position.x - 30 && egg.position.x - 30 <= position.x + width)
 				{
 					return 1;
 				}
@@ -143,13 +143,6 @@ public class Basket extends DoubleLayerGraphicsEntity{
 	@Override
 	public ImageLayer getBottomImageLayer() {
 		return bottomImageLayer;
-	}
-	@Override
-	public boolean isInRect(float x, float y, float width, float height) {
-		if(initComplete)
-			return  position.y < height;
-		else
-			return super.isInRect(x, y, width, height);
 	}
 
 	public Vect2d getStartPosition() {

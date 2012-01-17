@@ -102,4 +102,9 @@ public class GameBackground extends ScrollableGroupEntity {
 		// get first elements height, it should be same with the other layers
 		return entities.get(0).getHeight();
 	}
+	@Override
+	public void stopScroll() {
+		for(int i = 0 ; i <entities.size(); i++)
+			entities.get(i).stopScroll();
+	}
 }
