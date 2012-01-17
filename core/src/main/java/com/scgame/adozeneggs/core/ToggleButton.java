@@ -50,7 +50,7 @@ public class ToggleButton extends Button {
 		if (hitTest(pointer.x, pointer.y)) {
 			toggle();
 			if (listener != null) {
-				listener.onClick(pointer);
+				listener.onClick();
 			}
 			return true;
 		}

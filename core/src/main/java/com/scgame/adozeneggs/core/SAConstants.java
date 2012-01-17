@@ -18,8 +18,22 @@ public class SAConstants {
 	
 	public static String LOCKED = "locked";
 	public static String UNLOCKED = "unlocked";
+	
+	/********** ACVIEVEMETS **********/
 	public static String ACH_FIRST_FAST_JUMP = "achFirstFastJump";
 	public static String ACH_FIRST_THREE_STAR_JUMP = "achFirstThreeStarJump";
+	public static String ACHIEVEMENT1  = "achievement1";
+	public static String ACHIEVEMENT2  = "achievement2";
+	public static String ACHIEVEMENT3  = "achievement3";
+	public static String ACHIEVEMENT4  = "achievement4";
+	public static String ACHIEVEMENT5  = "achievement5";
+	public static String ACHIEVEMENT6  = "achievement6";
+	public static String ACHIEVEMENT7  = "achievement7";
+	public static String ACHIEVEMENT8  = "achievement8";
+	public static String ACHIEVEMENT9  = "achievement9";
+	public static String ACHIEVEMENT10 = "achievement10";
+	
+	
 	
 	public static String IMG_FIRST_FAST_JUMP_PATH = "images/first_fast_jump.png";  // Image path for First Fast Jump achievement
 	public static String IMG_FIRST_THREE_STAR_JUMP_PATH = "images/first_three_star_jump.png";  // Image path for First Three Star Jump achievement

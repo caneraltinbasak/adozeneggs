@@ -82,7 +82,7 @@ public class SceneResolution extends Scene {
 		
 		res1.setEventListener(new ButtonEventListener() {
 			@Override
-			public void onClick(Vect2d pointer) {
+			public void onClick() {
 				GameConstants.ScreenProperties.height = 1024;
 				GameConstants.ScreenProperties.width = 768;
 				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.HIGH;
@@ -93,7 +93,7 @@ public class SceneResolution extends Scene {
 		
 		res2.setEventListener(new ButtonEventListener() {	
 			@Override
-			public void onClick(Vect2d pointer) {
+			public void onClick() {
 				GameConstants.ScreenProperties.height = 480;
 				GameConstants.ScreenProperties.width = 320;
 				GameConstants.ScreenProperties.gQuality= GameConstants.ScreenProperties.MEDIUM;

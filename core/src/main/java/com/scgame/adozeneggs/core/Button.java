@@ -14,6 +14,8 @@ public class Button {
 	protected ImageLayer imageLayer = null;
 	protected ButtonEventListener listener = null;
 	protected Image imgButton = null;
+	private boolean visible = true;
+	private boolean enabled = true;
 
 	/**
 	 * Button Constructor
@@ -46,6 +48,14 @@ public class Button {
 	 * @param y pointer (mouse, touch) value on y coordinate
 	 */
 	public boolean hitTest(float x, float y) {	
+		if (visible == false) {
+			return false;
+		}
+		
+		if (enabled == false) {
+			return false;
+		}
+		
 		if ((x > px) && (x < px + width) && (y > py) && (y < py + height)) {
 			this.isHit = true;
 		} else {
@@ -57,7 +67,7 @@ public class Button {
 	public boolean clicked(Vect2d pointer) {
 		if (hitTest(pointer.x, pointer.y)) {
 			if (listener != null) {
-				listener.onClick(pointer);
+				listener.onClick();
 			}
 			return true;
 		}
@@ -73,4 +83,23 @@ public class Button {
 			this.imageLayer.setDepth(depth);
 		}
 	}
+	
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+		if (visible == false) {
+			this.imageLayer.setTranslation(-10000, 0);
+		}
+		else {
+			this.imageLayer.setTranslation(this.px, this.py);
+		}
+	}
+	
+	public void enable() {
+		this.enabled = true;
+	}
+	
+	public void disable() {
+		this.enabled = false;
+	}
+	
 }

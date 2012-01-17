@@ -5,10 +5,10 @@ import static playn.core.PlayN.graphics;
 import playn.core.Game;
 
 enum eScenes {
-	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING, CHARACTER_SELECT, HIGH_SCORES
+	RESOLUTION, MENU, LEVELS, GAMEPLAY, OPTIONS, CREDITS, LOADING, CHARACTER_SELECT, HIGH_SCORES, ACHIEVEMENTS
 }
 
-public class SceneNavigator implements Game {
+public class SceneNavigator {
 	public Scene activeScene;
 	private static SceneNavigator instance = null;
 	private Scene scResolution;
@@ -18,6 +18,8 @@ public class SceneNavigator implements Game {
 	private Scene scLoading;
 	private Scene scCharacterSelect;
 	private Scene scHighScores;
+	private Scene scAchievements;
+
 	
 	private SceneNavigator() {
 		// Creating scenes
@@ -29,6 +31,7 @@ public class SceneNavigator implements Game {
 		scGameplay = new SceneGameplay(); 
 		scCharacterSelect = new SceneCharacterSelect();
 		scHighScores = new SceneHighScores();
+		scAchievements = new SceneAchievements();
 	}
 	public static SceneNavigator getInstance() {
 		if (instance == null) {
@@ -36,6 +39,7 @@ public class SceneNavigator implements Game {
 		}
 		return instance;
 	}
+	
 	public void runScene(eScenes scene, Object data) {
 		if (activeScene != null) {
 			activeScene.shutdown();
@@ -70,6 +74,10 @@ public class SceneNavigator implements Game {
 			activeScene = scHighScores;
 			activeScene.init(null);
 			break;
+		case ACHIEVEMENTS:
+			activeScene = scAchievements;
+			activeScene.init(null);
+			break;
 		}
 			
 	}
@@ -78,7 +86,6 @@ public class SceneNavigator implements Game {
 		return activeScene;
 	}
 
-	@Override
 	public void init() {
 		graphics().setSize(220, 300);
 		scResolution = new SceneResolution();
@@ -86,22 +93,6 @@ public class SceneNavigator implements Game {
 		runScene(eScenes.RESOLUTION, null);
 	}
 
-	@Override
-	public void update(float delta) {
-		activeScene.update(delta);
-	}
-
-	@Override
-	public void paint(float alpha) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int updateRate() {
-		// TODO Auto-generated method stub
-		return 25;
-	}
 }
 		
 	

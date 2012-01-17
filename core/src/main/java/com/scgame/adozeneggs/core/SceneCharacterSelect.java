@@ -5,6 +5,7 @@ import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.json;
 import static playn.core.PlayN.log;
 import static playn.core.PlayN.pointer;
+import static playn.core.PlayN.mouse;
 import static playn.core.PlayN.storage;
 
 import java.util.ArrayList;
@@ -16,16 +17,25 @@ import playn.core.ImageLayer;
 import playn.core.Json;
 import playn.core.Pointer;
 import playn.core.ResourceCallback;
+import playn.core.Mouse.ButtonEvent;
+import playn.core.Mouse.MotionEvent;
+import playn.core.Mouse.WheelEvent;
+import playn.core.Pointer.Event;
 
 public class SceneCharacterSelect extends Scene {
 	private List<Button> buttonList = new ArrayList<Button>();
-	private List<Button> buttonPlayList = new ArrayList<Button>();
+	private List<Button> chButtonList = new ArrayList<Button>();
+	
 	private Image bgImage;
 	private GroupLayer gLayer = null;
 	private String jsonPath = "layouts/SceneCharacterSelect.json";
-	
-	private ArrayList<GroupLayer> characterLayers = new ArrayList<GroupLayer>();
-	private int activeChIndex = 0;
+	private int chIndex = 0;
+	private Button ch1Unlocked;
+	private Button ch1Locked;
+	private Button ch2Unlocked;
+	private Button ch2Locked;
+	private Button ch3Unlocked;
+	private Button ch3Locked;
 
 	
 	public SceneCharacterSelect() {
@@ -36,6 +46,7 @@ public class SceneCharacterSelect extends Scene {
 	@Override
 	public void init(Object data) {
 		// add a listener for pointer (mouse, touch) input
+		/*
 	    pointer().setListener(new Pointer.Adapter() {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) {
@@ -43,9 +54,54 @@ public class SceneCharacterSelect extends Scene {
 	    		firePointerEndEvent(pointer);		
 	    	}
 	    });
+	   */
+		
+		pointer().setListener(new Pointer.Listener() {
+			
+			@Override
+			public void onPointerStart(Event event) {
+				System.out.println("onPointerStart");
+				
+			}
+			
+			@Override
+			public void onPointerEnd(Event event) {
+				System.out.println("onPointerEnd");
+				
+			}
+			
+			@Override
+			public void onPointerDrag(Event event) {
+				System.out.println("onPointerDrag");
+				
+			}
+		});
 	    
 	    gLayer.setVisible(true);
 
+	    chButtonList.clear();
+	    
+	    // Init character buttons as locked/unlocked by checking storage data.
+	    if (storage().getItem(SAConstants.CHARACTER1_LOCK).equals(SAConstants.UNLOCKED)) {
+	    	chButtonList.add(ch1Unlocked);
+	    }
+	    else {
+	    	chButtonList.add(ch1Locked);
+	    }
+	    
+	    if (storage().getItem(SAConstants.CHARACTER2_LOCK).equals(SAConstants.UNLOCKED)) {
+	    	chButtonList.add(ch2Unlocked);
+	    }
+	    else {
+	    	chButtonList.add(ch2Locked);
+	    }
+	    
+	    if (storage().getItem(SAConstants.CHARACTER3_LOCK).equals(SAConstants.UNLOCKED)) {
+	    	chButtonList.add(ch3Unlocked);
+	    }
+	    else {
+	    	chButtonList.add(ch3Locked);
+	    }
 	}
 	
 	private void initLayout() {    
@@ -73,29 +129,82 @@ public class SceneCharacterSelect extends Scene {
 	    	    	  // create and add background image layer
 	    	    	  bgImage = (Image)CachedResource.getInstance().getResource(bgImagePath);
 	    	    	  ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-	    	    	  //bgLayer.setDepth(depth);
 					  gLayer.add(bgLayer);
 
-					  //depth++; // character images have same depth
+					  /********** CHARACTER 1 **********/
+					  // character1 unlocked		
+					  ch1Unlocked = createCharacterButton(resolution, "character1_image", SAConstants.UNLOCKED);
+					  chButtonList.add(ch1Unlocked);
+					  gLayer.add(ch1Unlocked.getLayer());
+					  ch1Unlocked.setEventListener(new ButtonEventListener() {
+						@Override
+						public void onClick() {
+							SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
+							
+						}
+					  });
 					  
-					  gLayer.add(createCharacter(resolution, "character1_image", SAConstants.CHARACTER1_LOCK));
-					  gLayer.add(createCharacter(resolution, "character2_image", SAConstants.CHARACTER2_LOCK));
-					  gLayer.add(createCharacter(resolution, "character3_image", SAConstants.CHARACTER3_LOCK));
+					  // character1 locked button
+					  ch1Locked = createCharacterButton(resolution, "character1_image", SAConstants.LOCKED);
+					  chButtonList.add(ch1Locked);
+					  ch1Locked.setVisible(false);
+					  gLayer.add(ch1Locked.getLayer());
 					  
-					  characterLayers.get(0).setVisible(true);
+					  /*********************************/
 					  
-
+					  /********** CHARACTER 2 **********/
+					  // character2 unlocked button
+					  ch2Unlocked = createCharacterButton(resolution, "character2_image", SAConstants.UNLOCKED);
+					  chButtonList.add(ch2Unlocked);
+					  ch2Unlocked.setVisible(false);
+					  gLayer.add(ch2Unlocked.getLayer());	
+					  ch2Unlocked.setEventListener(new ButtonEventListener() {
+						@Override
+						public void onClick() {
+							SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
+							
+						}
+					  });
+					  
+					  // character2 locked button
+					  ch2Locked = createCharacterButton(resolution, "character2_image", SAConstants.LOCKED);
+					  chButtonList.add(ch2Locked);
+					  ch2Locked.setVisible(false);
+					  gLayer.add(ch2Locked.getLayer());	
+					  
+					  /*********************************/
+					  
+					  /********** CHARACTER 3 **********/
+					  // character3 unlocked button
+					  ch3Unlocked = createCharacterButton(resolution, "character3_image", SAConstants.UNLOCKED);
+					  chButtonList.add(ch3Unlocked);
+					  ch3Unlocked.setVisible(false);
+					  gLayer.add(ch3Unlocked.getLayer());	
+					  ch3Unlocked.setEventListener(new ButtonEventListener() {
+						@Override
+						public void onClick() {
+							SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
+							
+						}
+					  });
+					  
+					  // character3 locked
+					  ch3Locked = createCharacterButton(resolution, "character3_image", SAConstants.LOCKED);
+					  chButtonList.add(ch3Locked);
+					  ch3Locked.setVisible(false);
+					  gLayer.add(ch3Locked.getLayer());
+					  
+					  /*********************************/
+					  
 					  // previous button
 					  Json.Object objPrevious = resolution.getObject("previous_button");
-					  Button btnPrevious = createButton(objPrevious);
-					  final ImageLayer btnPreviousLayer = btnPrevious.getLayer();
-    	    		  gLayer.add(btnPreviousLayer);
+					  Button btnPrevious = createButton(objPrevious); 
+    	    		  gLayer.add(btnPrevious.getLayer());
     	    		  buttonList.add(btnPrevious);
-    	    		  
     	    		  btnPrevious.setEventListener(new ButtonEventListener() {
 						
 						@Override
-						public void onClick(Vect2d pointer) {
+						public void onClick() {
 							showPreviousCharacter();
 						}
     	    		  });
@@ -103,14 +212,12 @@ public class SceneCharacterSelect extends Scene {
     	    		  // next button
 					  Json.Object objNext = resolution.getObject("next_button");
     	    		  Button btnNext = createButton(objNext);
-    	    		  final ImageLayer btnNextLayer = btnNext.getLayer();
-    	    		  gLayer.add(btnNextLayer);
+    	    		  gLayer.add(btnNext.getLayer());
     	    		  buttonList.add(btnNext);
-    	    		  
     	    		  btnNext.setEventListener(new ButtonEventListener() {
 						
 						@Override
-						public void onClick(Vect2d pointer) {
+						public void onClick() {
 							showNextCharacter();
 						}
     	    		  });
@@ -124,16 +231,16 @@ public class SceneCharacterSelect extends Scene {
 	      }
 	    });
 	}
+	
 	private synchronized void firePointerEndEvent(Vect2d pointer) {
 		
 		for (int i = 0; i < buttonList.size(); i++) {
 			buttonList.get(i).clicked(pointer);
 		}
-	
-		if (buttonPlayList.get(activeChIndex) != null) {
-			buttonPlayList.get(activeChIndex).clicked(pointer);
+
+		for (int i = 0; i < chButtonList.size(); i++) {
+			chButtonList.get(i).clicked(pointer);
 		}
-		
 	}
 	
 	public Button createButton(Json.Object objButton) {
@@ -145,71 +252,52 @@ public class SceneCharacterSelect extends Scene {
 		return btnPlay;
 	}
 	
-	public GroupLayer createCharacter(Json.Object resolution, String characterName, String strLock) {
-		GroupLayer gChLayer = graphics().createGroupLayer();
-		ImageLayer btnPlayLayer = null;
-		String chImagePath;
-		  
-		Json.Object objCharacter = resolution.getObject(characterName);
-			
-		if (storage().getItem(strLock).equals(SAConstants.UNLOCKED)) {
-			chImagePath = objCharacter.getString("path");
-			Json.Object objButton = resolution.getObject("play_button");
-			Button btnPlay = createButton(objButton);
-			
-			btnPlayLayer = btnPlay.getLayer();
-			buttonPlayList.add(btnPlay);
-			
-			btnPlay.setEventListener(new ButtonEventListener() {
-				
-				@Override
-				public void onClick(Vect2d pointer) {
-					SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "newgame");
-				}
-			});
-		}  
+	public Button createCharacterButton(Json.Object resolution, String characterName, String strLock) {
+		Json.Object objButton = resolution.getObject(characterName);
+		int x = objButton.getInt("x");
+		int y = objButton.getInt("y");
+		
+		String path;
+		Button btnPlay;
+		
+		if (strLock.equals(SAConstants.UNLOCKED)) {
+			path = objButton.getString("path");
+			btnPlay = new Button(x, y, path);
+			btnPlay.enable();
+		}
 		else {
-			chImagePath = objCharacter.getString("path_locked");
-			buttonPlayList.add(null);
-		}
-		  
-		Image chImage = (Image) CachedResource.getInstance().getResource(chImagePath);
-		ImageLayer chImageLayer = graphics().createImageLayer(chImage);
-		int x = objCharacter.getInt("x");
-		int y = objCharacter.getInt("y");
-		chImageLayer.setTranslation(x, y);
-		
-		gChLayer.add(chImageLayer);
-		if (btnPlayLayer != null) {
-			gChLayer.add(btnPlayLayer);
-		}
-		gChLayer.setVisible(false);
-		characterLayers.add(gChLayer);
-		return gChLayer;
-	}
-	
-	public void showPreviousCharacter() {
-		for (int i = 0; i < characterLayers.size(); i++) {
-			characterLayers.get(i).setVisible(false);
+			path = objButton.getString("path_locked");
+			btnPlay = new Button(x, y, path);
+			btnPlay.disable();
 		}
 		
-		activeChIndex--;
-		if (activeChIndex < 0) {
-			activeChIndex = characterLayers.size() - 1;
-		}
-		characterLayers.get(activeChIndex).setVisible(true);
+		return btnPlay;
 	}
 	
 	public void showNextCharacter() {
-		for (int i = 0; i < characterLayers.size(); i++) {
-			characterLayers.get(i).setVisible(false);
+		chIndex++;
+		if (chIndex == chButtonList.size()) {
+			chIndex = 0;
 		}
 		
-		activeChIndex++;
-		if (activeChIndex == characterLayers.size()) {
-			activeChIndex = 0;
+		for (int i = 0; i < chButtonList.size(); i++) {
+			chButtonList.get(i).setVisible(false);
 		}
-		characterLayers.get(activeChIndex).setVisible(true);
+		
+		chButtonList.get(chIndex).setVisible(true);
+	}
+	
+	public void showPreviousCharacter() {
+		chIndex--;
+		if (chIndex < 0) {
+			chIndex = chButtonList.size()-1;
+		}
+		
+		for (int i = 0; i < chButtonList.size(); i++) {
+			chButtonList.get(i).setVisible(false);
+		}
+		
+		chButtonList.get(chIndex).setVisible(true);
 	}
 	
 	@Override
@@ -219,5 +307,4 @@ public class SceneCharacterSelect extends Scene {
 			gLayer.setVisible(false);
 		}
 	}
-
 }

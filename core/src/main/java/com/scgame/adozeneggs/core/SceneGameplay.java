@@ -106,7 +106,7 @@ public class SceneGameplay extends Scene  implements EggEventListener {
 						buttonList.add(pButton);
 						pButton.setEventListener(new ButtonEventListener() {
 							@Override
-							public void onClick(Vect2d pointer) {
+							public void onClick() {
 								if (gamePaused) {
 									gamePaused = false;
 									pauseScreen.hide();

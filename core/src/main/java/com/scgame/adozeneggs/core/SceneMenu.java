@@ -95,7 +95,7 @@ public class SceneMenu extends Scene {
     	    		  // Adding event listener for newGame button
     	    		  btnNewGame.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
+    	    			  public void onClick() {
     	    				  SceneNavigator.getInstance().runScene(eScenes.CHARACTER_SELECT, null);
     	    			  }
     	    		  });
@@ -114,7 +114,7 @@ public class SceneMenu extends Scene {
     	    		  // Adding event listener for High Scores button
     	    		  btnHighScores.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
+    	    			  public void onClick() {
     	    				  SceneNavigator.getInstance().runScene(eScenes.HIGH_SCORES, null);
     	    			  }
     	    		  });
@@ -133,8 +133,8 @@ public class SceneMenu extends Scene {
     	    		  // Adding event listener for High Scores button
     	    		  btnAchievements.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
-    	    				  
+    	    			  public void onClick() {
+    	    				  SceneNavigator.getInstance().runScene(eScenes.ACHIEVEMENTS, null);
     	    			  }
     	    		  });
     	    		  
@@ -164,7 +164,7 @@ public class SceneMenu extends Scene {
     	    		  
     	    		  btnSound.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
+    	    			  public void onClick() {
     	    				  // Stop or Play game music
     	    				  if (btnSound.getToggle() == Toggle.OFF) {
     	    					  SoundControl.getInstance().setSoundOff();
@@ -200,7 +200,7 @@ public class SceneMenu extends Scene {
     	    		  
     	    		  btnMusic.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
+    	    			  public void onClick() {
     	    				  // Stop or Play game music
     	    				  if (btnMusic.getToggle() == Toggle.OFF) {
     	    					  SoundControl.getInstance().stopGameMusic();
