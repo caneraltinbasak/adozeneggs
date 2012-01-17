@@ -46,36 +46,13 @@ public class SceneCharacterSelect extends Scene {
 	@Override
 	public void init(Object data) {
 		// add a listener for pointer (mouse, touch) input
-		/*
-	    pointer().setListener(new Pointer.Adapter() {
+		pointer().setListener(new Pointer.Adapter() {
 	    	@Override
 	    	public void onPointerEnd(Pointer.Event event) {
 	    		Vect2d pointer = new Vect2d(event.x(), event.y());
 	    		firePointerEndEvent(pointer);		
 	    	}
 	    });
-	   */
-		
-		pointer().setListener(new Pointer.Listener() {
-			
-			@Override
-			public void onPointerStart(Event event) {
-				System.out.println("onPointerStart");
-				
-			}
-			
-			@Override
-			public void onPointerEnd(Event event) {
-				System.out.println("onPointerEnd");
-				
-			}
-			
-			@Override
-			public void onPointerDrag(Event event) {
-				System.out.println("onPointerDrag");
-				
-			}
-		});
 	    
 	    gLayer.setVisible(true);
 
