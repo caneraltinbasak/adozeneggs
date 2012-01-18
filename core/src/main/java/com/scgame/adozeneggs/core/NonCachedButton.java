@@ -79,7 +79,7 @@ public class NonCachedButton {
 	public void clicked(Vect2d pointer) {
 		if (hitTest(pointer.x, pointer.y)) {
 			if (listener != null) {
-				listener.onClick(pointer);
+				listener.onClick();
 			}
 		}
 	}

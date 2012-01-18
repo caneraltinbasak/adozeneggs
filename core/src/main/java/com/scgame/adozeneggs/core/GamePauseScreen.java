@@ -46,7 +46,7 @@ public class GamePauseScreen {
 		button.setEventListener(new ButtonEventListener() {
 			
 			@Override
-			public void onClick(Vect2d position) {
+			public void onClick() {
 				SceneNavigator.getInstance().runScene(eScenes.MENU, null);	
 			}
 		});
@@ -61,7 +61,7 @@ public class GamePauseScreen {
 		button.setEventListener(new ButtonEventListener() {
 			
 			@Override
-			public void onClick(Vect2d position) {
+			public void onClick() {
 				SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "restart");	
 			}
 		});
@@ -76,7 +76,7 @@ public class GamePauseScreen {
 		button.setEventListener(new ButtonEventListener() {
 			
 			@Override
-			public void onClick(Vect2d position) {
+			public void onClick() {
 				SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "resume");	
 			}
 		});

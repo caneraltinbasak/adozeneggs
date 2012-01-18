@@ -32,21 +32,15 @@
                 "previous_button": {
                   	"id":"next",
                     "path":"images/previous_medium.png",
-                    "x":30,
-                    "y":400
+                    "x":5,
+                    "y":200
                 },
                 "next_button": {
                   	"id":"next",
                     "path":"images/next_medium.png",
-                    "x":250,
-                    "y":400
+                    "x":280,
+                    "y":200
                 },
-                "play_button": {
-                  	"id":"play",
-                    "path":"images/play_medium.png",
-                    "x":105,
-                    "y":400
-                }
             },
             {
                 "x":768,
@@ -88,12 +82,6 @@
                     "x":475,
                     "y":600
                 },
-                "play_button": {
-                  	"id":"play",
-                    "path":"images/play_high.png",
-                    "x":300,
-                    "y":600
-                }
             }
         ]
     }

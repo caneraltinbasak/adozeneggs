@@ -26,6 +26,8 @@ public class Basket extends DoubleLayerGraphicsEntity{
 	private ImageLayer topImageLayer = null;
 	private ImageLayer bottomImageLayer = null;
 	private boolean initComplete = false;
+	private OnScreenCheckInterface parentRect;
+
 
 	
 	public Basket() {
@@ -104,10 +106,10 @@ public class Basket extends DoubleLayerGraphicsEntity{
 			{
 				// TODO: Commented out this part for easier testing. Comment in for real application
 				// TODO: Implement star rating
-				//if(egg.position.x >= position.x && egg.position.x <= position.x + width)
-				//{
+				if(egg.position.x >= position.x && egg.position.x <= position.x + width)
+				{
 					return 1;
-				//}
+				}
 			}
 		}
 		return 0;
@@ -127,6 +129,14 @@ public class Basket extends DoubleLayerGraphicsEntity{
 			{
 				velocity = - velocity;
 			}
+		}
+		switch(getParentRect().isInRect(this))
+		{
+		case TOP_IS_UNDER_VISIBLE_AREA:
+			position.y-=GameConstants.ScreenProperties.height*2;
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -164,5 +174,18 @@ public class Basket extends DoubleLayerGraphicsEntity{
 		this.endPosition = endPosition;
 		this.velocity =velocity;
 		initComplete = true;
+	}
+
+	@Override
+	public float getHeight() {
+		return this.height;
+	}
+
+	public OnScreenCheckInterface getParentRect() {
+		return parentRect;
+	}
+
+	public void setParentRect(OnScreenCheckInterface parentRect) {
+		this.parentRect = parentRect;
 	}
 }

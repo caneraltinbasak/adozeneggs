@@ -93,7 +93,7 @@ public class SceneHighScores extends Scene {
     	    		  // Adding event listener for local scores button
     	    		  btnLocal.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
+    	    			  public void onClick() {
     	    				  globalScoresLayer.setVisible(false);
     	    				  localScoresLayer.setVisible(true);
     	    			  }
@@ -112,7 +112,7 @@ public class SceneHighScores extends Scene {
     	    		  // Adding event listener for global scores button
     	    		  btnGlobal.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
+    	    			  public void onClick() {
     	    				  localScoresLayer.setVisible(false);
     	    				  globalScoresLayer.setVisible(true);
     	    			  }
@@ -129,7 +129,7 @@ public class SceneHighScores extends Scene {
     	    		  
     	    		  button.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
+    	    			  public void onClick() {
     	    				  SceneNavigator.getInstance().runScene(eScenes.MENU,null);
     	    			  }
     	    		  });

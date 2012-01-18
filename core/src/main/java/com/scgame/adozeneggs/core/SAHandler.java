@@ -34,6 +34,8 @@ public class SAHandler {
 		storage().setItem(SAConstants.ACH_FIRST_FAST_JUMP, SAConstants.LOCKED);
 		storage().setItem(SAConstants.ACH_FIRST_THREE_STAR_JUMP, SAConstants.LOCKED);
 		storage().setItem(SAConstants.CHARACTER1_LOCK, SAConstants.UNLOCKED);
+		storage().setItem(SAConstants.CHARACTER2_LOCK, SAConstants.LOCKED);
+		storage().setItem(SAConstants.CHARACTER3_LOCK, SAConstants.LOCKED);
 		
 		
 		// Initializing all achievements as locked, if they were not initialized before
@@ -42,6 +44,36 @@ public class SAHandler {
 		}
 		if (storage().getItem(SAConstants.ACH_FIRST_THREE_STAR_JUMP) == null) {
 			storage().setItem(SAConstants.ACH_FIRST_THREE_STAR_JUMP, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT1) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT1, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT2) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT2, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT3) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT3, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT4) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT4, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT5) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT5, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT6) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT6, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT7) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT7, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT8) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT8, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT9) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT9, SAConstants.LOCKED);
+		}
+		if (storage().getItem(SAConstants.ACHIEVEMENT10) == null) {
+			storage().setItem(SAConstants.ACHIEVEMENT10, SAConstants.LOCKED);
 		}
 		if (storage().getItem(SAConstants.CHARACTER1_LOCK) == null) {
 			storage().setItem(SAConstants.CHARACTER1_LOCK, SAConstants.LOCKED);
@@ -255,6 +287,7 @@ public class SAHandler {
 		
 		if (storage().getItem(SAConstants.ACH_FIRST_THREE_STAR_JUMP).equals(SAConstants.LOCKED) && threeStarJumpCount > 0) {
 			storage().setItem(SAConstants.ACH_FIRST_THREE_STAR_JUMP, SAConstants.UNLOCKED);
+			storage().setItem(SAConstants.CHARACTER2_LOCK, SAConstants.UNLOCKED);
 			achToShow.add(SAConstants.ACH_FIRST_THREE_STAR_JUMP);
 		}
 	}

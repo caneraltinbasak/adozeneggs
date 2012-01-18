@@ -1,6 +1,9 @@
 package com.scgame.adozeneggs.core;
 
 import static playn.core.PlayN.graphics;
+
+import com.scgame.adozeneggs.tweener.freeTimer;
+
 import playn.core.Game;
 import playn.core.GroupLayer;
 
@@ -25,6 +28,8 @@ public class adozeneggs implements Game {
 
 	@Override
 	public void update(float delta) {
+		// update tweener timer
+		freeTimer.timer.setSysTime(delta);
 		if (SceneNavigator.getInstance().getActiveScene() != null) {
 			SceneNavigator.getInstance().getActiveScene().update(delta);
 		}

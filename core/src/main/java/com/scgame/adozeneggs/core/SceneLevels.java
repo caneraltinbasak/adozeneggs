@@ -72,7 +72,7 @@ public class SceneLevels extends Scene {
 	    	    		  
 	    	    		  button.setEventListener(new ButtonEventListener() {
 	    	    			  @Override
-	    	    			  public void onClick(Vect2d pointer) {
+	    	    			  public void onClick() {
 	    	    				  SceneNavigator.getInstance().runScene(eScenes.GAMEPLAY, "levels/level1.json"); // TODO: Implement passing the correct data to start level
 	    	    			  }
 	    	    		  });
@@ -90,7 +90,7 @@ public class SceneLevels extends Scene {
     	    		  
     	    		  button.setEventListener(new ButtonEventListener() {
     	    			  @Override
-    	    			  public void onClick(Vect2d pointer) {
+    	    			  public void onClick() {
     	    				  SceneNavigator.getInstance().runScene(eScenes.MENU,null);
     	    			  }
     	    		  });
