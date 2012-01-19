@@ -1,6 +1,8 @@
 package com.scgame.adozeneggs.core;
 
 import static playn.core.PlayN.graphics;
+import static playn.core.PlayN.log;
+
 
 import com.scgame.adozeneggs.tweener.freeTimer;
 
@@ -14,7 +16,8 @@ public class adozeneggs implements Game {
 	@Override
 	public void init() {
 		// init screen size for simulation
-		graphics().setSize(220, 300);
+		log().debug("\nHeight: "+graphics().screenHeight());
+		log().debug("\nWidth: "+ graphics().screenWidth());
 		SceneNavigator.getInstance().runScene(eScenes.RESOLUTION, null);
 
 	}
