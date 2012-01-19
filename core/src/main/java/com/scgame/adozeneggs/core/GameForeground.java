@@ -6,6 +6,10 @@ import static playn.core.PlayN.log;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scgame.adozeneggs.tweener.Circ;
+import com.scgame.adozeneggs.tweener.Quart;
+import com.scgame.adozeneggs.tweener.Tweener;
+
 import playn.core.GroupLayer;
 
 public class GameForeground extends ScrollableGroupEntity implements EggEventListener, OnScreenCheckInterface {
@@ -16,6 +20,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	private float scrollPosition = 0.0f;
 	private Egg egg;
 	private GameOverScreen gameOverScreen;
+	private Tweener scrollTween=new Tweener(new Quart());
 
 
 	public GameForeground() {
@@ -90,7 +95,7 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	@Override
 	public void update(float delta) {
 		// SCROLL
-		position.y = position.y + ( scrollPosition -position.y )*GameConstants.ScreenProperties.FRAME_RATE/1000;
+		position.y = scrollTween.getValue();
 		
 		// UPDATE POSITIONS
 		for(int i = 0 ; i <entities.size(); i++)
@@ -121,6 +126,9 @@ public class GameForeground extends ScrollableGroupEntity implements EggEventLis
 	}
 	@Override
 	public void scrollTo(float scrollPosition){
+		scrollTween.clear();
+		scrollTween.add(0, this.position.y, Tweener.EASING_OUT);
+		scrollTween.add(1f, scrollPosition);
 		this.scrollPosition = scrollPosition;
 	}
 	@Override

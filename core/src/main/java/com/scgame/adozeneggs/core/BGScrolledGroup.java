@@ -7,6 +7,11 @@ import static playn.core.PlayN.log;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scgame.adozeneggs.tweener.Circ;
+import com.scgame.adozeneggs.tweener.Cubic;
+import com.scgame.adozeneggs.tweener.Quart;
+import com.scgame.adozeneggs.tweener.Tweener;
+
 import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
@@ -17,6 +22,7 @@ public class BGScrolledGroup extends ScrollableGroupEntity implements OnScreenCh
 	private List<BGScrolledImage> entities = new ArrayList<BGScrolledImage>();
 	private float scrollPosition = 0;
 	private float scrollingSpeedFactor;
+	private Tweener scrollTween=new Tweener(new Quart());
 	enum ScrollingDirection {
 		SCROLLING_UP,
 		SCROLLING_DOWN,
@@ -56,7 +62,7 @@ public class BGScrolledGroup extends ScrollableGroupEntity implements OnScreenCh
 
 	@Override
 	public void update(float delta) {
-		position.y = position.y + ( scrollPosition -position.y )*GameConstants.ScreenProperties.FRAME_RATE*scrollingSpeedFactor/1000;
+		position.y = scrollTween.getValue();
 
 		for (int i=0;i<entities.size();i++)
 			entities.get(i).update(delta);
@@ -75,6 +81,10 @@ public class BGScrolledGroup extends ScrollableGroupEntity implements OnScreenCh
 
 	@Override
 	public void scrollTo(float scrollPosition) {
+		scrollTween.clear();
+		scrollTween.add(0, this.position.y, Tweener.EASING_OUT);
+		scrollTween.add(1f, scrollPosition);
+
 		this.scrollPosition = scrollPosition;
 	}
 
